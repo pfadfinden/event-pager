@@ -1,0 +1,5 @@
+controllers:
+    resource:
+        path: ../src/View/Web/
+        namespace: App\View\Web
+    type: attribute
