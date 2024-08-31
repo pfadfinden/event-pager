@@ -18,13 +18,14 @@ jobs:
           coverage: xdebug
 
       - name: Validate composer.json and composer.lock
+        working-directory: webservice
         run: composer validate --strict
 
-      - name: Cache Composer packages
+      - name: Cache webservice Composer packages
         id: composer-cache
         uses: actions/cache@v3
         with:
-          path: vendor
+          path: webservice/vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
