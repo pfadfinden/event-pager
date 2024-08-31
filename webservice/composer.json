@@ -77,6 +77,7 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.63",
         "pestphp/pest": "^2.34",
         "symfony/debug-bundle": "7.1.*",
         "symfony/stopwatch": "7.1.*",

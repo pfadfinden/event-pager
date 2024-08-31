@@ -3,7 +3,7 @@ name: Continuous Integration
 on: ['push', 'pull_request']
 
 jobs:
-  test:
+  webservice:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,9 +17,37 @@ jobs:
           tools: composer:v2
           coverage: xdebug
 
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
       - name: Install Dependencies
         working-directory: webservice
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      #- name: Lint Twig Templates
+      #  working-directory: webservice
+      #  TODO check which folder was changed
+      #  run: composer run lint:twig
+
+      - name: Check Code Style (PHP)
+        working-directory: webservice
+        env: 
+          ORIGN_SHA:  ${{ github.event_name == 'push' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          IFS='
+          '
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${ ORIGIN_SHA }..${{ github.sha }}")
+          if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
+          vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
       - name: Tests
         working-directory: webservice

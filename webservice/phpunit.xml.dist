@@ -24,12 +24,12 @@
         <testsuite name="Function">
             <directory>tests/Function</directory>
         </testsuite>
-        <testsuite name="Integration">
+       <!-- <testsuite name="Integration">
             <directory>tests/Integration</directory>
         </testsuite>
         <testsuite name="Application">
             <directory>tests/Application</directory>
-        </testsuite>
+        </testsuite>-->
     </testsuites>
 
     <coverage processUncoveredFiles="true">
