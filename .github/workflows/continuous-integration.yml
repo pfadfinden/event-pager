@@ -19,7 +19,7 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         working-directory: webservice
-        run: composer validate # --strict
+        run: composer validate --no-check-publish --strict
 
       - name: Cache Composer packages
         id: composer-cache
