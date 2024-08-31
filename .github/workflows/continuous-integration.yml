@@ -41,12 +41,10 @@ jobs:
 
       - name: Check Code Style (PHP)
         working-directory: webservice
-        env: 
-          ORIGN_SHA:  ${{ github.event_name == 'push' && github.event.pull_request.base.sha || github.event.before }}
         run: |
           IFS='
           '
-          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${ ORIGIN_SHA }..${{ github.sha }}")
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${{ github.event_name == 'push' && github.event.pull_request.base.sha || github.event.before }}..${{ github.sha }}")
           if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
           vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
