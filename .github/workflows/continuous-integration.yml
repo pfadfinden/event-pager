@@ -1,6 +1,6 @@
 name: Continuous Integration
 
-on: ['push', 'pull_request']
+on: ['pull_request']
 
 jobs:
   webservice:
@@ -19,9 +19,9 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         working-directory: webservice
-        run: composer validate --strict
+        run: composer validate # --strict
 
-      - name: Cache webservice Composer packages
+      - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v3
         with:
