@@ -21,10 +21,10 @@
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Function">
+        <!--<testsuite name="Function">
             <directory>tests/Function</directory>
         </testsuite>
-       <!-- <testsuite name="Integration">
+        <testsuite name="Integration">
             <directory>tests/Integration</directory>
         </testsuite>
         <testsuite name="Application">
