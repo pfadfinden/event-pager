@@ -77,7 +77,8 @@
         "lint:twig": "bin/console lint:twig ./templates",
         "lint:container": "bin/console lint:container",
         "sa:check": "vendor/bin/phpstan analyse",
-        "sa:check:ci": "vendor/bin/phpstan analyse --error-format github"
+        "sa:check:ci": "vendor/bin/phpstan analyse --error-format github",
+        "test": "vendor/bin/pest"
     },
     "conflict": {
         "symfony/symfony": "*"
