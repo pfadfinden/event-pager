@@ -65,7 +65,19 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "quality:check": [
+            "@lint:twig",
+            "@lint:container",
+            "@style:check",
+            "@sa:check"
+        ],
+        "style:check": "vendor/bin/php-cs-fixer check",
+        "style:fix": "vendor/bin/php-cs-fixer fix",
+        "lint:twig": "bin/console lint:twig ./templates",
+        "lint:container": "bin/console lint:container",
+        "sa:check": "vendor/bin/phpstan analyse",
+        "sa:check:ci": "vendor/bin/phpstan analyse --error-format github"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -77,8 +89,13 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.63",
+        "friendsofphp/php-cs-fixer": "^3.64.0",
         "pestphp/pest": "^2.34",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan-phpunit": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6",
+        "phpstan/phpstan-symfony": "^1.4",
         "symfony/debug-bundle": "7.1.*",
         "symfony/stopwatch": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"
