@@ -54,7 +54,6 @@ jobs:
         with:
           php-version: 8.3
           tools: composer:v2
-          coverage: xdebug
 
       - name: Restore cached composer packages
         id: composer-cache
@@ -72,11 +71,11 @@ jobs:
 
       - name: Lint Twig Templates
         working-directory: webservice
-        run: 'composer run lint:twig'
+        run: 'composer run code:lint:twig'
 
       - name: Lint Symfony Container
         working-directory: webservice
-        run: 'composer run lint:container'
+        run: 'composer run code:lint:container'
 
       - name: Check Code Style (PHP)
         working-directory: webservice
@@ -120,7 +119,7 @@ jobs:
 
       - name: Run PHPUnit
         working-directory: webservice
-        run: 'composer run test'
+        run: 'composer run test:coverage'
 
   static-analyser-check:
     runs-on: ubuntu-latest
@@ -136,7 +135,6 @@ jobs:
         with:
           php-version: 8.3
           tools: composer:v2
-          coverage: xdebug
 
       - name: Restore cached composer packages
         id: composer-cache
