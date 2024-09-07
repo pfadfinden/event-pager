@@ -67,10 +67,10 @@
             "@auto-scripts"
         ],
         "code:quality:check": [
-            "@lint:twig",
-            "@lint:container",
-            "@style:check",
-            "@sa:check"
+            "@code:lint:twig",
+            "@code:lint:container",
+            "@code:style:check",
+            "@code:sa:check"
         ],
         "code:style:check": "@php vendor/bin/php-cs-fixer check",
         "code:style:fix": "@php vendor/bin/php-cs-fixer fix",
