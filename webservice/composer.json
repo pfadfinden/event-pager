@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
@@ -19,18 +19,17 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/monolog-bundle": "^3.0",
         "symfony/runtime": "7.1.*",
-        "symfony/stimulus-bundle": "*",
+        "symfony/stimulus-bundle": "2.19.*",
         "symfony/twig-bundle": "7.1.*",
         "symfony/yaml": "7.1.*",
-        "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/extra-bundle": "^2.12 || ^3.0",
+        "twig/twig": "^2.12 || ^3.0"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "pestphp/pest-plugin": true
+            "symfony/runtime": true
         },
         "sort-packages": true
     },
@@ -52,7 +51,8 @@
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
-        "symfony/polyfill-php82": "*"
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*"
     },
     "scripts": {
         "auto-scripts": {
@@ -65,6 +65,23 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "code:quality:check": [
+            "@code:lint:twig",
+            "@code:lint:container",
+            "@code:style:check",
+            "@code:sa:check"
+        ],
+        "code:style:check": "@php vendor/bin/php-cs-fixer check",
+        "code:style:fix": "@php vendor/bin/php-cs-fixer fix",
+        "code:lint:twig": "@php bin/console lint:twig ./templates",
+        "code:lint:container": "@php bin/console lint:container",
+        "code:sa:check": "@php vendor/bin/phpstan analyse",
+        "code:sa:check:ci": "@php vendor/bin/phpstan analyse --error-format github --no-progress",
+        "test": "@php vendor/bin/phpunit --no-coverage",
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "@php vendor/bin/phpunit"
         ]
     },
     "conflict": {
@@ -77,7 +94,13 @@
         }
     },
     "require-dev": {
-        "pestphp/pest": "^2.34",
+        "friendsofphp/php-cs-fixer": "^3.64.0",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan-phpunit": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6",
+        "phpstan/phpstan-symfony": "^1.4",
+        "phpunit/phpunit": "^10.5",
         "symfony/debug-bundle": "7.1.*",
         "symfony/stopwatch": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"
