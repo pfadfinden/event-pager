@@ -1,0 +1,44 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/webservice"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+    reviewers:
+      - "juliusstoerrle"
+      - "corphi"
+    allow:
+      # Allow both direct and indirect updates for all packages
+      - dependency-type: "all"
+    ignore:
+      # Symfony Major & Minor Dependencies must be made by developer to ensure extra.symfony.require setting is correct
+      - dependency-name: "symfony/*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    groups:
+      symfony:
+        patterns:
+          - "symfony/*"
+      twig:
+        patterns:
+          - "twig/*"
+    commit-message:
+      prefix: "chore: composer"
+      include: "scope"
+      
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: "daily"
+      day: "friday"
+    reviewers:
+      - "juliusstoerrle"
+      - "corphi"
+    commit-message:
+      prefix: "chore: github-actions"
+  
