@@ -29,3 +29,8 @@ phpstan.neon
 ###< phpstan/phpstan ###
 
 /dist/
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
