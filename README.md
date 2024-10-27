@@ -27,7 +27,7 @@ The project root includes global configuration files and Docker Compose files to
 Please check the README.md of each component for details on how to develop. Your contributions in the form of bug reports & triaging, documentation improvements, addition of further transports, bugfixes, test cases or new features are welcome.
 We recommend to start your contribution by creating an issue to allow for discussion. Smaller fixes, documentation and new test cases can be contributed through a pull request without a prior issue.
 
-Please consider the licence of this project and the Developer Certificate of Origin (https://maps.app.goo.gl/m4YGS3pn3r6TfrSh7) for your contributions.
+Please consider the licence of this project and the Developer Certificate of Origin (https://developercertificate.org/) for your contributions.
 
 ## Security
 
