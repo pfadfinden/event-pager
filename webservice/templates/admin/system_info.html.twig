@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pager-Admin: System Info{% endblock %}
+{% block body %}
+<h1>System Info</h1>
+
+<h2>Status</h2>
+Time & Timezone: {{ time }} {{timezone}}
+Memory / CPU
+Pending Messages?
+
+<h2>Configuration</h2>
+Activated Features (mercure, sso, etc.)
+
+<h2>Versions</h2>
+PHP Version: {{phpVersion}}
+
+Service Version 
+
+
+{% endblock %}

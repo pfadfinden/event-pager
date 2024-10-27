@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pager-Admin{% endblock %}
+{% block body %}
+<h1>Admin</h1>
+
+<h2>Status</h2>
+Twig Component?: Messages send total last 24 hours, total messages, erros last 24 hours
+
+<h2>Organisation</h2>
+Twig Component?: Statistik (Anzahl Nutzer, Gruppen, Rollen)
+
+<br/>
+
+Browse Add /Search?
+
+<h2>Transports</h2>
+
+List of Transports with status light, number of channels
+
+<div style="padding: .5rem; border-radius-top-left: 3px; border: 1px solid #ccc">
+    <h3>IntelPage Pager</h3>
+</div>
+<div style="padding: 1rem">
+    <h3>Ntify</h3>
+</div>
+
+<h2>Benutzer</h2>
+link to manage
+
+<h2>System</h2>
+
+Import, Export, System Info
+
+
+System Infos:
+Time & Timezone, PHP Version, Memory / CPU?, Mercure Activated?, Service Version 
+
+
+{% endblock %}
