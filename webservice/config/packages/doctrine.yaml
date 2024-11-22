@@ -7,6 +7,10 @@ doctrine:
         #server_version: '16'
 
         profiling_collect_backtrace: '%kernel.debug%'
+        types:
+            instant:  'App\Infrastructure\Doctrine\DBAL\Type\InstantType'
+            local_datetime:  'App\Infrastructure\Doctrine\DBAL\Type\LocalDateTimeType'
+            local_time:  'App\Infrastructure\Doctrine\DBAL\Type\LocalTimeType'
         use_savepoints: true
     orm:
         auto_generate_proxy_classes: true
