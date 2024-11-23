@@ -11,6 +11,7 @@ doctrine:
             instant:  'App\Infrastructure\Persistence\DoctrineORM\Type\InstantType'
             local_datetime:  'App\Infrastructure\Persistence\DoctrineORM\Type\LocalDateTimeType'
             local_time:  'App\Infrastructure\Persistence\DoctrineORM\Type\LocalTimeType'
+            ulid_array:  'App\Infrastructure\Persistence\DoctrineORM\Type\UlidArrayType'
         use_savepoints: true
     orm:
         auto_generate_proxy_classes: true
