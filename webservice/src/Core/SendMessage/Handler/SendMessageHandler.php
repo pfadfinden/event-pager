@@ -24,11 +24,11 @@ final readonly class SendMessageHandler
     {
         $incomingMessage = IncomingMessage::new(
             Ulid::fromString($cmd->sendBy),
-            array_map(fn($str) => Ulid::fromString($str), $cmd->to),
+            array_map(fn ($str) => Ulid::fromString($str), $cmd->to),
             $cmd->message,
             $cmd->priority,
         );
-        
+
         $this->repository->add($incomingMessage);
         $this->uow->commit();
 
