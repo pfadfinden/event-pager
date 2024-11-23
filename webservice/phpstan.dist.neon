@@ -11,6 +11,7 @@ parameters:
         consoleApplicationLoader: tests/console-application.php
     doctrine:
 #        objectManagerLoader: tests/object-manager.php
+    treatPhpDocTypesAsCertain: false
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
