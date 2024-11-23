@@ -4,8 +4,81 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cafcc848eeef516b0bc0e7510c5527fe",
+    "content-hash": "a771b54418686507c048c332e6582cb0",
     "packages": [
+        {
+            "name": "brick/date-time",
+            "version": "0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/date-time.git",
+                "reference": "7b39737f630a0e5d2a2dc0834b0da77a065efaed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/date-time/zipball/7b39737f630a0e5d2a2dc0834b0da77a065efaed",
+                "reference": "7b39737f630a0e5d2a2dc0834b0da77a065efaed",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.0",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^10.5",
+                "vimeo/psalm": "5.25.0"
+            },
+            "suggest": {
+                "ext-timezonedb": "This PECL extension provides up-to-date timezone information"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\DateTime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Date and time library",
+            "keywords": [
+                "DayOfWeek",
+                "LocalDateRange",
+                "LocalDateTime",
+                "LocalTime",
+                "Month",
+                "MonthDay",
+                "Year",
+                "YearMonth",
+                "YearMonthRange",
+                "YearWeek",
+                "ZonedDateTime",
+                "brick",
+                "date",
+                "datetime",
+                "duration",
+                "instant",
+                "interval",
+                "localdate",
+                "period",
+                "stopwatch",
+                "time",
+                "timezone"
+            ],
+            "support": {
+                "issues": "https://github.com/brick/date-time/issues",
+                "source": "https://github.com/brick/date-time/tree/0.7.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/BenMorel",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-23T14:32:17+00:00"
+        },
         {
             "name": "composer/semver",
             "version": "3.4.3",
@@ -3827,6 +3900,85 @@
             "time": "2024-09-09T11:45:10+00:00"
         },
         {
+            "name": "symfony/polyfill-uuid",
+            "version": "v1.31.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-uuid.git",
+                "reference": "21533be36c24be3f4b1669c4725c7d1d2bab4ae2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/21533be36c24be3f4b1669c4725c7d1d2bab4ae2",
+                "reference": "21533be36c24be3f4b1669c4725c7d1d2bab4ae2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "provide": {
+                "ext-uuid": "*"
+            },
+            "suggest": {
+                "ext-uuid": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Uuid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for uuid functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "uuid"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.31.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-09T11:45:10+00:00"
+        },
+        {
             "name": "symfony/routing",
             "version": "v7.1.9",
             "source": {
@@ -4541,6 +4693,80 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/twig-bundle/tree/v7.1.6"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-25T14:20:29+00:00"
+        },
+        {
+            "name": "symfony/uid",
+            "version": "v7.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/uid.git",
+                "reference": "65befb3bb2d503bbffbd08c815aa38b472999917"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/uid/zipball/65befb3bb2d503bbffbd08c815aa38b472999917",
+                "reference": "65befb3bb2d503bbffbd08c815aa38b472999917",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/polyfill-uuid": "^1.15"
+            },
+            "require-dev": {
+                "symfony/console": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Uid\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides an object-oriented API to generate and represent UIDs",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "UID",
+                "ulid",
+                "uuid"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/uid/tree/v7.1.6"
             },
             "funding": [
                 {
