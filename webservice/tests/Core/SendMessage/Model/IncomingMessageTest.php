@@ -8,11 +8,13 @@ use App\Core\SendMessage\Model\IncomingMessage;
 use Brick\DateTime\Clock\FixedClock;
 use Brick\DateTime\DefaultClock;
 use Brick\DateTime\Instant;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
 #[Group('unit')]
+#[CoversClass(IncomingMessage::class)]
 final class IncomingMessageTest extends TestCase
 {
     public function testCreateNew(): void
