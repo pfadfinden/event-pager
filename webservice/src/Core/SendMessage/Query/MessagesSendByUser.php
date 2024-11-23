@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core\SendMessage\Query;
 
 use App\Core\Bus\Query;
