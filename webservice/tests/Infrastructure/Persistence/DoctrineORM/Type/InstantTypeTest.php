@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Doctrine\DBAL\Type;
+namespace App\Tests\Infrastructure\Persistence\DoctrineORM\Type;
 
-use App\Infrastructure\Persistence\DoctrineORM\Type\LocalDateTimeType;
-use Brick\DateTime\LocalDateTime;
+use App\Infrastructure\Persistence\DoctrineORM\Type\InstantType;
+use Brick\DateTime\Instant;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
@@ -14,30 +14,30 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(LocalDateTimeType::class)]
+#[CoversClass(InstantType::class)]
 #[Small()]
-final class LocalDateTimeTypeTest extends TestCase
+final class InstantTypeTest extends TestCase
 {
     /**
-     * @return array{0: ?string, 1: ?LocalDateTime}[]
+     * @return array{0: ?string, 1: ?Instant}[]
      */
     public static function convertToDatabaseValueProvider(): array
     {
         return [
             [null, null],
-            ['2024-11-30T00:00', LocalDateTime::of(2024, 11, 30)],
-            ['2024-11-30T12:34:56.123456789', LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789)],
-            ['-123456-11-30T12:34:56.123456789', LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789)],
-            ['-999999-01-01T00:00', LocalDateTime::min()],
-            ['999999-12-31T23:59:59.999999999', LocalDateTime::max()],
+            ['0', Instant::epoch()],
+            ['1234567890.123456789', Instant::of(1234567890, 123456789)],
+            ['-123456789.123456789', Instant::of(-123456789, 123456789)],
+            ['9999999999.999999999', Instant::of(9_999_999_999, 999_999_999)],
+            ['-9999999999.999999999', Instant::of(-9_999_999_999, 999_999_999)],
         ];
     }
 
     #[DataProvider('convertToDatabaseValueProvider')]
-    public function testConvertToDatabaseValue(?string $expected, ?LocalDateTime $value): void
+    public function testConvertToDatabaseValue(?string $expected, ?Instant $value): void
     {
         $platform = $this->createMock(AbstractPlatform::class);
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
         $result = $type->convertToDatabaseValue($value, $platform);
 
@@ -51,7 +51,10 @@ final class LocalDateTimeTypeTest extends TestCase
     {
         return [
             [true],
-            ['abcdef'],
+            [Instant::min()],
+            [Instant::of(-10_000_000_000, 0)],
+            [Instant::of(10_000_000_000, 0)],
+            [Instant::max()],
         ];
     }
 
@@ -59,7 +62,7 @@ final class LocalDateTimeTypeTest extends TestCase
     public function testConvertToDatabaseValueException(mixed $value): void
     {
         $platform = $this->createMock(AbstractPlatform::class);
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
         self::expectException(ConversionException::class);
 
@@ -67,23 +70,30 @@ final class LocalDateTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: ?LocalDateTime, 1: ?string}[]
+     * @return array{0: ?Instant, 1: mixed}[]
      */
     public static function convertToPhpValueProvider(): array
     {
         return [
             [null, null],
-            [LocalDateTime::of(2024, 11, 30), '2024-11-30T00:00'],
-            [LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789), '2024-11-30T12:34:56.123456789'],
-            [LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789), '-123456-11-30T12:34:56.123456789'],
+            [Instant::epoch(), 0],
+            [Instant::epoch(), 0.0],
+            [Instant::epoch(), '0'],
+            [Instant::epoch(), '0.'],
+            [Instant::epoch(), '0.0'],
+            [Instant::of(42, 125000000), 42.125],
+            [Instant::of(4711, 250000000), 4711.25],
+            [Instant::of(0, 123456789), '0.123456789'],
+            [Instant::of(123456789, 0), '123456789.0'],
+            [Instant::of(123456, 789000000), '123456.789'],
         ];
     }
 
     #[DataProvider('convertToPhpValueProvider')]
-    public function testConvertToPhpValue(?LocalDateTime $expected, ?string $value): void
+    public function testConvertToPhpValue(?Instant $expected, mixed $value): void
     {
         $platform = $this->createMock(AbstractPlatform::class);
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
         $result = $type->convertToPHPValue($value, $platform);
 
@@ -111,7 +121,7 @@ final class LocalDateTimeTypeTest extends TestCase
     public function testConvertToPhpValueException(mixed $value): void
     {
         $platform = $this->createMock(AbstractPlatform::class);
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
         self::expectException(ConversionException::class);
 
@@ -120,9 +130,9 @@ final class LocalDateTimeTypeTest extends TestCase
 
     public function testGetName(): void
     {
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
-        self::assertSame(LocalDateTimeType::NAME, $type->getName());
+        self::assertSame(InstantType::NAME, $type->getName());
     }
 
     /**
@@ -133,7 +143,7 @@ final class LocalDateTimeTypeTest extends TestCase
         $mysql = new MySQLPlatform();
 
         return [
-            ['VARCHAR(32)', [], $mysql],
+            ['NUMERIC(19, 9)', [], $mysql],
         ];
     }
 
@@ -143,7 +153,7 @@ final class LocalDateTimeTypeTest extends TestCase
     #[DataProvider('getSqlDeclarationProvider')]
     public function testGetSqlDeclaration(string $expected, array $column, AbstractPlatform $platform): void
     {
-        $type = new LocalDateTimeType();
+        $type = new InstantType();
 
         self::assertSame($expected, $type->getSQLDeclaration($column, $platform));
     }

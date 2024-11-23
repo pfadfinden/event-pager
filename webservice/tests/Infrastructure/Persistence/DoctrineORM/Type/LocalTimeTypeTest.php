@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Doctrine\DBAL\Type;
+namespace App\Tests\Infrastructure\Persistence\DoctrineORM\Type;
 
 use App\Infrastructure\Persistence\DoctrineORM\Type\LocalTimeType;
 use Brick\DateTime\LocalTime;
