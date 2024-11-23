@@ -18,6 +18,7 @@
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
+        "symfony/form": "7.2.*",
         "symfony/framework-bundle": "7.2.*",
         "symfony/messenger": "7.2.*",
         "symfony/monolog-bundle": "^3.0",
@@ -28,6 +29,7 @@
         "symfony/uid": "7.2.*",
         "symfony/ux-icons": "^2.22",
         "symfony/ux-live-component": "^2.22",
+        "symfony/validator": "7.2.*",
         "symfony/yaml": "7.2.*",
         "twig/extra-bundle": "^2.12 || ^3.0",
         "twig/twig": "^2.12 || ^3.0"

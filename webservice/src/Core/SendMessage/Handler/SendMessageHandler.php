@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Core\SendMessage\Handler;
 
+use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\SendMessage\Command\SendMessage;
 use App\Core\SendMessage\Model\IncomingMessage;
 use App\Core\SendMessage\Port\IncomingMessageRepository;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
+#[AsMessageHandler(bus: Bus::COMMAND)]
 final readonly class SendMessageHandler
 {
     public function __construct(
-        private readonly IncomingMessageRepository $repository,
-        private readonly UnitOfWork $uow,
+        private IncomingMessageRepository $repository,
+        private UnitOfWork $uow,
     ) {
     }
 
