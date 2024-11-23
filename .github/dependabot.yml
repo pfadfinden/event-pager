@@ -25,6 +25,12 @@ updates:
       twig:
         patterns:
           - "twig/*"
+      phpstan:
+        patterns:
+          - "phpstan/*"
+      doctrine:
+        patterns:
+          - "doctrine/*"
     commit-message:
       prefix: "chore: composer"
       include: "scope"
