@@ -1,4 +1,10 @@
 services:
+
+  pager_transmitter_stub:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./pager_transmitter_stub
+
   php:
     build:
       dockerfile: ./build/frankenphp/Dockerfile
@@ -19,8 +25,8 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
-
-  ###> doctrine/doctrine-bundle ###
+  
+###> doctrine/doctrine-bundle ###
   database:
     ports:
       - "5432"
