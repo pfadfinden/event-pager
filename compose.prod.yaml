@@ -2,7 +2,7 @@
 services:
   php:
     build:
-      dockerfile: ./webservice/build/frankenphp/Dockerfile
+      dockerfile: ./build/frankenphp/Dockerfile
       context: ./webservice
       target: frankenphp_prod
     environment:
