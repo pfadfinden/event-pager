@@ -19,22 +19,12 @@ updates:
       - dependency-name: "symfony/*"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
-      symfony:
-        patterns:
-          - "symfony/*"
-      twig:
-        patterns:
-          - "twig/*"
-      phpstan:
-        patterns:
-          - "phpstan/*"
-      doctrine:
-        patterns:
-          - "doctrine/*"
+      all:
+        exclude-patterns:
+          - 'friendsofphp/php-cs-fixer'
     commit-message:
       prefix: "chore: composer"
       include: "scope"
-      
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
     directory: "/"
@@ -47,4 +37,3 @@ updates:
       - "corphi"
     commit-message:
       prefix: "chore: github-actions"
-  
