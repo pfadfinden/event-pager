@@ -37,6 +37,12 @@ return (new PhpCsFixer\Config())
             'comment_text' => 'Intentional: No break',
         ],
         'non_printable_character' => false, // As of PHP 7, they can be masked in strings (Not included in @Symfony)
+        'phpdoc_no_alias_tag' => [ // differs from @Symfony, needed for abstract readonly properties
+            'replacements' => [
+                'type' => 'var',
+                'link' => 'see',
+            ],
+        ],
         'phpdoc_to_comment' => false, // differs from @Symfony, needed for higher PHPStan / lower PSalm levels
         'pow_to_exponentiation' => true,
     ])
