@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="layout-container">
+		{{ include('_sidebar.html.twig') }}
+		<div class="vertical-divider"></div>
+		<div class="flex-grow-1 overflow-y-auto" style="width:x">
+			{% block main %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}

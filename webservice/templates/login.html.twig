@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pager System Login{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.divider:after,
+		.divider:before {
+			content: "";
+			flex: 1;
+			height: 1px;
+			background: #eee;
+		}
+
+		svg {
+			fill: var(--bs-secondary-color);
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<section class="vh-100">
+		<div class="container py-5 h-100">
+			<div class="row d-flex align-items-center justify-content-center h-100">
+				<div class="col-md-8 col-lg-7 col-xl-6">
+					<h1>Event Pager Login</h1>
+					<svg id="pager-icon" viewbox="0 0 450.624 400.624" class="w-50">
+						<title>Pager-Icon</title>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M428.153,85.991H12.471C5.587,85.991,0,91.578,0,98.462v243.7c0,6.881,5.587,12.471,12.471,12.471h415.682
+							        c6.881,0,12.471-5.59,12.471-12.471v-243.7C440.624,91.578,435.045,85.991,428.153,85.991z M121.768,315.681l-49.115-34.447
+							        l49.115-34.445V315.681z M166.085,315.681v-68.899l49.115,34.44L166.085,315.681z M366.841,286.562
+							        c-13.201,0-23.906-10.698-23.906-23.899s10.705-23.906,23.906-23.906s23.906,10.705,23.906,23.906S380.042,286.562,366.841,286.562
+							        z M304.58,325.015c-13.201,0-23.906-10.698-23.906-23.899s10.705-23.906,23.906-23.906s23.906,10.705,23.906,23.906
+							        S317.781,325.015,304.58,325.015z M398.018,191.474c0,6.884-5.584,12.471-12.471,12.471H48.841
+							        c-6.884,0-12.471-5.587-12.471-12.471V133.28c0-6.884,5.587-12.471,12.471-12.471h336.706c6.887,0,12.471,5.587,12.471,12.471
+							        V191.474z"></path>
+					</svg>
+				</div>
+				<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+					<form>
+
+
+						<a data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="{{ path('app_view_web_admin_adminhome__invoke') }}" role="button">
+							<i class="fab fa-facebook-f me-2"></i>Continue without Login
+						</a>
+
+						<a data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" style="background-color: #55acee" href="#!" role="button">
+							<i class="fab fa-twitter me-2"></i>Continue with BdP Login</a>
+
+						<div class="divider d-flex align-items-center my-4">
+							<p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+						</div>
+
+						<!-- Email input -->
+						<div data-mdb-input-init class="form-outline mb-4">
+							<input type="email" id="form1Example13" class="form-control form-control-lg"/>
+							<label class="form-label" for="form1Example13">Email address</label>
+						</div>
+
+						<!-- Password input -->
+						<div data-mdb-input-init class="form-outline mb-4">
+							<input type="password" id="form1Example23" class="form-control form-control-lg"/>
+							<label class="form-label" for="form1Example23">Password</label>
+						</div>
+
+						<div
+							class="d-flex justify-content-around align-items-center mb-4">
+							<!-- Checkbox -->
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="form1Example3" checked/>
+								<label class="form-check-label" for="form1Example3">
+									Remember me
+								</label>
+							</div>
+							<a href="#!">Forgot password?</a>
+						</div>
+
+						<!-- Submit button -->
+						<button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block">Sign in</button>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

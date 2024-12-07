@@ -1,0 +1,30 @@
+<div{{attributes}} data-poll="delay(5000)|$render">
+
+	<div class="d-flex mx-0" style="gap: 1rem">
+		<div class="col">
+			<div class="card">
+				<div class="card-header">Messages (24h)</div>
+				<div class="card-body fw-bold fs-2 text-center">
+					{{computed.last24Count}}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card">
+				<div class="card-header">Total Messages</div>
+				<div class="card-body fw-bold fs-2 text-center">
+					{{computed.totalCount}}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card text-bg-danger">
+				<div class="card-header">Errors (24h)</div>
+				<div class="card-body fw-bold fs-2 text-center">
+					{{computed.errorLast24Count}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

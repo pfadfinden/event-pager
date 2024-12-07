@@ -1,0 +1,63 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Pager-Admin{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>Admin</h1>
+
+		<h2 class="mt-5 mb-4">Status</h2>
+
+		{{ component('Status') }}
+
+		<h2 class="mt-5 mb-4">Organisation</h2>
+
+		{{ component('OrgStats') }}
+
+		<br/>
+
+		ToDo: Browse Add /Search?
+
+		<h2 class="mt-5">Transports</h2>
+
+		ToDo: List of Transports with status light, number of channels
+
+		<div class="d-flex flex-column gap-2 mt-4">
+			<div class="card card-body">
+				<h3>IntelPage Pager</h3>
+			</div>
+			<div class="card card-body">
+				<h3>Ntify</h3>
+			</div>
+		</div>
+
+		<h2 class="mt-5">Benutzer</h2>
+		ToDo: link to manage
+
+		<h2 class="mt-5">System</h2>
+
+		<div class="d-flex gap-4 my-4 flex-wrap ">
+
+			<div class="card flex-grow-1">
+				<div class="card-body">
+					<h5 class="card-title">Import</h5>
+
+				</div>
+			</div>
+
+			<div class="card flex-grow-1">
+				<div class="card-body">
+					<h5 class="card-title">Export</h5>
+
+				</div>
+			</div>
+
+			<a class="card flex-grow-1 text-decoration-none" role="button" href="/admin/system-info">
+				<span class="card-body">
+					<h5 class="card-title">System Info</h5>
+
+				</span>
+			</a>
+		</div>
+	</main>
+{% endblock %}

@@ -1,0 +1,72 @@
+<nav>
+	<div class="d-flex flex-column flex-shrink-0 p-3" style="width: 250px; height: 100vh;">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-body">
+			<twig:ux:icon name="pager" height="40" width="32" aria-hidden="true" class="bi me-2" />
+			<span class="fs-4">Pagersystem</span>
+		</a>
+		<hr>
+		<ul class="nav nav-pills flex-column mb-auto">
+			<li class="nav-item">
+				<a href="/" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_home__invoke' %}active{% endif %}" aria-current="page">
+					<twig:ux:icon name="bi:house-door" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					Home
+				</a>
+			</li>
+			<li>
+				<a href="/send" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_sendmessage_sendmessage__invoke' %}active{% endif %}">
+					<twig:ux:icon name="bi:chat-quote" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					Senden
+				</a>
+			</li>
+			<li>
+				<a href="/inbox" class="nav-link">
+					<twig:ux:icon name="bi:envelope" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					Postfach
+				</a>
+			</li>
+			<li>
+				<a href="/pager-management" class="nav-link">
+					<twig:ux:icon name="bi:table" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					Pagerverwaltung
+				</a>
+			</li>
+			<li>
+				<a href="/admin" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_admin_adminhome__invoke' %}active{% endif %}">
+					<twig:ux:icon name="bi:tools" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					Administration
+				</a>
+			</li>
+		</ul>
+
+		<div data-controller="dark-mode" data-action="dark-mode:change->dark-mode#updateColorScheme">
+			<select label="Select a theme" name="theme" class="form-select" value="auto" data-dark-mode-target="select" data-action="change->dark-mode#toggle">
+				<option value="light">Light
+				</option>
+				<option value="dark">Dark
+				</option>
+				<option value="auto">Auto
+				</option>
+			</select>
+		</div>
+
+		<hr>
+		<div class="dropdown dropup user-dropdown">
+			<a href="#" class="d-flex align-items-center text-body text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="https://fastly.picsum.photos/id/478/32/32.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
+				<strong>username</strong>
+			</a>
+			<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+				<li>
+					<a class="dropdown-item" href="#">Einstellungen</a>
+				</li>
+				<li>
+					<a class="dropdown-item" href="#">Benutzerkonto</a>
+				</li>
+				<li><hr class="dropdown-divider"></li>
+				<li>
+					<a class="dropdown-item" href="/login">Sign out</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
