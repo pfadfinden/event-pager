@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Doctrine\DBAL\Type;
+namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 
-use Brick\DateTime\LocalDateTime;
+use Brick\DateTime\LocalTime;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Throwable;
 use function is_string;
 
-final class LocalDateTimeType extends Type
+final class LocalTimeType extends Type
 {
-    public const NAME = 'local_datetime';
+    public const NAME = 'local_time';
 
     /**
      * @template T
@@ -28,21 +28,19 @@ final class LocalDateTimeType extends Type
             return null;
         }
 
-        if ($value instanceof LocalDateTime) {
+        if ($value instanceof LocalTime) {
             return $value->toISOString();
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', LocalDateTime::class]);
+        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', LocalTime::class]);
     }
 
     /**
      * @template T
      *
      * @param T $value
-     *
-     * @return (T is null ? null : LocalDateTime)
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?LocalDateTime
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?LocalTime
     {
         if (null === $value) {
             return null;
@@ -53,7 +51,7 @@ final class LocalDateTimeType extends Type
         }
 
         try {
-            return LocalDateTime::parse($value);
+            return LocalTime::parse($value);
         } catch (Throwable $ex) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), 'ISO 8601', $ex);
         }
@@ -67,7 +65,7 @@ final class LocalDateTimeType extends Type
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getStringTypeDeclarationSQL([
-            'length' => 1 + (6 + 1 + 2 + 1 + 2) + 1 + 8 + 1 + 9,
+            'length' => 8 + 1 + 9,
         ]);
     }
 }

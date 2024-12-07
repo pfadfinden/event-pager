@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Doctrine\DBAL\Type;
 
-use App\Infrastructure\Doctrine\DBAL\Type\LocalTimeType;
+use App\Infrastructure\Persistence\DoctrineORM\Type\LocalTimeType;
 use Brick\DateTime\LocalTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
