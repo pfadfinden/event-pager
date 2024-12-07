@@ -1,0 +1,17 @@
+<div{{attributes}} data-poll="delay(1000)|$render">
+
+	<h2 class="mt-5">Status</h2>
+	Serverzeit:
+	{{ computed.time|date("D, d.m.Y H:i:s e", computed.timezone) }}
+	<br>
+	Pending Messages?
+
+	<h2 class="mt-5">Configuration</h2>
+	Activated Features (mercure, sso, etc.)
+
+	<h2 class="mt-5">Versions</h2>
+	PHP Version:
+	{{phpVersion}}<br/>
+	Service Version: DEV
+
+</div>
