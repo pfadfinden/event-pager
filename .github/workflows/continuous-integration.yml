@@ -1,9 +1,20 @@
 name: Continuous Integration / Webservice
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - webservice/**
   pull_request:
     paths:
       - webservice/**
+    types: [opened, reopened, synchronize, ready_for_review]
+
+env:
+  COMMIT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  BRANCH: ${{ github.event_name == 'pull_request' && format('refs/heads/{0}', github.event.pull_request.head.ref) || github.ref }}
+  BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
 
 jobs:
 
@@ -47,7 +58,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: $(( ${{ github.event_name == 'pull_request' && github.event.pull_request.commits || 0 }} + 1 ))
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -82,7 +93,7 @@ jobs:
         run: |
           IFS='
           '
-          CHANGED_FILES=$(git diff --name-only --relative --diff-filter=ACMRTUXB "${{ github.event_name == 'push' && github.event.pull_request.base.sha || github.event.before }}..${{ github.sha }}")
+          CHANGED_FILES=$(git diff --name-only --relative --diff-filter=ACMRTUXB "${BASE_SHA}..${COMMIT_SHA}")
           if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
           vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
