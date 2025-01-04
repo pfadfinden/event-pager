@@ -18,6 +18,7 @@ services:
       #  from the bind-mount for better performance by enabling the next line:
       #- /app/vendor
     environment:
+      INTEL_PAGE_TRANSMITTER_DSN: intelpage://pager_transmitter_stub:6000?timeBetweenMessages=2
       MERCURE_EXTRA_DIRECTIVES: demo
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
