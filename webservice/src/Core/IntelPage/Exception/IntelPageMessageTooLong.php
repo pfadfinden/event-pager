@@ -11,6 +11,6 @@ final class IntelPageMessageTooLong extends RuntimeException
 {
     public static function withLength(int $length): self
     {
-        return new self(sprintf('The message was too long with %d Bytes, the maximum allowed is 512.', $length));
+        return new self(sprintf('The message was too long with %d bytes, the maximum allowed is 512.', $length));
     }
 }

@@ -4,6 +4,16 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # sample format: intelpage://<IP_ADDRESS>:6000?secondsBetweenMessages=2
+    intel_page.transmitter.host: '%env(string:key:host:url:INTEL_PAGE_TRANSMITTER_DSN)%'
+    intel_page.transmitter.port.default: 6000
+    intel_page.transmitter.port: '%env(int:default:intel_page.transmitter.port.default:key:port:url:INTEL_PAGE_TRANSMITTER_DSN)%'
+    intel_page.seconds_between_messages.default: 2
+    intel_page.seconds_between_messages: '%env(int:default:intel_page.seconds_between_messages.default:key:secondsBetweenMessages:query_string:INTEL_PAGE_TRANSMITTER_DSN)%' # in seconds
+    intel_page.microseconds_after_no_new_message.default: 500_000
+    intel_page.microseconds_after_no_new_message: '%env(int:default:intel_page.microseconds_after_no_new_message.default:key:microsecondsAfterNoNewMessage:query_string:INTEL_PAGE_TRANSMITTER_DSN)%' # in seconds
+    intel_page.seconds_after_error.default: 2
+    intel_page.seconds_after_error: '%env(int:default:intel_page.seconds_after_error.default:key:secondsAfterError:query_string:INTEL_PAGE_TRANSMITTER_DSN)%' # in seconds
 
 services:
     # default configuration for services in *this* file

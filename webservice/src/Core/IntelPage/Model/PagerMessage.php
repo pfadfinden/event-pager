@@ -17,6 +17,9 @@ class PagerMessage
     #[ORM\Column(type: 'ulid')]
     private readonly Ulid $id;
 
+    #[ORM\Column]
+    private readonly string $transport;
+
     #[ORM\Embedded]
     private readonly CapCode $cap;
 
@@ -35,7 +38,7 @@ class PagerMessage
     #[ORM\Column]
     private int $attemptedToSend = 0;
 
-    public static function new(Ulid $id, CapCode $cap, string $message, int $priority): self
+    public static function new(Ulid $id, string $transport, CapCode $cap, string $message, int $priority): self
     {
         if (str_contains($message, "\r")) {
             $message = str_replace("\r", ' ', $message);
@@ -43,6 +46,7 @@ class PagerMessage
 
         return new self(
             $id,
+            $transport,
             $cap,
             $message,
             $priority,
@@ -51,9 +55,10 @@ class PagerMessage
     }
 
     public function __construct(
-        Ulid $id, CapCode $cap, string $message, int $priority, Instant $queuedOn)
+        Ulid $id, string $transport, CapCode $cap, string $message, int $priority, Instant $queuedOn)
     {
         $this->id = $id;
+        $this->transport = $transport;
         $this->cap = $cap;
         $this->message = $message;
         $this->priority = $priority;
