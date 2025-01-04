@@ -12,13 +12,18 @@ use App\Core\TransportContract\Model\SystemTransportConfig;
 /**
  * The factory combines services from dependency injection with the individual configuration.
  */
-final readonly class IntelPageTransportFactory implements \App\Core\TransportContract\Port\TransportFactory\IntelPageTransportFactory
+final readonly class IntelPageTransportFactory implements \App\Core\TransportContract\Port\TransportFactory
 {
     public function __construct(
         private QueryBus $queryBus,
         private CommandBus $commandBus,
         private EventBus $eventBus,
     ) {
+    }
+
+    public function supports(string $transportClass): bool
+    {
+        return IntelPageTransport::class === $transportClass;
     }
 
     public function withSystemConfiguration(SystemTransportConfig $config): IntelPageTransport

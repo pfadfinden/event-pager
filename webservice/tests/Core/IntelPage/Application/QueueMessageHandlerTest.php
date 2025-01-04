@@ -46,6 +46,7 @@ final class QueueMessageHandlerTest extends TestCase
 
         $cmd = QueueMessage::with(
             $id,
+            'default',
             CapCode::fromInt(1001),
             'Hello World',
             1,

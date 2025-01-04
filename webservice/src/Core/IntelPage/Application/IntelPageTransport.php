@@ -95,6 +95,7 @@ final readonly class IntelPageTransport implements Transport
 
         $this->commandBus->do(QueueMessage::with(
             $message->id,
+            $this->key(),
             $capCode,
             $message->incomingMessage->body,
             $message->incomingMessage->priority->value,
@@ -134,6 +135,19 @@ final readonly class IntelPageTransport implements Transport
     public function channelCapCode(RecipientConfiguration $recipientConfiguration): ?CapCode
     {
         return $this->queryBus->get(new ChannelCapCodeById($recipientConfiguration->channelId()));
+    }
+
+    /**
+     * HIGH-RISK for Code Injection!!!
+     *
+     * @return array{0: string, 1: int}
+     */
+    public function configuredTransmitter(): array
+    {
+        return [
+            $this->config->getVendorSpecificConfig()['transmitterHost'] ?? null,
+            $this->config->getVendorSpecificConfig()['transmitterPort'] ?? null,
+        ];
     }
 
     private function selectPagerCapBasedOnPriority(

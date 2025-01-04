@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
 #[CoversClass(IntelPageTransport::class)]
+#[CoversClass(IntelPageMessageTooLong::class)]
 #[Group('unit')]
 final class IntelPageTransportTest extends TestCase
 {
@@ -137,7 +138,7 @@ final class IntelPageTransportTest extends TestCase
     public function testCanSendToFailsWhenMessageIsTooLong(): void
     {
         self::expectException(IntelPageMessageTooLong::class);
-        self::expectExceptionMessage('The message was too long with 513 Bytes, the maximum allowed is 512.');
+        self::expectExceptionMessage('The message was too long with 513 bytes, the maximum allowed is 512.');
 
         $messageRecipientMock = self::createMock(MessageRecipient::class);
 

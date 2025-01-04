@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 #[CoversClass(AllTransportsQueryHandler::class)]
+#[CoversClass(AllTransports::class)]
 #[Group('integration'), Group('integration.database')]
 final class AllTransportsQueryHandlerTest extends KernelTestCase
 {

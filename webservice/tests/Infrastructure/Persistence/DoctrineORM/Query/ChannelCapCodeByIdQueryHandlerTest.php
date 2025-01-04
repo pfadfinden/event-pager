@@ -16,6 +16,7 @@ use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 #[CoversClass(ChannelCapCodeByIdQueryHandler::class)]
+#[CoversClass(ChannelCapCodeById::class)]
 #[Group('integration'), Group('integration.database')]
 final class ChannelCapCodeByIdQueryHandlerTest extends KernelTestCase
 {
