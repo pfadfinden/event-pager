@@ -22,15 +22,22 @@ def readData(connection, clientAddress):
     while True:
       data = connection.recv(1024).decode()
       if data:
-#       print ('data: ' + str(data))
         message = message + str(data)
-#       print ('message: ' + message)
       else:
         break
               
   finally:
     messageParts = message.split('\r')
-    print('Message to Pager ' + messageParts[0] + ': ' + messageParts[1])
+
+    if len(messageParts) != 4:
+        print('Message with invalid format: ' + repr(message))
+    elif not messageParts[0].isdigit():
+        print('Message with invalid cap: ' + messageParts[0])
+    elif messageParts[2] != '' or messageParts[3] != '':
+        print('Message with invalid ending: ' + repr(message))
+    else:
+        print('Message to cap code ' + messageParts[0] + ': ' + messageParts[1])
+
     # Sleep for 2 second. Simulating the real Pager-Transmitter.
     time.sleep(TIME_BETWEEN_MSG)
     # Clean up the connection
@@ -43,5 +50,4 @@ sock.listen(1)
 while True:
   # Wait for a connection
   connection, clientAddress = sock.accept()
-  readData(connection, clientAddress);
-
+  readData(connection, clientAddress)
