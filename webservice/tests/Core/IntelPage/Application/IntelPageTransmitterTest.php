@@ -28,17 +28,18 @@ namespace App\Tests\Core\IntelPage\Application {
 }
 
 namespace App\Tests\Core\IntelPage\Application {
-    use App\Core\IntelPage\Application\IntelPageSender;
+    use App\Core\IntelPage\Application\IntelPageTransmitter;
+    use App\Core\IntelPage\Model\CapCode;
     use PHPUnit\Framework\Attributes\Group;
     use PHPUnit\Framework\TestCase;
 
     #[Group('unit')]
-    final class IntelPageSenderTest extends TestCase
+    final class IntelPageTransmitterTest extends TestCase
     {
         public function testSend(): void
         {
-            $sender = new IntelPageSender('pager_transmitter_stub', 6000);
-            $sender->transmit(9001, 'Hello World');
+            $sender = new IntelPageTransmitter('pager_transmitter_stub', 6000);
+            $sender->transmit(CapCode::fromInt(9001), 'Hello World');
             $this->expectNotToPerformAssertions();
         }
     }

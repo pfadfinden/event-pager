@@ -6,6 +6,6 @@ namespace App\Core\IntelPage\Exception;
 
 use RuntimeException;
 
-final class TransmitterNotAvailable extends RuntimeException
+final class IntelPageTransmitterNotAvailable extends RuntimeException
 {
 }

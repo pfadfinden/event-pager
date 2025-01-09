@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\View\Cli;
 
-use App\Core\IntelPage\Application\IntelPageSender;
+use App\Core\IntelPage\Application\IntelPageTransmitter;
+use App\Core\IntelPage\Model\CapCode;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -66,9 +67,9 @@ final class IntelPageSendTestMessageCommand extends Command
 
         // ##############################
 
-        $transmitter = new IntelPageSender($transmitterUrl, $transmitterPort);
+        $transmitter = new IntelPageTransmitter($transmitterUrl, $transmitterPort);
         try {
-            $transmitter->transmit($capCode, $message);
+            $transmitter->transmit(CapCode::fromInt($capCode), $message);
         } catch (Exception $e) {
             $io->error($e->getMessage());
 

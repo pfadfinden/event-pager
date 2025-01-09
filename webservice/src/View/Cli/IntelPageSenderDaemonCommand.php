@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\View\Cli;
 
-use App\Core\IntelPage\Application\IntelPageSender;
+use App\Core\IntelPage\Application\IntelPageTransmitter;
+use App\Core\IntelPage\Application\SendPagerMessageService;
+use App\Core\IntelPage\Model\PagerMessage;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,6 +41,9 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         private readonly int $defaultTransmitterPort,
         #[Autowire(param: 'intel_page.time_between_messages')]
         private readonly int $defaultTimeBetweenMessages,
+        #[Autowire(param: 'intel_page.time_after_error')]
+        private readonly int $defaultTimeAfterError,
+        private readonly EntityManagerInterface $em,
     ) {
         parent::__construct();
     }
@@ -51,24 +57,25 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         ;
     }
 
-    private function processMessages(SymfonyStyle $io, IntelPageSender $transmitter, int $timeBetweenMessages): void
+    private function processMessages(SymfonyStyle $io, SendPagerMessageService $sender, int $timeBetweenMessages): void
     {
         while ($this->shouldContinue) {
-            // TODO poll db
-
-            $capCode = 0;
-            $message = 'Hello World';
-
-            if ($io->isVerbose()) {
-                $io->writeln('Sending message: ... ');
+            $message = $sender->nextMessageToSend();
+            if (!$message instanceof PagerMessage) {
+                sleep(1);
+                continue;
             }
 
-            // send
+            if ($io->isVerbose()) {
+                $io->writeln('Sending message: '.$message->getId());
+            }
+
             try {
-                $transmitter->transmit($capCode, $message);
-                // mark as send & send event
+                $sender->send($message);
             } catch (Exception $e) {
                 $io->error($e->getMessage());
+
+                sleep($this->defaultTimeAfterError - $timeBetweenMessages);
             }
 
             sleep($timeBetweenMessages);
@@ -84,7 +91,8 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         $transmitterHost = $input->getOption('transmitterHost');
         $transmitterPort = (int) $input->getOption('transmitterPort');
         $timeBetweenMessages = (int) $input->getOption('timeBetweenMessages');
-        $transmitter = new IntelPageSender($transmitterHost, $transmitterPort);
+        $transmitter = new IntelPageTransmitter($transmitterHost, $transmitterPort);
+        $sender = new SendPagerMessageService($this->em, $transmitter);
 
         /*if (false === $this->lock('intelpage_daemon_' . sha1($transmitterHost . ': '. $transmitterPort))) {
             $io->error('Failed to acquire lock for this IntelPage appliance. Please ensure no other daemon is running.');
@@ -98,7 +106,7 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         }
 
         // ##############################
-        $this->processMessages($io, $transmitter, $timeBetweenMessages);
+        $this->processMessages($io, $sender, $timeBetweenMessages);
 
         $io->writeln('Daemon stopped gracefully');
 
