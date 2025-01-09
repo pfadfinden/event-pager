@@ -2,12 +2,12 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\CapCode;
-use App\Entity\Channel;
-use App\Entity\ChannelCapAssignment;
-use App\Entity\IndividualCapAssignment;
-use App\Entity\NoCapAssignment;
-use App\Entity\Pager;
+use App\Core\IntelPage\Model\CapCode;
+use App\Core\IntelPage\Model\Channel;
+use App\Core\IntelPage\Model\ChannelCapAssignment;
+use App\Core\IntelPage\Model\IndividualCapAssignment;
+use App\Core\IntelPage\Model\NoCapAssignment;
+use App\Core\IntelPage\Model\Pager;
 use PHPUnit\Framework\TestCase;
 
 class PagerTest extends TestCase
@@ -19,12 +19,12 @@ class PagerTest extends TestCase
 
         $pager->assignCap(0, new NoCapAssignment())
             ->assignCap(1, new IndividualCapAssignment(false, false, new CapCode(1)))
-            ->assignCap(2, new ChannelCapAssignment($channel));
+            ->assignCap(7, new ChannelCapAssignment($channel));
 
         $assignments = $pager->getCapAssignments();
         $this->assertTrue($assignments[0] instanceof NoCapAssignment);
         $this->assertTrue($assignments[1] instanceof IndividualCapAssignment);
-        $this->assertTrue($assignments[2] instanceof ChannelCapAssignment);
+        $this->assertTrue($assignments[7] instanceof ChannelCapAssignment);
     }
 
     public function testSlotOutOfBoundsUpper(): void
@@ -32,7 +32,7 @@ class PagerTest extends TestCase
         $pager = new Pager('Pager 2', 2);
 
         try {
-            $pager->assignCap(10, new NoCapAssignment());
+            $pager->assignCap(8, new NoCapAssignment());
         } catch (\InvalidArgumentException $e) {
             $this->assertTrue(true);
 
@@ -47,7 +47,7 @@ class PagerTest extends TestCase
         $pager = new Pager('Pager 3', 3);
 
         try {
-            $pager->assignCap(-10, new NoCapAssignment());
+            $pager->assignCap(-1, new NoCapAssignment());
         } catch (\InvalidArgumentException $e) {
             $this->assertTrue(true);
 

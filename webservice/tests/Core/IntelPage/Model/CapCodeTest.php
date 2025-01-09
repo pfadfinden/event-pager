@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\CapCode;
+use App\Core\IntelPage\Model\CapCode;
 use PHPUnit\Framework\TestCase;
 
 class CapCodeTest extends TestCase

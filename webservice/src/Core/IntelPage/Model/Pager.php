@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Core\IntelPage\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +12,7 @@ class Pager
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    // ULID
     private int $id;
 
     #[ORM\Column(length: 255)]
@@ -51,7 +52,7 @@ class Pager
 
     private function isInSlotBounds(int $slot): bool
     {
-        return ($slot >= 0) && ($slot < 6);
+        return ($slot >= 0) && ($slot < 8); // TODO const
     }
 
     public function getCapAssignment(int $atSlot): AbstractCapAssignment
@@ -68,13 +69,13 @@ class Pager
         return $this->slots->toArray();
     }
 
-    public function assignCap(int $atSlot, AbstractCapAssignment $assignment): static
+    public function assignCap(AbstractCapAssignment $assignment): static
     {
-        if (!$this->isInSlotBounds($atSlot)) {
+        if (!$this->isInSlotBounds($assignment->getSlot())) {
             throw new \InvalidArgumentException('Trying to access out of bounds slot!');
         }
 
-        $this->slots->set($atSlot, $assignment);
+        $this->slots->set($assignment->getSlot(), $assignment);
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Core\IntelPage\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,7 +13,7 @@ class IndividualCapAssignment extends AbstractCapAssignment
     private int $id;
 
     #[ORM\Embedded]
-    private CapCode $capCode;
+    private readonly CapCode $capCode;
 
     #[ORM\Column]
     private bool $audible;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Core\IntelPage\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
