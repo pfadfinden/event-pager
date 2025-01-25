@@ -11,7 +11,17 @@ parameters:
         consoleApplicationLoader: tests/console-application.php
     doctrine:
         objectManagerLoader: tests/object-manager.php
-
+    ignoreErrors:
+        -   # Errors occur due to design of KernelTestCase, rewriting the code would make it less readable
+            messages:
+                - '#Cannot call method getContainer\(\) on Symfony\\Component\\HttpKernel\\KernelInterface\|null#'
+                - '#Parameter \#1 \$kernel of class Symfony\\Bundle\\FrameworkBundle\\Console\\Application constructor expects Symfony\\Component\\HttpKernel\\KernelInterface, Symfony\\Component\\HttpKernel\\KernelInterface\|null given.#'
+            path: tests/*
+        -   # Most tests don't need an actual class-string, no need to mock this
+            messages:
+                - '#Parameter \#2 \$transport of class App\\Core\\TransportManager\\Model\\TransportConfiguration constructor expects class-string, string given.#'
+                - '#Call to static method PHPUnit\\Framework\\Assert::assertSame\(\) with \x27\\\\App\\\\Tests\\\\Mock…\x27 and class-string will always evaluate to false.#'
+            path: tests/*
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan-symfony/extension.neon

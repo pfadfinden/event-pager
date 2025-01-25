@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Core\TransportContract\Port;
 
-use App\Core\MessageRecipient\Model\MessageRecipient;
 use App\Core\TransportContract\Model\Message;
+use App\Core\TransportContract\Model\MessageRecipient;
 use App\Core\TransportContract\Model\OutgoingMessage;
 use App\Core\TransportContract\Model\OutgoingMessageEvent;
-use App\Core\TransportContract\Model\SystemTransportConfig;
 
 /**
  * A Transport instance implements the logic to push (or queue) one
@@ -24,11 +23,6 @@ use App\Core\TransportContract\Model\SystemTransportConfig;
  */
 interface Transport
 {
-    /**
-     * static constructor method.
-     */
-    public static function withSystemConfiguration(SystemTransportConfig $config): static;
-
     /**
      * returns identifier as Slug.
      */
@@ -52,6 +46,8 @@ interface Transport
      * it should be passed to this method.
      *
      * The implementation of this method should queue the message for asynchronous processing
+     *
+     * This call should not throw exceptions, instead a domain event should be thrown for the failed message.
      */
     public function send(OutgoingMessage $message): void;
 }
