@@ -9,6 +9,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Throwable;
+use function is_string;
 
 final class LocalTimeType extends Type
 {
@@ -47,8 +48,12 @@ final class LocalTimeType extends Type
             return null;
         }
 
+        if (!is_string($value)) {
+            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
+        }
+
         try {
-            return LocalTime::parse((string) $value);
+            return LocalTime::parse($value);
         } catch (Throwable $ex) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), 'ISO 8601', $ex);
         }
