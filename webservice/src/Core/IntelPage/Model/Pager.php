@@ -34,6 +34,14 @@ class Pager
     private int $number;
 
     /**
+     * @var bool shows whether the pager is activated or not
+     *
+     * Deactivated pagers will be skipped when sending messages
+     */
+    #[ORM\Column]
+    private bool $activated;
+
+    /**
      * List of cap code assignments.
      *
      * @var Collection<int, AbstractCapAssignment>
@@ -152,5 +160,47 @@ class Pager
         $this->number = $number;
 
         return $this;
+    }
+
+    public function isActivated(): bool
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(bool $activated): static
+    {
+        $this->activated = $activated;
+
+        return $this;
+    }
+
+    public function individualAlertCap(): ?CapCode
+    {
+        foreach ($this->slots as $slot) {
+            if (!$slot instanceof IndividualCapAssignment) {
+                continue;
+            }
+
+            if ($slot->isAudible()) {
+                return $slot->getCapCode();
+            }
+        }
+
+        return null;
+    }
+
+    public function individualNonAlertCap(): ?CapCode
+    {
+        foreach ($this->slots as $slot) {
+            if (!$slot instanceof IndividualCapAssignment) {
+                continue;
+            }
+
+            if (!$slot->isAudible()) {
+                return $slot->getCapCode();
+            }
+        }
+
+        return null;
     }
 }
