@@ -11,6 +11,8 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 class PagerMessage
 {
+    public const int MAX_LENGTH = 512;
+
     #[ORM\Id]
     #[ORM\Column(type: 'ulid')]
     private readonly Ulid $id;
@@ -18,7 +20,7 @@ class PagerMessage
     #[ORM\Embedded]
     private readonly CapCode $cap;
 
-    #[ORM\Column(length: 512)]
+    #[ORM\Column(length: self::MAX_LENGTH)]
     private readonly string $message;
 
     #[ORM\Column(type: 'instant')]
@@ -35,6 +37,10 @@ class PagerMessage
 
     public static function new(Ulid $id, CapCode $cap, string $message, int $priority): self
     {
+        if (str_contains($message, "\r")) {
+            $message = str_replace("\r", ' ', $message);
+        }
+
         return new self(
             $id,
             $cap,
