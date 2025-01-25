@@ -52,6 +52,10 @@ final class InstantType extends Type
             return null;
         }
 
+        if (!is_numeric($value)) {
+            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string', 'int', 'float']);
+        }
+
         $matches = [];
         if (1 === preg_match('@\A(\d{1,10})(?:\.(\d{0,9}))?\z@', (string) $value, $matches)) {
             return Instant::of(
