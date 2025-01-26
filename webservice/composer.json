@@ -100,6 +100,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.64.0",
+        "phpat/phpat": "0.10.18",
         "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-doctrine": "^1.5",
         "phpstan/phpstan-phpunit": "^1.4",

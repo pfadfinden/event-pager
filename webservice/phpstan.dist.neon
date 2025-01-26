@@ -20,3 +20,21 @@ includes:
 #    - vendor/phpstan/phpstan-doctrine/rules.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpat/phpat/extension.neon
+
+services:
+    - class: App\Tests\Architecture\DependenciesBetweenCoreModules
+      tags:
+          - phpat.test
+
+    - class: App\Tests\Architecture\HighLevelArchitecture
+      tags:
+          - phpat.test
+    
+    - class: App\Tests\Architecture\NamingConventions
+      tags:
+          - phpat.test
+
+    - class: App\Tests\Architecture\TestConventions
+      tags:
+          - phpat.test
