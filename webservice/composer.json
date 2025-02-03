@@ -22,6 +22,7 @@
         "symfony/messenger": "7.2.*",
         "symfony/monolog-bundle": "^3.0",
         "symfony/runtime": "7.2.*",
+        "symfony/security-bundle": "7.2.*",
         "symfony/stimulus-bundle": "2.22.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/uid": "7.2.*",

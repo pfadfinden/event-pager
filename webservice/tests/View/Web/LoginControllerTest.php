@@ -13,7 +13,7 @@ final class LoginControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Request a specific page
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request('GET', '/login/');
 
         // Validate a successful response and some content
         self::assertResponseIsSuccessful();
