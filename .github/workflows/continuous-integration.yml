@@ -144,8 +144,9 @@ jobs:
         # run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
         run: docker compose exec -T php bin/console -e test doctrine:schema:create --no-interaction
 
-      - name: Doctrine Schema Validator
-        run: docker compose exec -T php bin/console -e test doctrine:schema:validate
+      #- name: Doctrine Schema Validator
+      #  Disabled due to issue in dbal 4 with custom types
+      #  run: docker compose exec -T php bin/console -e test doctrine:schema:validate
 
       - name: Run PHPUnit
         run: docker compose exec -T php composer run test:coverage
