@@ -10,13 +10,13 @@ parameters:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
         consoleApplicationLoader: tests/console-application.php
     doctrine:
-#        objectManagerLoader: tests/object-manager.php
+        objectManagerLoader: tests/object-manager.php
 
 includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-symfony/rules.neon
     - vendor/phpstan/phpstan-doctrine/extension.neon
-#    - vendor/phpstan/phpstan-doctrine/rules.neon
+    - vendor/phpstan/phpstan-doctrine/rules.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-phpunit/rules.neon

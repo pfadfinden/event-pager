@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Doctrine\DBAL\Type;
+namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 
 use Brick\DateTime\Instant;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -43,8 +43,6 @@ final class InstantType extends Type
      * @template T
      *
      * @param T $value
-     *
-     * @return (T is null ? null : Instant)
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Instant
     {

@@ -1,6 +1,7 @@
 services:
 
   pager_transmitter_stub:
+    image: ${IMAGES_PREFIX:-}pager_transmitter_stub
     build:
       dockerfile: ./Dockerfile
       context: ./pager_transmitter_stub

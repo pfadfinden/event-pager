@@ -11,6 +11,10 @@ on:
       - webservice/**
     types: [opened, reopened, synchronize, ready_for_review]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 env:
   COMMIT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
   BRANCH: ${{ github.event_name == 'pull_request' && format('refs/heads/{0}', github.event.pull_request.head.ref) || github.ref }}
@@ -103,34 +107,49 @@ jobs:
       - install-dependencies
 
     steps:
-      
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          tools: composer:v2
-          coverage: xdebug
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Restore cached composer packages
-        id: composer-cache
-        uses: actions/cache/restore@v4
+      - name: Build Docker images
+        uses: docker/bake-action@v6
         with:
-          path: webservice/vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+          pull: true
+          load: true
+          files: |
+            compose.yaml
+            compose.override.yaml
+          set: |
+            *.cache-from=type=gha,scope=${{github.ref}}
+            *.cache-from=type=gha,scope=refs/heads/main
+            *.cache-to=type=gha,scope=${{github.ref}},mode=max
 
-      - name: Install Dependencies
-        working-directory: webservice
-        run: >-
-          composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+      - name: Start services
+        run: docker compose up --wait --no-build
+
+      - name: Check HTTPS reachability
+        if: false # Remove this line when the homepage will be configured, or change the path to check
+        run: curl -vk --fail-with-body https://localhost
+      
+      - name: Check Mercure reachability
+        run: curl -vkI --fail-with-body https://localhost/.well-known/mercure?topic=test
+
+      - name: Create test database
+        run: docker compose exec -T php bin/console -e test doctrine:database:create
+
+      - name: Run migrations
+        # Switch following line once Doctrine Migrations is used
+        # run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
+        run: docker compose exec -T php bin/console -e test doctrine:schema:create --no-interaction
+
+      #- name: Doctrine Schema Validator
+      #  Disabled due to issue in dbal 4 with custom types
+      #  run: docker compose exec -T php bin/console -e test doctrine:schema:validate
 
       - name: Run PHPUnit
-        working-directory: webservice
-        run: 'composer run test:coverage'
+        run: docker compose exec -T php composer run test:coverage
 
   static-analyser-check:
     runs-on: ubuntu-latest
