@@ -7,6 +7,7 @@ namespace App\Tests\Core\UserManagement\Application;
 use App\Core\UserManagement\Application\AddUserHandler;
 use App\Core\UserManagement\Command\AddUser;
 use App\Infrastructure\Repository\UserRepository;
+use App\Infrastructure\Entity\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,13 @@ final class AddUserHandlerTest extends TestCase
     {
         $repository = self::createMock(UserRepository::class);
 
-        //TODO: Add expectations here    
+        $repository->expects(self::once())->method('save')
+            ->with(self::callback(function ($value) {
+                return $value instanceof User
+                    && $value->getUsername() === 'test-user'
+                    && $value->getDisplayName() === 'Test User'
+                    && $value->getPassword() !== 'secure-password'; // Password should be hashed
+            }));
 
         $sut = new AddUserHandler($repository);
         $command = AddUser::with(

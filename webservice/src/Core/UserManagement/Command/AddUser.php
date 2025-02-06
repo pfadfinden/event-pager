@@ -25,4 +25,19 @@ readonly class AddUser
         private string $password,
         private string $displayName
     ) {}
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getDisplayName(): string
+    {
+        return $this->displayName;
+    }
 }
