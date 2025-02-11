@@ -27,7 +27,7 @@ final class AddUserHandlerTest extends TestCase
             ->with(self::callback(function ($value) {
                 return $value instanceof User
                     && 'test-user' === $value->getUsername()
-                    && 'Test User' === $value->getDisplayName()
+                    && 'Test User' === $value->getDisplayname()
                     && 'secure-password' !== $value->getPassword(); // Password should be hashed
             }));
 

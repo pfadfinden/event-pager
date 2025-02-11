@@ -41,11 +41,11 @@ final class AddUserCommand extends Command
         $password = $input->getArgument('password');
         $displayName = $input->getArgument('DisplayName');
 
-        if ('' == $displayName) {
+        if (null === $displayName || '' === $displayName) {
             $displayName = $username;
         }
 
-        if ('' == $password) {
+        if (null === $password || '' === $password) {
             $password = bin2hex(random_bytes(8));
         }
 
