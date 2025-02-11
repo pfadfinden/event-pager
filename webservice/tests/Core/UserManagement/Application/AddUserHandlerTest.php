@@ -11,6 +11,8 @@ use App\Infrastructure\Repository\UserRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 #[CoversClass(AddUser::class)]
 #[CoversClass(AddUserHandler::class)]
@@ -29,7 +31,7 @@ final class AddUserHandlerTest extends TestCase
                     && 'secure-password' !== $value->getPassword(); // Password should be hashed
             }));
 
-        $sut = new AddUserHandler($repository);
+        $sut = new AddUserHandler($repository, new UserPasswordHasher(new PasswordHasherFactory([User::class => ['algorithm' => 'auto']])));
         $command = AddUser::with(
             'test-user',
             'secure-password',
