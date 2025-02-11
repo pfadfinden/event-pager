@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity(UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -99,6 +99,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        foreach ($this->roles as $key => $value) {
+            if ($value === $role) {
+                array_splice($this->roles, $key, 1);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addRoles(array $roles): self
+    {
+        $this->roles = array_unique(array_merge($this->roles, $roles));
 
         return $this;
     }

@@ -14,6 +14,8 @@ use function sprintf;
 
 /**
  * @extends ServiceEntityRepository<User>
+ *
+ * @implements PasswordUpgraderInterface<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
@@ -39,6 +41,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function save(User $user): void
     {
         $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
+    public function delete(User $user): void
+    {
+        $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
     }
 

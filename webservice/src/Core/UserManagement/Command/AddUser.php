@@ -16,7 +16,7 @@ readonly class AddUser
         string $username,
         string $password,
         string $displayName,
-    ) : self {
+    ): self {
         return new self($username, $password, $displayName);
     }
 
