@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Entity;
 
 use App\Infrastructure\Repository\UserRepository;
@@ -14,10 +16,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type : 'integer')]
-    private int $id;
+    private int $id = 0;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private ?string $username;
+    private string $username;
 
     #[ORM\Column(type: 'string', length: 180, unique: false)]
     private ?string $displayname;
@@ -50,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->displayname;
     }
 
-    public function setDisplayname(string $displayname): self
+    public function setDisplayname(?string $displayname): self
     {
         $this->displayname = $displayname;
 
@@ -58,8 +60,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * The public representation of the user
-     * 
+     * The public representation of the user.
+     *
      * @see UserInterface
      */
     public function getUserIdentifier(): string

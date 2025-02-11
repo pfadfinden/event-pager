@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace App\Core\UserManagement\Application;
 
@@ -9,8 +9,6 @@ use App\Core\UserManagement\Command\AddUser;
 use App\Infrastructure\Entity\User;
 use App\Infrastructure\Repository\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsMessageHandler(bus: Bus::COMMAND)]
@@ -21,9 +19,8 @@ final readonly class AddUserHandler
 
     public function __construct(
         UserRepository $userRepository,
-        UserPasswordHasherInterface $passwordHasher
-    )
-    {
+        UserPasswordHasherInterface $passwordHasher,
+    ) {
         $this->userRepository = $userRepository;
         $this->passwordHasher = $passwordHasher;
     }

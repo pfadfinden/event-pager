@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace App\Core\UserManagement\Command;
 
@@ -15,16 +15,17 @@ readonly class AddUser
     public static function with(
         string $username,
         string $password,
-        string $displayName
-    ) {
+        string $displayName,
+    ) : self {
         return new self($username, $password, $displayName);
     }
-    
+
     public function __construct(
         private string $username,
         private string $password,
-        private string $displayName
-    ) {}
+        private string $displayName,
+    ) {
+    }
 
     public function getUsername(): string
     {
