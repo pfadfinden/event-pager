@@ -9,13 +9,23 @@ use App\Core\UserManagement\Command\AddUser;
 use App\Infrastructure\Entity\User;
 use App\Infrastructure\Repository\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsMessageHandler(bus: Bus::COMMAND)]
 final readonly class AddUserHandler
 {
-    public function __construct(private UserRepository $userRepository)
+    private UserPasswordHasherInterface $passwordHasher;
+    private UserRepository $userRepository;
+
+    public function __construct(
+        UserRepository $userRepository,
+        UserPasswordHasherInterface $passwordHasher
+    )
     {
+        $this->userRepository = $userRepository;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(AddUser $command): void
@@ -24,8 +34,7 @@ final readonly class AddUserHandler
         $user->setUsername($command->getUsername());
         $user->setDisplayname($command->getDisplayName());
 
-        $passwordHasher = $this->userRepository->getPasswordHasher();
-        $user->setPassword($passwordHasher->hashPassword($user, $command->getPassword()));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $command->getPassword()));
 
         $this->userRepository->save($user);
     }

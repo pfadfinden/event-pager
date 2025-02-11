@@ -11,6 +11,10 @@ use App\Infrastructure\Entity\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 #[CoversClass(AddUser::class)]
 #[CoversClass(AddUserHandler::class)]
@@ -29,7 +33,7 @@ final class AddUserHandlerTest extends TestCase
                     && $value->getPassword() !== 'secure-password'; // Password should be hashed
             }));
 
-        $sut = new AddUserHandler($repository);
+        $sut = new AddUserHandler($repository, new UserPasswordHasher(new PasswordHasherFactory([User::class => ['algorithm' => 'auto']])));
         $command = AddUser::with(
             'test-user',
             'secure-password',
