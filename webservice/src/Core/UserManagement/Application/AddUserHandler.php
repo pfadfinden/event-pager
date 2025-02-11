@@ -6,7 +6,7 @@ namespace App\Core\UserManagement\Application;
 
 use App\Core\Contracts\Bus\Bus;
 use App\Core\UserManagement\Command\AddUser;
-use App\Infrastructure\Entity\User;
+use App\Core\UserManagement\Model\User;
 use App\Infrastructure\Repository\UserRepository;
 use InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
