@@ -19,6 +19,10 @@
 {% endblock %}
 
 {% block body %}
+	{% if error %}
+		<div>{{ error.messageKey|trans(error.messageData, 'security' )}}</div>
+	{% endif %}
+
 	<section class="vh-100">
 		<div class="container py-5 h-100">
 			<div class="row d-flex align-items-center justify-content-center h-100">
@@ -37,7 +41,7 @@
 					</svg>
 				</div>
 				<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-					<form action="{{ path('login_submit') }}" method="POST">
+					<form action="{{ path('app_login') }}" method="POST">
 
 
 						<a data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="{{ path('app_view_web_admin_adminhome__invoke') }}" role="button">
@@ -53,13 +57,13 @@
 
 						<!-- Username input -->
 						<div data-mdb-input-init class="form-outline mb-4">
-							<input type="text" id="form1Example13" name="username" placeholder="Username" class="form-control form-control-lg" required/>
+							<input type="text" id="form1Example13" name="_username" placeholder="Username" class="form-control form-control-lg" required/>
 							<label class="form-label" for="form1Example13">Username</label>
 						</div>
 
 						<!-- Password input -->
 						<div data-mdb-input-init class="form-outline mb-4">
-							<input type="password" id="form1Example23" name="password" class="form-control form-control-lg" required/>
+							<input type="password" id="form1Example23" name="_password" class="form-control form-control-lg" required/>
 							<label class="form-label" for="form1Example23">Password</label>
 						</div>
 
