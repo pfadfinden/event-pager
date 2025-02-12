@@ -1,16 +1,16 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace App\Tests\View\Cli;
 
+use App\Core\UserManagement\Model\User;
 use App\View\Cli\EditUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use App\Core\UserManagement\Model\User;
 use Symfony\Component\Console\Tester\CommandTester;
 
 #[CoversClass(EditUserCommand::class)]
@@ -34,7 +34,7 @@ final class EditUserCommandTest extends KernelTestCase
     protected function tearDown(): void
     {
         $em = $this->getEntityManager();
-        $user = $em->getRepository(User::class)->findOneBy(['username'=> 'edituser']);
+        $user = $em->getRepository(User::class)->findOneBy(['username' => 'edituser']);
         $em->remove($user);
         $em->flush();
         $em->clear();
@@ -43,11 +43,12 @@ final class EditUserCommandTest extends KernelTestCase
 
     private function sampleUser(string $username): User
     {
-        $user = new User;
+        $user = new User();
         $user->setUsername($username);
         $user->setPassword('');
         $user->setDisplayname('');
         $user->setRoles(['ROLE_TEST']);
+
         return $user;
     }
 
@@ -58,14 +59,14 @@ final class EditUserCommandTest extends KernelTestCase
         $command = $application->find('app:user:edit');
         $commandTester = new CommandTester($command);
         $em = $this->getEntityManager();
-        $user = $em->getRepository(User::class)->findOneBy(['username'=> 'edituser']);
+        $user = $em->getRepository(User::class)->findOneBy(['username' => 'edituser']);
 
         $commandTester->execute([
             'username' => 'edituser',
         ]); // no password or display name
 
         $commandTester->assertCommandIsSuccessful();
-        $result = $em->getRepository(User::class)->findOneBy(['username'=> 'edituser']);
+        $result = $em->getRepository(User::class)->findOneBy(['username' => 'edituser']);
         self::assertInstanceOf(User::class, $result);
         self::assertEquals($user, $result);
     }
@@ -82,11 +83,11 @@ final class EditUserCommandTest extends KernelTestCase
             '--displayname' => 'newdisplayname',
             '--addRole' => ['ROLE_ADMIN'],
             '--removeRole' => ['ROLE_TEST'],
-            ]);
+        ]);
 
         $commandTester->assertCommandIsSuccessful();
         $em = $this->getEntityManager();
-        $result = $em->getRepository(User::class)->findOneBy(['username'=> 'edituser']);
+        $result = $em->getRepository(User::class)->findOneBy(['username' => 'edituser']);
         self::assertInstanceOf(User::class, $result);
         self::assertSame('newdisplayname', $result->getDisplayname());
         self::assertNotSame('', $result->getPassword());

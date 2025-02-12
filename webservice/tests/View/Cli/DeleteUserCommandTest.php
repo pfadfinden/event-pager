@@ -1,18 +1,17 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace App\Tests\View\Cli;
 
 use App\Core\UserManagement\Model\User;
-use Doctrine\ORM\EntityManagerInterface;
 use App\View\Cli\DeleteUserCommand;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\Group;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-
 
 #[CoversClass(DeleteUserCommand::class)]
 #[Group('functional')]
@@ -35,8 +34,8 @@ final class DeleteUserCommandTest extends KernelTestCase
     protected function tearDown(): void
     {
         $em = $this->getEntityManager();
-        $user = $em->getRepository(User::class)->findOneBy(['username'=> 'testuser']);
-        if ($user === null) {
+        $user = $em->getRepository(User::class)->findOneBy(['username' => 'testuser']);
+        if (null === $user) {
             return;
         }
 
@@ -48,10 +47,11 @@ final class DeleteUserCommandTest extends KernelTestCase
 
     private function sampleUser(string $username): User
     {
-        $user = new User;
+        $user = new User();
         $user->setUsername($username);
         $user->setPassword('');
         $user->setDisplayname('');
+
         return $user;
     }
 
@@ -64,7 +64,7 @@ final class DeleteUserCommandTest extends KernelTestCase
 
         $commandTester->execute([
             'username' => 'testuser',
-            ]);
+        ]);
 
         $commandTester->assertCommandIsSuccessful();
         $em = $this->getEntityManager();

@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace App\Tests\View\Cli;
 
+use App\Core\UserManagement\Model\User;
 use App\View\Cli\AddUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\Group;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use App\Core\UserManagement\Model\User;
 
 #[CoversClass(AddUserCommand::class)]
 #[Group('functional')]
@@ -52,7 +52,7 @@ class AddUserCommandTest extends KernelTestCase
         self::assertStringContainsString('newuser', $output);
 
         $em = $this->getEntityManager();
-        $result = $em->getRepository(User::class)->findOneBy(['username'=> 'newuser']);
+        $result = $em->getRepository(User::class)->findOneBy(['username' => 'newuser']);
 
         self::assertInstanceOf(User::class, $result);
         self::assertSame('newuser', $result->getDisplayname());
@@ -81,13 +81,13 @@ class AddUserCommandTest extends KernelTestCase
         self::assertStringContainsString('testpassword', $output);
 
         $em = $this->getEntityManager();
-        $result = $em->getRepository(User::class)->findOneBy(['username'=> 'newuser']);
+        $result = $em->getRepository(User::class)->findOneBy(['username' => 'newuser']);
 
         self::assertInstanceOf(User::class, $result);
         self::assertSame('Test User', $result->getDisplayname());
         self::assertNotNull($result->getId());
         self::assertNotNull($result->getPassword());
-        self::assertNotSame('testpassword', $result->getPassword()); //Check if password is hashed
+        self::assertNotSame('testpassword', $result->getPassword()); // Check if password is hashed
         self::assertCount(1, $result->getRoles());
         self::assertContains('ROLE_USER', $result->getRoles());
     }
