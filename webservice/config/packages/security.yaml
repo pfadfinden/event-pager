@@ -6,7 +6,7 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: App\Infrastructure\Entity\User
+                class: App\Core\UserManagement\Model\User
                 property: username
     firewalls:
         dev:
@@ -15,6 +15,9 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
