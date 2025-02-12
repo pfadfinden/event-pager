@@ -10,6 +10,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function sprintf;
@@ -27,8 +28,8 @@ final class AddUserCommand extends Command
     {
         $this
             ->addArgument('username', InputArgument::REQUIRED, '(Unique) username of the User')
-            ->addArgument('password', InputArgument::OPTIONAL, 'The password of the User, if no password is provided, a random password will be generated')
-            ->addArgument('DisplayName', InputArgument::OPTIONAL, 'The display name of the User, defaults to the username')
+            ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'The password of the User, if no password is provided, a random password will be generated')
+            ->addOption('displayName', 'd', InputOption::VALUE_REQUIRED, 'The display name of the User, defaults to the username')
         ;
     }
 
@@ -38,8 +39,8 @@ final class AddUserCommand extends Command
         $io->title('Add a new User');
 
         $username = $input->getArgument('username');
-        $password = $input->getArgument('password');
-        $displayName = $input->getArgument('DisplayName');
+        $password = $input->getOption('password');
+        $displayName = $input->getOption('displayName');
 
         if (null === $displayName || '' === $displayName) {
             $displayName = $username;

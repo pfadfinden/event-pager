@@ -27,7 +27,7 @@ final class EditUserCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('username', InputArgument::REQUIRED, '(Unique) username of the User')
+            ->addArgument('username', InputArgument::REQUIRED, '(Unique) username of the User, cannot be altererd!')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'New Password for the User')
             ->addOption('displayname', 'd', InputOption::VALUE_REQUIRED, 'New Display Name for the User')
             ->addOption('addRole', 'r', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Add Role(s) to the User')
