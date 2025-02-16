@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\UserManagement\Model;
 
-use App\Infrastructure\Repository\UserRepository;
+use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,16 +19,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private ?string $username;
+    private string $username;
 
-    #[ORM\Column(type: 'string', length: 180, unique: false)]
+    #[ORM\Column(type: 'string', length: 180, unique: false, nullable: true)]
     private ?string $displayname;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: 'json', nullable: true)]
     private ?array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private ?string $password;
+    private string $password;
+
+    public function __construct(string $username)
+    {
+        $this->username = $username;
+        $this->password = ''; // Password should not be null, but passwords cant be hashed unless the user is created
+    }
 
     public function getId(): ?int
     {
@@ -114,8 +120,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param ?string[] $roles
+     * @return User
+     */
     public function addRoles(array $roles): self
     {
+        if ($this->roles === null) 
+        {
+            $this->roles = $roles;
+            return $this;
+        }
         $this->roles = array_unique(array_merge($this->roles, $roles));
 
         return $this;

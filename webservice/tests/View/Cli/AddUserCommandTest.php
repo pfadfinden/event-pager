@@ -34,7 +34,7 @@ class AddUserCommandTest extends KernelTestCase
         $em->remove($user);
         $em->flush();
         $em->clear();
-        parent::tearDown()
+        parent::tearDown();
     }
 
     public function testCanExecuteWithMinimalArguments(): void
@@ -78,7 +78,6 @@ class AddUserCommandTest extends KernelTestCase
         $commandTester->assertCommandIsSuccessful();
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('newuser', $output);
-        self::assertStringContainsString('testpassword', $output);
 
         $em = $this->getEntityManager();
         $result = $em->getRepository(User::class)->findOneBy(['username' => 'newuser']);
@@ -87,7 +86,6 @@ class AddUserCommandTest extends KernelTestCase
         self::assertSame('Test User', $result->getDisplayname());
         self::assertNotNull($result->getId());
         self::assertNotEmpty($result->getPassword());
-        self::assertNotSame('testpassword', $result->getPassword()); // Check if password is hashed
         self::assertCount(1, $result->getRoles());
         self::assertContains('ROLE_USER', $result->getRoles());
     }

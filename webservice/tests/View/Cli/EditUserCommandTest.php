@@ -38,13 +38,12 @@ final class EditUserCommandTest extends KernelTestCase
         $em->remove($user);
         $em->flush();
         $em->clear();
-        parent::tearDown()
+        parent::tearDown();
     }
 
     private function sampleUser(string $username): User
     {
-        $user = new User();
-        $user->setUsername($username);
+        $user = new User($username);
         $user->setPassword('');
         $user->setDisplayname('');
         $user->setRoles(['ROLE_TEST']);
