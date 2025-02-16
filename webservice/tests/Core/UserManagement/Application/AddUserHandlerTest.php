@@ -7,7 +7,7 @@ namespace App\Tests\Core\UserManagement\Application;
 use App\Core\UserManagement\Application\AddUserHandler;
 use App\Core\UserManagement\Command\AddUser;
 use App\Core\UserManagement\Model\User;
-use App\Infrastructure\Repository\UserRepository;
+use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;

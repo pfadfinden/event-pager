@@ -46,13 +46,17 @@ final class AddUserCommand extends Command
             $displayName = $username;
         }
 
+        $result_string = 'User %s added successfully.';
+
         if (null === $password || '' === $password) {
             $password = bin2hex(random_bytes(8));
+            $result_string .= ' The password is: ';
+            $result_string .= $password;
         }
 
         $this->commandbus->do(AddUser::with($username, $password, $displayName));
 
-        $io->success(sprintf('User %s added successfully. Password is: %s', $username, $password));
+        $io->success(sprintf($result_string, $username));
 
         return Command::SUCCESS;
     }

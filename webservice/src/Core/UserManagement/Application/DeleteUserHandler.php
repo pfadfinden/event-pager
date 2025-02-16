@@ -6,7 +6,7 @@ namespace App\Core\UserManagement\Application;
 
 use App\Core\Contracts\Bus\Bus;
 use App\Core\UserManagement\Command\DeleteUser;
-use App\Infrastructure\Repository\UserRepository;
+use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -20,7 +20,7 @@ final readonly class DeleteUserHandler
 
     public function __invoke(DeleteUser $command): void
     {
-        $user = $this->userRepository->findOneBy(['username' => $command->getUsername()]);
+        $user = $this->userRepository->findOneByUsername($command->getUsername());
 
         if (null === $user) {
             throw new InvalidArgumentException('User not found');

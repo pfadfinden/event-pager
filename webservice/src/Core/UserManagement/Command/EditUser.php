@@ -6,6 +6,10 @@ namespace App\Core\UserManagement\Command;
 
 readonly class EditUser
 {
+    /**
+     * @param ?string[] $add_roles
+     * @param ?string[] $remove_roles
+     */
     public static function with(
         string $username,
         ?string $password,
@@ -16,6 +20,10 @@ readonly class EditUser
         return new self($username, $password, $displayname, $add_roles, $remove_roles);
     }
 
+    /**
+     * @param ?string[] $add_roles
+     * @param ?string[] $revoke_roles
+     */
     public function __construct(
         private string $username,
         private ?string $password,
@@ -40,11 +48,17 @@ readonly class EditUser
         return $this->displayname;
     }
 
+    /**
+     * @return string[]|null
+     */
     public function getAddRoles(): ?array
     {
         return $this->add_roles;
     }
 
+    /**
+     * @return string[]|null
+     */
     public function getRevokeRoles(): ?array
     {
         return $this->revoke_roles;

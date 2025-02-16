@@ -7,7 +7,7 @@ namespace App\Core\UserManagement\Application;
 use App\Core\Contracts\Bus\Bus;
 use App\Core\UserManagement\Command\AddUser;
 use App\Core\UserManagement\Model\User;
-use App\Infrastructure\Repository\UserRepository;
+use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -28,12 +28,11 @@ final readonly class AddUserHandler
 
     public function __invoke(AddUser $command): void
     {
-        if (null !== $this->userRepository->findOneBy(['username' => $command->getUsername()])) {
+        if (null !== $this->userRepository->findOneByUsername($command->getUsername())) {
             throw new InvalidArgumentException('User already exists');
         }
 
-        $user = new User();
-        $user->setUsername($command->getUsername());
+        $user = new User($command->getUsername());
         $user->setDisplayname($command->getDisplayName());
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $command->getPassword()));

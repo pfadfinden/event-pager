@@ -7,8 +7,8 @@ namespace App\Tests\View\Cli;
 use App\Core\UserManagement\Model\User;
 use App\View\Cli\EditUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Metadata\CoversClass;
-use PHPUnit\Metadata\Group;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -38,13 +38,12 @@ final class EditUserCommandTest extends KernelTestCase
         $em->remove($user);
         $em->flush();
         $em->clear();
-        self::ensureKernelShutdown();
+        parent::tearDown();
     }
 
     private function sampleUser(string $username): User
     {
-        $user = new User();
-        $user->setUsername($username);
+        $user = new User($username);
         $user->setPassword('');
         $user->setDisplayname('');
         $user->setRoles(['ROLE_TEST']);
