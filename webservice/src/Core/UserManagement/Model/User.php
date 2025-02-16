@@ -122,13 +122,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param ?string[] $roles
-     * @return User
      */
     public function addRoles(array $roles): self
     {
-        if ($this->roles === null) 
-        {
+        if (null === $this->roles) {
             $this->roles = $roles;
+
             return $this;
         }
         $this->roles = array_unique(array_merge($this->roles, $roles));
