@@ -135,7 +135,7 @@
         ]
     },
     "symfony/messenger": {
-        "version": "7.1",
+        "version": "7.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
