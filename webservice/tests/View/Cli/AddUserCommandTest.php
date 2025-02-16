@@ -8,7 +8,7 @@ use App\Core\UserManagement\Model\User;
 use App\View\Cli\AddUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Metadata\Group;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -34,7 +34,7 @@ class AddUserCommandTest extends KernelTestCase
         $em->remove($user);
         $em->flush();
         $em->clear();
-        self::ensureKernelShutdown();
+        parent::tearDown()
     }
 
     public function testCanExecuteWithMinimalArguments(): void
@@ -57,7 +57,7 @@ class AddUserCommandTest extends KernelTestCase
         self::assertInstanceOf(User::class, $result);
         self::assertSame('newuser', $result->getDisplayname());
         self::assertNotNull($result->getId());
-        self::assertNotNull($result->getPassword());
+        self::assertNotEmpty($result->getPassword());
         self::assertNotSame('', $result->getPassword());
         self::assertCount(1, $result->getRoles());
         self::assertContains('ROLE_USER', $result->getRoles());
@@ -86,7 +86,7 @@ class AddUserCommandTest extends KernelTestCase
         self::assertInstanceOf(User::class, $result);
         self::assertSame('Test User', $result->getDisplayname());
         self::assertNotNull($result->getId());
-        self::assertNotNull($result->getPassword());
+        self::assertNotEmpty($result->getPassword());
         self::assertNotSame('testpassword', $result->getPassword()); // Check if password is hashed
         self::assertCount(1, $result->getRoles());
         self::assertContains('ROLE_USER', $result->getRoles());
