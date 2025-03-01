@@ -36,7 +36,7 @@ final class PersonTest extends TestCase
         } else {
             self::assertSame($id, $person->id);
         }
-        self::assertSame($name, $person->name);
+        self::assertSame($name, $person->getName());
         self::assertSame([], $person->getRoles());
     }
 }

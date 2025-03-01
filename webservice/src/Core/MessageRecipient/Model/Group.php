@@ -7,6 +7,7 @@ namespace App\Core\MessageRecipient\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Component\Uid\Ulid;
 use Traversable;
@@ -31,6 +32,9 @@ class Group extends AbstractMessageRecipient implements Delegated
 
     public function addMember(AbstractMessageRecipient $member): void
     {
+        if ($this->id->equals($member->id)) {
+            throw new InvalidArgumentException('Cannot add group to itself: '.$this->id);
+        }
         $this->members->add($member);
     }
 
@@ -48,6 +52,15 @@ class Group extends AbstractMessageRecipient implements Delegated
     }
 
     /**
+     * Caution: yield from does not reset the keys. It preserves the keys returned by the Traversable object, or array.
+     * Thus some values may share a common key with another yield or yield from, which, upon insertion into an array,
+     * will overwrite former values with that key.
+     *
+     * See: https://www.php.net/manual/en/language.generators.syntax.php
+     *
+     * Solution: set preserve keys to false in array generation, example:
+     * iterator_to_array($group1->getMembersRecursively(), false)
+     *
      * @return Traversable<AbstractMessageRecipient>
      */
     public function getMembersRecursively(): Traversable

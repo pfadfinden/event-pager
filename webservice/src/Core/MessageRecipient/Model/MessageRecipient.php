@@ -8,8 +8,8 @@ use Symfony\Component\Uid\Ulid;
 
 /**
  * @property-read Ulid $id
- * @property string $name
  */
 interface MessageRecipient
 {
+    public function getName(): string;
 }
