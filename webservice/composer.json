@@ -89,7 +89,13 @@
         "test:coverage": [
             "@putenv XDEBUG_MODE=coverage",
             "@php vendor/bin/phpunit"
-        ]
+        ],
+        "test:unit": "@php vendor/bin/phpunit --group unit --no-coverage",
+        "test:unit:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group unit"],
+        "test:integration": "@php vendor/bin/phpunit --group integration --no-coverage",
+        "test:integration:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group integration"],
+        "test:application": "@php vendor/bin/phpunit --group application --no-coverage",
+        "test:application:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group application"]
     },
     "conflict": {
         "symfony/symfony": "*"

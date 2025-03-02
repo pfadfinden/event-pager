@@ -23,7 +23,7 @@ readonly class IncomingMessage
      * @param array<Ulid> $to
      */
     public static function new(
-        Ulid $sendBy,
+        Ulid $by,
         array $to,
         string $content,
         int $priority,
@@ -31,7 +31,7 @@ readonly class IncomingMessage
         return new self(
             Ulid::generate(),
             Instant::now(),
-            $sendBy,
+            $by,
             $to,
             $content,
             $priority,
@@ -39,18 +39,18 @@ readonly class IncomingMessage
     }
 
     /**
-     * @param array<Ulid> $sendTo
+     * @param array<Ulid> $to
      */
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: UlidType::NAME)]
         public string $messageId,
         #[ORM\Column(type: InstantType::NAME)]
-        public Instant $sendOn,
+        public Instant $sentOn,
         #[ORM\Column(type: UlidType::NAME)]
-        public Ulid $sendBy,
-        #[ORM\Column(type: UlidArrayType::NAME)]
-        public array $sendTo,
+        public Ulid $by,
+        #[ORM\Column(name: 'sentTo', type: UlidArrayType::NAME)]
+        public array $to,
         #[ORM\Column]
         public string $content,
         #[ORM\Column]

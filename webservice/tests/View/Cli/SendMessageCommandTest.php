@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\View\CLI;
+namespace App\Tests\View\Cli;
 
 use App\Core\SendMessage\Model\IncomingMessage;
-use App\View\CLI\SendMessageCommand;
+use App\View\Cli\SendMessageCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -89,11 +89,11 @@ final class SendMessageCommandTest extends KernelTestCase
 
         /** @var EntityManagerInterface $em */
         $em = $application->getKernel()->getContainer()->get('doctrine')->getManager();
-        $msg = $em->getRepository(IncomingMessage::class)->findOneBy(['sendBy' => $from], ['sendOn' => 'DESC']);
+        $msg = $em->getRepository(IncomingMessage::class)->findOneBy(['by' => $from], ['sentOn' => 'DESC']);
         self::assertInstanceOf(IncomingMessage::class, $msg);
         self::assertSame($content, $msg->content);
         self::assertSame($prio, $msg->priority);
-        self::assertSame($to, array_map(fn (Ulid $ulid) => $ulid->toString(), $msg->sendTo));
+        self::assertSame($to, array_map(fn (Ulid $ulid) => $ulid->toString(), $msg->to));
 
         // Clean
         $em->remove($msg);
