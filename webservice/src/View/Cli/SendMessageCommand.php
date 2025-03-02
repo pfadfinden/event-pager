@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View\CLI;
+namespace App\View\Cli;
 
 use App\Core\SendMessage\Command\SendMessage;
 use App\Core\SendMessage\Handler\SendMessageHandler;

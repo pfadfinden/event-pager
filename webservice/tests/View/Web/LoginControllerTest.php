@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\View\Web;
 
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+#[Group('application'), Group('application.web')]
 final class LoginControllerTest extends WebTestCase
 {
     public function testCanAssertTrue(): void

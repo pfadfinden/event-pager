@@ -31,7 +31,7 @@ final class IncomingMessageTest extends TestCase
         // Assert
         self::assertSame('Hello World', $sut->content);
         self::assertSame(1, $sut->priority);
-        self::assertTrue($sut->sendOn->isEqualTo(Instant::of(1_000_000_000)));
+        self::assertTrue($sut->sentOn->isEqualTo(Instant::of(1_000_000_000)));
 
         // Cleanup
         DefaultClock::reset();

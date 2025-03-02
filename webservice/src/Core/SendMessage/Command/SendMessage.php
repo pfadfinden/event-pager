@@ -11,7 +11,7 @@ final readonly class SendMessage
      */
     public function __construct(
         public string $message,
-        public string $sendBy,
+        public string $by,
         public int $priority,
         public array $to,
     ) {

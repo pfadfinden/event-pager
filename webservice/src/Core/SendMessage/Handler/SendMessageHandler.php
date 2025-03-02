@@ -21,7 +21,7 @@ final readonly class SendMessageHandler
     public function __invoke(SendMessage $cmd): void
     {
         $incomingMessage = IncomingMessage::new(
-            Ulid::fromString($cmd->sendBy),
+            Ulid::fromString($cmd->by),
             array_map(fn ($str) => Ulid::fromString($str), $cmd->to),
             $cmd->message,
             $cmd->priority,
