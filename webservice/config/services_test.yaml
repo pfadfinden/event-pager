@@ -1,0 +1,4 @@
+services:
+  cmd.bus:
+    alias: App\Core\Contracts\Bus\CommandBus
+    public: true

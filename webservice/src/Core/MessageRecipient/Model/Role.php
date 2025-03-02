@@ -35,4 +35,9 @@ class Role extends AbstractMessageRecipient implements Delegated
 
         return [$this->person];
     }
+
+    public function bindPerson(?Person $person): void
+    {
+        $this->person = $person;
+    }
 }

@@ -38,7 +38,7 @@ final class RoleTest extends TestCase
         } else {
             self::assertSame($id, $role->id);
         }
-        self::assertSame($name, $role->name);
+        self::assertSame($name, $role->getName());
         self::assertSame($person, $role->person);
     }
 
@@ -78,5 +78,28 @@ final class RoleTest extends TestCase
         self::expectException(LogicException::class);
 
         $role->resolve();
+    }
+
+    public function testBindPerson(): void
+    {
+        $person = new Person('Eve');
+
+        $role = new Role('Role A', null);
+
+        $role->bindPerson($person);
+
+        self::assertSame($person, $role->person);
+    }
+
+    public function testRemovePersonAssignment(): void
+    {
+        $person = new Person('Eve');
+
+        $role = new Role('Role A', $person);
+        self::assertSame($person, $role->person);
+
+        $role->bindPerson(null);
+
+        self::assertNull($role->person);
     }
 }

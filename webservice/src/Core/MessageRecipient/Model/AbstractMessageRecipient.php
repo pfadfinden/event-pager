@@ -25,12 +25,12 @@ abstract class AbstractMessageRecipient implements MessageRecipient
     public readonly Ulid $id;
 
     #[ORM\Column]
-    public string $name;
+    private string $name;
 
     /**
      * @var Collection<int, Group>
      */
-    #[ORM\ManyToMany(Group::class, mappedBy: 'members')]
+    #[ORM\ManyToMany(Group::class, mappedBy: 'members', )]
     private Collection $groups;
 
     public function __construct(string $name, ?Ulid $id = null)
@@ -46,5 +46,20 @@ abstract class AbstractMessageRecipient implements MessageRecipient
     public function getGroups(): array
     {
         return $this->groups->getValues();
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

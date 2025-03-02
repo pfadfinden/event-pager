@@ -36,7 +36,15 @@ final class AbstractMessageRecipientTest extends TestCase
         } else {
             self::assertSame($id, $recipient->id);
         }
-        self::assertSame($name, $recipient->name);
+        self::assertSame($name, $recipient->getName());
         self::assertSame([], $recipient->getGroups());
+    }
+
+    public function testCanChangeName(): void
+    {
+        $recipient = new class('Previous Name') extends AbstractMessageRecipient {};
+        $recipient->setName('New Name');
+
+        self::assertSame('New Name', $recipient->getName());
     }
 }
