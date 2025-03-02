@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\View\Web\Admin;
 
+use App\Core\Contracts\Bus\QueryBus;
+use App\Core\MessageRecipient\Query\CountOfMessageRecipients;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -12,18 +14,22 @@ class OrgStatsComponent
 {
     use DefaultActionTrait;
 
+    public function __construct(private QueryBus $queryBus)
+    {
+    }
+
     public function getGroupCount(): int
     {
-        return rand(1, 100);
+        return $this->queryBus->get(CountOfMessageRecipients::onlyGroups());
     }
 
     public function getRoleCount(): int
     {
-        return rand(1, 100);
+        return $this->queryBus->get(CountOfMessageRecipients::onlyRoles());
     }
 
     public function getPeopleCount(): int
     {
-        return rand(1, 500);
+        return $this->queryBus->get(CountOfMessageRecipients::onlyPeople());
     }
 }
