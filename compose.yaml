@@ -43,6 +43,30 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 7080
+      KC_HTTPS_PORT: 7443
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7080/health/ready"]
+      interval: 15s
+      timeout: 2s
+      retries: 15
+    command: ["start-dev", "--import-realm"]
+    volumes: # Ignore if you don't have realm-export.json to migrate data
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+      - "7080:7080"
+      - "7443:7443"
+#    networks:
+#      - local_network
+
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
