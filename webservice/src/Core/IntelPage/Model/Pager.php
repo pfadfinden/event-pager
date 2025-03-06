@@ -40,7 +40,7 @@ class Pager
      */
     #[ORM\OneToMany(
         targetEntity: AbstractCapAssignment::class,
-        mappedBy: 'slots',
+        mappedBy: 'pager',
         cascade: ['persist', 'remove'],
         orphanRemoval: true,
         indexBy: 'slot'
@@ -48,19 +48,17 @@ class Pager
     private Collection $slots;
 
     /**
-     * @param string                  $label  see property description
-     * @param int                     $number see property description
-     * @param AbstractCapAssignment[] $slots  list of assignments
+     * @param string $label  see property description
+     * @param int    $number see property description
      */
     public function __construct(
         Ulid $id,
         string $label,
         int $number,
-        array $slots = [],
     ) {
         $this->id = $id;
-        $this->slots = new ArrayCollection($slots);
-        $this->label = $label;
+        $this->slots = new ArrayCollection();
+        $this->setLabel($label);
         $this->number = $number;
     }
 
@@ -136,7 +134,7 @@ class Pager
     public function setLabel(string $label): static
     {
         if (strlen($label) > 255 || '' === $label) {
-            throw new InvalidArgumentException('The length of the new label must be from 0 to 255 characters!');
+            throw new InvalidArgumentException('The length of the new label must be from 1 to 255 characters!');
         }
 
         $this->label = $label;

@@ -26,7 +26,8 @@ readonly class ChannelCapAssignment extends AbstractCapAssignment
 
     public function getChannel(): Channel
     {
-        if (null === $this->channel) {
+        // @phpstan-ignore instanceof.alwaysTrue (condition not always true due to possibility of database manipulation)
+        if (!$this->channel instanceof Channel) {
             throw new LogicException('Reference channel was removed from database');
         }
 
