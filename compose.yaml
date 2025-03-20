@@ -58,7 +58,8 @@ services:
       interval: 15s
       timeout: 2s
       retries: 15
-    command: ["start-dev", "--import-realm"]
+    command: ["start-dev", "--import-realm", "--file", "DEV_BuLa_SanSi-realm.json"]
+    #export command: docker compose run --rm keycloak export --dir /opt/keycloak/data/import --users realm_file --realm DEV_BuLa_SanSi
     volumes: # Ignore if you don't have realm-export.json to migrate data
       - ./keycloak/config:/opt/keycloak/data/import:rw
       - keycloak_data:/opt/keycloak/data:rw
