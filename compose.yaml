@@ -60,7 +60,8 @@ services:
       retries: 15
     command: ["start-dev", "--import-realm"]
     volumes: # Ignore if you don't have realm-export.json to migrate data
-      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+      - ./keycloak/config:/opt/keycloak/data/import:rw
+      - keycloak_data:/opt/keycloak/data:rw
     ports:
       - "7080:7080"
       - "7443:7443"
@@ -77,3 +78,4 @@ volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+  keycloak_data:
