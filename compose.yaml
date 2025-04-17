@@ -43,6 +43,7 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+# More information about the keycloak service is located unter /keycloak/README.md
   keycloak:
     image: quay.io/keycloak/keycloak:26.1
     environment:
@@ -59,15 +60,12 @@ services:
       timeout: 2s
       retries: 15
     command: ["start-dev", "--import-realm", "--file", "DEV_BuLa_SanSi-realm.json"]
-    #export command: docker compose run --rm keycloak export --dir /opt/keycloak/data/import --users realm_file --realm DEV_BuLa_SanSi
-    volumes: # Ignore if you don't have realm-export.json to migrate data
+    volumes: 
       - ./keycloak/config:/opt/keycloak/data/import:rw
       - keycloak_data:/opt/keycloak/data:rw
     ports:
       - "7080:7080"
       - "7443:7443"
-#    networks:
-#      - local_network
 
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
