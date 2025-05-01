@@ -27,15 +27,17 @@ final class SendMessageRequest
     public int $priority = 3;
 
     /**
-     * The text body to send.
-     *
-     * @var string[]
+     * @var SendMessageRecipientRequest[]
      */
     #[Assert\NotBlank]
     #[Assert\Count(min: 1)]
-    #[Assert\All([
-        new Assert\NotBlank(),
-        new Assert\Ulid(),
-    ])]
     public array $to;
+
+    /**
+     * @return string[]
+     */
+    public function toIds(): array
+    {
+        return array_values(array_map(fn (SendMessageRecipientRequest $to) => $to->id, $this->to));
+    }
 }

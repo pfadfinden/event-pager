@@ -21,7 +21,20 @@ final readonly class MessagesSentByUserQueryHandler
      */
     public function __invoke(MessagesSentByUser $query): iterable
     {
-        $dql = 'SELECT NEW '.IncomingMessageStatus::class.'(m.messageId, m.sentOn, m.by, m.content, m.priority, \'Unknown\') FROM '.IncomingMessage::class.' m WHERE m.by = :sentBy';
+        $source = IncomingMessage::class;
+        $dto = IncomingMessageStatus::class;
+        $dql = <<<EOF
+            SELECT NEW $dto(
+                m.messageId,
+                m.sentOn,
+                m.by,
+                m.to,
+                m.content,
+                m.priority,
+                'Unknown' )
+            FROM $source m
+            WHERE m.by = :sentBy
+            EOF;
         // Doctrine currently uses UUID format to store ULIDs, therefore we have to convert here:
         $parameters = ['sentBy' => Ulid::fromString($query->sentBy)->toRfc4122()];
 
