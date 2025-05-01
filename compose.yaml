@@ -43,6 +43,25 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+# More information about the keycloak service is located unter /keycloak/README.md
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 7080
+      KC_HTTPS_PORT: 7443
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+    command: ["start-dev", "--import-realm", "--file", "DEV_BuLa_SanSi-realm.json"]
+    volumes: 
+      - ./keycloak/config:/opt/keycloak/data/import:rw
+      - keycloak_data:/opt/keycloak/data:rw
+    ports:
+      - "7080:7080"
+      - "7443:7443"
+
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
@@ -53,3 +72,4 @@ volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+  keycloak_data:
