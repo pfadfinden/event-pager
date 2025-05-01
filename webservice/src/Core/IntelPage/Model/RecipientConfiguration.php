@@ -33,6 +33,9 @@ final readonly class RecipientConfiguration
 
     public function alertFromPriority(): Priority
     {
-        return Priority::tryFrom($this->config[self::KEY_ALERT_FROM_PRIORITY] ?? null) ?? self::DEFAULT_ALERT_FROM_PRIORITY;
+        return Priority::tryFrom(
+            $this->config[self::KEY_ALERT_FROM_PRIORITY]
+                ?? self::DEFAULT_ALERT_FROM_PRIORITY->value
+        ) ?? self::DEFAULT_ALERT_FROM_PRIORITY;
     }
 }

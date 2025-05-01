@@ -49,7 +49,7 @@ final readonly class IntelPageTransport implements Transport
     public function acceptsNewMessages(): bool
     {
         /* At this time, there is no option to configure the transport from
-         * application side. It is to be expected, that the operations
+         * the application side. It is to be expected, that the operations
          * responsible configured the transport correctly, therefore (for now)
          * this method always returns true.
          */
@@ -67,7 +67,7 @@ final readonly class IntelPageTransport implements Transport
         $recipientConfiguration = new RecipientConfiguration($config);
 
         if ($recipientConfiguration->hasChannelConfiguration()) {
-            // -- should send to channel, can do so only if channel can was found in database:
+            // -- should send to channel, can do so only if channel cap code was found in database:
             return $this->channelCapCode($recipientConfiguration) instanceof CapCode;
         }
 

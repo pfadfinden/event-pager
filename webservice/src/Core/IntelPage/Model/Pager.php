@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\IntelPage\Model;
 
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
+use App\Core\MessageRecipient\Model\MessageRecipient;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +41,7 @@ class Pager
      * Deactivated pagers will be skipped when sending messages
      */
     #[ORM\Column]
-    private bool $activated;
+    private bool $activated = false;
 
     /**
      * List of cap code assignments.
@@ -54,6 +56,12 @@ class Pager
         indexBy: 'slot'
     )]
     private Collection $slots;
+
+    #[ORM\ManyToOne(
+        targetEntity: AbstractMessageRecipient::class,
+        fetch: 'LAZY',
+    )]
+    private ?AbstractMessageRecipient $carriedBy = null;
 
     /**
      * @param string $label  see property description
@@ -80,17 +88,8 @@ class Pager
         return $this->label;
     }
 
-    private function isInSlotBounds(Slot $slot): bool
-    {
-        return ($slot->getSlot() >= self::PAGER_SLOT_MIN) && ($slot->getSlot() <= self::PAGER_SLOT_MAX);
-    }
-
     public function getCapAssignment(Slot $atSlot): ?AbstractCapAssignment
     {
-        if (!$this->isInSlotBounds($atSlot)) {
-            throw new InvalidArgumentException('Trying to access out of bounds slot!');
-        }
-
         return $this->slots->get($atSlot->getSlot());
     }
 
@@ -202,5 +201,17 @@ class Pager
         }
 
         return null;
+    }
+
+    public function getCarriedBy(): ?MessageRecipient
+    {
+        return $this->carriedBy;
+    }
+
+    public function setCarriedBy(?AbstractMessageRecipient $carriedBy): self
+    {
+        $this->carriedBy = $carriedBy;
+
+        return $this;
     }
 }

@@ -9,7 +9,9 @@ use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\IntelPage\Application\QueueMessageHandler;
 use App\Core\IntelPage\Command\QueueMessage;
 use App\Core\IntelPage\Model\CapCode;
+use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\IntelPage\Port\PagerMessageRepository;
+use App\Core\TransportContract\Model\OutgoingMessageEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -21,17 +23,29 @@ final class QueueMessageHandlerTest extends TestCase
 {
     public function testCanQueueMessage(): void
     {
-        // TODO add expectations to the mocks, this should include that the ::add() method on the repository and the ::commit() method on the UnitOfWork is called
-        // TODO expect that event was published on event bus
+        $id = Ulid::fromString(Ulid::generate());
+
         $pagerMessageRepositoryMock = self::createMock(PagerMessageRepository::class);
+        $pagerMessageRepositoryMock->expects(self::once())->method('add')
+            ->with(self::callback(fn (PagerMessage $m) => (
+                'Hello World' === $m->getMessage()
+                && $m->getId()->equals($id)
+                && 1001 === $m->getCap()->getCode()
+            )));
+        // Pot. Improvement: Assert all properties if message are correct
+
         $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock->expects(self::once())->method('commit');
+
         $eventBusMock = self::createMock(EventBus::class);
+        $eventBusMock->expects(self::once())->method('publish')->with(self::isInstanceOf(OutgoingMessageEvent::class));
+        // Pot. Improvement: Assert properties of event are correct
 
         // sut = Subject Under Test i.e. the class we are testing
         $sut = new QueueMessageHandler($pagerMessageRepositoryMock, $unitOfWorkMock, $eventBusMock);
 
-        $cmd = new QueueMessage(
-            Ulid::fromString(Ulid::generate()),
+        $cmd = QueueMessage::with(
+            $id,
             CapCode::fromInt(1001),
             'Hello World',
             1,
