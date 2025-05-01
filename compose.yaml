@@ -54,11 +54,6 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "true"
       KC_LOG_LEVEL: info
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7080/health/ready"]
-      interval: 15s
-      timeout: 2s
-      retries: 15
     command: ["start-dev", "--import-realm", "--file", "DEV_BuLa_SanSi-realm.json"]
     volumes: 
       - ./keycloak/config:/opt/keycloak/data/import:rw
