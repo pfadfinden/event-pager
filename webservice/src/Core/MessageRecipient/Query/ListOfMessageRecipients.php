@@ -35,10 +35,15 @@ final readonly class ListOfMessageRecipients implements Query
         return new self(null);
     }
 
+    public static function allMatching(string $searchQuery): self
+    {
+        return new self(searchQuery: trim($searchQuery));
+    }
+
     /**
      * @param class-string|null $filterType
      */
-    private function __construct(public ?string $filterType = null)
+    private function __construct(public ?string $filterType = null, public ?string $searchQuery = null)
     {
     }
 }
