@@ -11,6 +11,7 @@ use App\Core\MessageRecipient\Model\Role;
 use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
 use Doctrine\ORM\EntityManagerInterface;
+use function count;
 use function sprintf;
 
 final readonly class ListOfMessageRecipientsQueryHandler
@@ -30,11 +31,21 @@ final readonly class ListOfMessageRecipientsQueryHandler
      when r INSTANCE OF %s then 'PERSON'
      else 'unknown'
    end) as type, r.name) FROM %s r", RecipientListEntry::class, Group::class, Role::class, Person::class, AbstractMessageRecipient::class);
+        $dqlWhereClauses = [];
         $parameters = [];
 
         if (null !== $query->filterType) {
-            $dql .= ' WHERE r INSTANCE OF :type';
+            $dqlWhereClauses[] = 'r INSTANCE OF :type';
             $parameters['type'] = $this->em->getClassMetadata($query->filterType);
+        }
+
+        if (null !== $query->searchQuery) {
+            $dqlWhereClauses[] = 'LOWER(r.name) LIKE :query';
+            $parameters['query'] = '%'.strtolower($query->searchQuery).'%';
+        }
+
+        if (count($dqlWhereClauses) > 0) {
+            $dql .= ' WHERE '.implode(' AND ', $dqlWhereClauses);
         }
 
         $doctrineQuery = $this->em->createQuery($dql);
