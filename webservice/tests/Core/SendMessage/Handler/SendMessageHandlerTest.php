@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\SendMessage\Handler;
 
+use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Persistence\UnitOfWork;
+use App\Core\SendMessage\Command\ProcessIncomingMessage;
 use App\Core\SendMessage\Command\SendMessage;
 use App\Core\SendMessage\Handler\SendMessageHandler;
 use App\Core\SendMessage\Model\IncomingMessage;
@@ -37,7 +39,10 @@ final class SendMessageHandlerTest extends TestCase
         $uow = $this->createMock(UnitOfWork::class);
         $uow->expects(self::once())->method('commit');
 
-        $sut = new SendMessageHandler($repo, $uow);
+        $cmdBus = $this->createMock(CommandBus::class);
+        $cmdBus->expects(self::once())->method('do')->with(self::isInstanceOf(ProcessIncomingMessage::class));
+
+        $sut = new SendMessageHandler($repo, $uow, $cmdBus);
 
         // Act
         $sut($command);
