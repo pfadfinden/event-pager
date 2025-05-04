@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Core\IntelPage\ReadModel;
+
+final class Pager
+{
+    public function __construct(
+        public string $id,
+        public string $label,
+        public int $number,
+        public bool $isActive = false,
+        public string $carriedBy = 'Jane Doe',
+        // TODO channel
+    ) {
+    }
+}

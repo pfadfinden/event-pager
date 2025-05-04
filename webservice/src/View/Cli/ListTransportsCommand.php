@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\View\Cli;
 
 use App\Core\Contracts\Bus\QueryBus;
-use App\Core\TransportManager\Query\AllTransports;
+use App\Core\TransportManager\Query\AllPager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,13 +33,13 @@ final class ListTransportsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $query = AllTransports::withoutFilter();
+        $query = AllPager::withoutFilter();
 
         if (true === $input->getOption('enabled')) {
-            $query = AllTransports::thatAreEnabled();
+            $query = AllPager::thatAreEnabled();
             $io->title('Enabled Transports');
         } elseif (false === $input->getOption('enabled')) {
-            $query = AllTransports::thatAreDisabled();
+            $query = AllPager::thatAreDisabled();
             $io->title('Disabled Transports');
         } else {
             $io->title('All Transports');
