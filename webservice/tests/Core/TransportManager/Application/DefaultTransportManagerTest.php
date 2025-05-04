@@ -10,7 +10,7 @@ use App\Core\TransportContract\Port\Transport;
 use App\Core\TransportContract\Port\TransportFactory;
 use App\Core\TransportManager\Application\DefaultTransportManager;
 use App\Core\TransportManager\Model\TransportConfiguration;
-use App\Core\TransportManager\Query\AllTransports;
+use App\Core\TransportManager\Query\AllPager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +27,7 @@ final class DefaultTransportManagerTest extends TestCase
         $transportConfiguration2 = new TransportConfiguration('test02', 'otherTestClass', 'Dummy 02');
         $queryBusMock->expects($this->once())
             ->method('get')
-            ->with(self::isInstanceOf(AllTransports::class))
+            ->with(self::isInstanceOf(AllPager::class))
             ->willReturn([
                 $transportConfiguration1,
                 $transportConfiguration2,
@@ -59,7 +59,7 @@ final class DefaultTransportManagerTest extends TestCase
         $transportConfiguration2 = new TransportConfiguration('test02', 'otherTestClass', 'Dummy 02');
         $queryBusMock->expects($this->once())
             ->method('get')
-            ->with(self::isInstanceOf(AllTransports::class))
+            ->with(self::isInstanceOf(AllPager::class))
             ->willReturn([
                 $transportConfiguration2,
             ]);
@@ -85,7 +85,7 @@ final class DefaultTransportManagerTest extends TestCase
         $transportConfiguration2 = new TransportConfiguration('test02', 'otherTestClass', 'Dummy 02');
         $queryBusMock->expects($this->once())
             ->method('get')
-            ->with(self::isInstanceOf(AllTransports::class))
+            ->with(self::isInstanceOf(AllPager::class))
             ->willReturn([
                 $transportConfiguration2,
             ]);
