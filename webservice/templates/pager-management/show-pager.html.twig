@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Pagerverwaltung{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>Pagerverwaltung</h1>
+
+		<div class="mt-4">
+			<h2>01: Pager A01</h2>
+
+		</div>
+
+		<div class="row gx-5">
+		<div class="py-3 mt-5 col-12 col-md bg-body-secondary">
+			<dl>
+				<dt>Nummer</dt>
+				<dd>1</dd>
+				<dt>Bezeichnung</dt>
+				<dd>Pager A01</dd>
+				<dt>Kommentar</dt>
+				<dd>XXX</dd>
+			</dl>
+		</div>
+
+		<div class="mt-5 col-12 col-md">
+			<h3>Status</h3>
+			<dl>
+				<dt>Status</dt>
+				<dd>
+					<div class="d-inline rounded-pill ps-2 pe-1 text-bg-danger fs-6 fw-semibold text-uppercase">Inactive
+						<twig:ux:icon name="bi:pause-circle" height="16" width="16" aria-hidden="true" class="bi ms-1"/></div>
+				</dd>
+				<dt>Zuweisung</dt>
+				<dd>Jane Doe</dd>
+			</dl>
+		</div>
+		</div>
+
+		<div class="mt-5">
+			<h3>Konfiguration</h3>
+
+			<h4 class="mt-3">Cap Assignments</h4>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Slot</th>
+						<th scope="col">Assignment</th>
+						<th scope="col">Cap Code</th>
+						<th scope="col">Sound</th>
+						<th scope="col">Vibration</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1</th>
+						<td>Individual</td>
+						<td>9001</td>
+						<td>Off</td>
+						<td>On</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+		<div class="row gx-5">
+		<div class="mt-5 py-3  bg-danger text-bg-danger">
+			<h3>Danger Zone</h3>
+
+			<p>Delete</p>
+		</div>
+		</div>
+	</main>
+{% endblock %}
