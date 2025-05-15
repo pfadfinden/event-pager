@@ -1,0 +1,11 @@
+hwi_oauth:
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/docs/2-configuring_resource_owners.md
+    resource_owners:
+        keycloak:
+            type: keycloak
+            base_url: http://host.docker.internal:7080
+            realm: DEV_BuLa_SanSi
+            client_id: PagerApp
+            client_secret: xvTlbEOzzjjIuglPXG6QKyWk5WVguVfs
+#            options:
+#                idp_hint: <auth_hint_idp>

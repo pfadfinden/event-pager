@@ -77,6 +77,9 @@
 						<button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary btn-lg btn-block w-100">{% trans %}Log in with local account{% endtrans %}</button>
 
 					</form>
+					<a href="{{ path('hwi_oauth_service_redirect', {'service': 'keycloak' }) }}">
+						<span>Login with Keycloak</span>
+					</a>
 				</div>
 			</div>
 		</div>

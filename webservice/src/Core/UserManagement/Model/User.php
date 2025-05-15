@@ -38,6 +38,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING)]
     private string $password = '';
 
+    private string $keycloak;
+
     public function __construct(string $username)
     {
         assert('' !== $username);

@@ -62,6 +62,8 @@ security:
             entity:
                 class: App\Core\UserManagement\Model\User
                 property: username
+        hwi_oauth:
+            id: hwi_oauth.user.provider
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
@@ -69,10 +71,22 @@ security:
             security: false
         main:
             lazy: true
-            provider: app_user_provider
-            form_login:
-                login_path: app_login
-                check_path: app_login
+#            provider: app_user_provider
+#            form_login:
+#                login_path: app_login
+#                check_path: app_login
+            pattern: ^/
+            oauth:
+                resource_owners:
+                    keycloak: "/login/check-keycloak"
+                login_path: /login
+                use_forward: false
+                failure_path: /login
+                default_target_path: /
+
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider
+                provider: hwi_oauth
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -83,7 +97,8 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/, roles: ROLE_ACCESS_WEB }
+        - { path: ^/connect, roles: PUBLIC_ACCESS }
+        - { path: ^/, roles: ROLE_ACCESS_WEB } # force login
 
 when@test:
     security:
