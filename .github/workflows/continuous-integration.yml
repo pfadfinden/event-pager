@@ -32,7 +32,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer:v2
           coverage: xdebug
 
@@ -67,7 +67,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer:v2
 
       - name: Restore cached composer packages
@@ -94,6 +94,8 @@ jobs:
 
       - name: Check Code Style (PHP)
         working-directory: webservice
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: 1
         run: |
           IFS='
           '
@@ -132,7 +134,7 @@ jobs:
       - name: Check HTTPS reachability
         if: false # Remove this line when the homepage will be configured, or change the path to check
         run: curl -vk --fail-with-body https://localhost
-      
+
       - name: Check Mercure reachability
         run: curl -vkI --fail-with-body https://localhost/.well-known/mercure?topic=test
 
@@ -163,7 +165,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer:v2
 
       - name: Restore cached composer packages
