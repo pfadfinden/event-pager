@@ -30,6 +30,13 @@ readonly class OutgoingMessageEvent
         return new self($incomingMessageId, $outgoingMessageId, Instant::now(), OutgoingMessageStatus::QUEUED);
     }
 
+    public static function failedToQueue(
+        Ulid $incomingMessageId,
+        Ulid $outgoingMessageId,
+    ): self {
+        return new self($incomingMessageId, $outgoingMessageId, Instant::now(), OutgoingMessageStatus::ERROR);
+    }
+
     public static function transmitted(
         Ulid $incomingMessageId,
         Ulid $outgoingMessageId,
