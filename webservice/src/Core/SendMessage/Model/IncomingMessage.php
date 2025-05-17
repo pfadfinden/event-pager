@@ -29,7 +29,7 @@ readonly class IncomingMessage
         int $priority,
     ): self {
         return new self(
-            Ulid::generate(),
+            Ulid::fromString(Ulid::generate()),
             Instant::now(),
             $by,
             $to,
@@ -44,7 +44,7 @@ readonly class IncomingMessage
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: UlidType::NAME)]
-        public string $messageId,
+        public Ulid $messageId,
         #[ORM\Column(type: InstantType::NAME)]
         public Instant $sentOn,
         #[ORM\Column(type: UlidType::NAME)]
