@@ -9,11 +9,13 @@ use App\Core\IntelPage\Model\PagerMessage;
 use Brick\DateTime\Clock\FixedClock;
 use Brick\DateTime\DefaultClock;
 use Brick\DateTime\Instant;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[CoversClass(PagerMessage::class)]
 #[Group('unit')]
 final class PagerMessageTest extends TestCase
 {

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\IntelPage\Model;
 
-use App\Core\IntelPage\Model\CapCode;
+use App\Core\IntelPage\Model\Slot;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(CapCode::class)]
+#[CoversClass(Slot::class)]
 #[Group('unit')]
-final class CapCodeTest extends TestCase
+final class SlotTest extends TestCase
 {
     /**
      * @return array<string, list<int>>
@@ -21,8 +21,8 @@ final class CapCodeTest extends TestCase
     public static function validIntProvider(): array
     {
         return [
-            'lower bound' => [1],
-            'upper bound' => [9999],
+            'lower bound' => [0],
+            'upper bound' => [7],
         ];
     }
 
@@ -32,37 +32,36 @@ final class CapCodeTest extends TestCase
     public static function invalidIntProvider(): array
     {
         return [
-            'negatives' => [-1],
-            'lower bound' => [0],
-            'upper bound' => [10000],
+            'lower bound' => [-1],
+            'upper bound' => [8],
         ];
     }
 
     #[DataProvider('validIntProvider')]
     public function testCanBeCreatedByInt(int $testValue): void
     {
-        $cc = CapCode::fromInt($testValue);
-        self::assertTrue($testValue === $cc->getCode());
+        $cc = Slot::fromInt($testValue);
+        self::assertTrue($testValue === $cc->getSlot());
     }
 
     #[DataProvider('invalidIntProvider')]
-    public function testCreateInvalidCapCode(int $testValue): void
+    public function testCreateInvalidSlot(int $testValue): void
     {
         self::expectException(InvalidArgumentException::class);
-        CapCode::fromInt($testValue);
+        Slot::fromInt($testValue);
     }
 
     #[DataProvider('validIntProvider')]
     public function testCanBeCreatedFromString(int $testValue): void
     {
-        $cc = CapCode::fromString((string) $testValue);
-        self::assertTrue($testValue === $cc->getCode());
+        $cc = Slot::fromString((string) $testValue);
+        self::assertTrue($testValue === $cc->getSlot());
     }
 
     #[DataProvider('invalidIntProvider')]
-    public function testCreateInvalidCapCodeFromString(int $testValue): void
+    public function testCreateInvalidSlotFromString(int $testValue): void
     {
         self::expectException(InvalidArgumentException::class);
-        CapCode::fromString((string) $testValue);
+        Slot::fromString((string) $testValue);
     }
 }

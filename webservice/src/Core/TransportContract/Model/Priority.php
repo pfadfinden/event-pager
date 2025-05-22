@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Core\TransportContract\Model;
 
 /*
- * Defines Priorities for the Messages
+ * Priorities that messages can be sent with
  */
 enum Priority: int
 {
@@ -14,4 +14,9 @@ enum Priority: int
     case DEFAULT = 30;
     case LOW = 20;
     case MIN = 10;
+
+    public function isHigherOrEqual(Priority $other): bool
+    {
+        return $this->value >= $other->value;
+    }
 }
