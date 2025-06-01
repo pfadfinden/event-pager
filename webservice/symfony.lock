@@ -152,7 +152,7 @@
         ]
     },
     "symfony/form": {
-        "version": "7.2",
+        "version": "7.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
