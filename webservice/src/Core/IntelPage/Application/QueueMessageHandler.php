@@ -22,7 +22,7 @@ final readonly class QueueMessageHandler
 
     public function __invoke(QueueMessage $cmd): void
     {
-        $pagerMessage = PagerMessage::new($cmd->id, $cmd->capCode, $cmd->message, $cmd->priority);
+        $pagerMessage = PagerMessage::new($cmd->id, $cmd->transport, $cmd->capCode, $cmd->message, $cmd->priority);
         $this->pagerMessageRepository->add($pagerMessage);
         $this->uow->commit();
 

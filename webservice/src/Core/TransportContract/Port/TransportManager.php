@@ -13,4 +13,6 @@ interface TransportManager
      * @return iterable<Transport>
      */
     public function activeTransports(): iterable;
+
+    public function transportWithKey(string $key): ?Transport;
 }

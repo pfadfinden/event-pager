@@ -16,6 +16,7 @@ use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 #[CoversClass(PagerByRecipientQueryHandler::class)]
+#[CoversClass(PagerByRecipient::class)]
 #[Group('integration'), Group('integration.database')]
 final class PagerByRecipientQueryHandlerTest extends KernelTestCase
 {

@@ -52,4 +52,15 @@ final readonly class DefaultTransportManager implements TransportManager
 
         return null;
     }
+
+    public function transportWithKey(string $key): ?Transport
+    {
+        $transportConfig = $this->queryBus->get(\App\Core\TransportManager\Query\Transport::withKey($key));
+
+        if ($transportConfig instanceof TransportConfiguration) {
+            return $this->instantiate($transportConfig);
+        }
+
+        return null;
+    }
 }
