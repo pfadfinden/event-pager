@@ -8,9 +8,6 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
-    reviewers:
-      - "juliusstoerrle"
-      - "corphi"
     allow:
       # Allow both direct and indirect updates for all packages
       - dependency-type: "all"
@@ -25,6 +22,7 @@ updates:
     commit-message:
       prefix: "chore: composer"
       include: "scope"
+
   - package-ecosystem: "github-actions"
     # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
     directory: "/"
@@ -32,8 +30,18 @@ updates:
       # Check for updates to GitHub Actions every weekday
       interval: "daily"
       day: "friday"
-    reviewers:
-      - "juliusstoerrle"
-      - "corphi"
     commit-message:
       prefix: "chore: github-actions"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+
