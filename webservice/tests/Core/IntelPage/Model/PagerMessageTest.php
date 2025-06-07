@@ -22,7 +22,7 @@ final class PagerMessageTest extends TestCase
     public function testCreate(): PagerMessage
     {
         $id = Ulid::fromString(Ulid::generate());
-        $message = PagerMessage::new($id, CapCode::fromInt(1001), 'Hello World', 1);
+        $message = PagerMessage::new($id, 'default', CapCode::fromInt(1001), 'Hello World', 1);
 
         self::assertEquals('Hello World', $message->getMessage());
         self::assertEquals(1001, $message->getCap()->getCode());
