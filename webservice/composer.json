@@ -14,22 +14,22 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.2",
         "runtime/frankenphp-symfony": "0.2.0",
-        "symfony/asset": "7.2.*",
-        "symfony/asset-mapper": "7.2.*",
-        "symfony/console": "7.2.*",
-        "symfony/dotenv": "7.2.*",
+        "symfony/asset": "7.3.*",
+        "symfony/asset-mapper": "7.3.*",
+        "symfony/console": "7.3.*",
+        "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "7.2.*",
-        "symfony/messenger": "7.2.*",
+        "symfony/framework-bundle": "7.3.*",
+        "symfony/messenger": "7.3.*",
         "symfony/monolog-bundle": "^3.0",
-        "symfony/runtime": "7.2.*",
-        "symfony/security-bundle": "7.2.*",
-        "symfony/stimulus-bundle": "2.22.*",
-        "symfony/twig-bundle": "7.2.*",
-        "symfony/uid": "7.2.*",
+        "symfony/runtime": "7.3.*",
+        "symfony/security-bundle": "7.3.*",
+        "symfony/stimulus-bundle": "2.26.*",
+        "symfony/twig-bundle": "7.3.*",
+        "symfony/uid": "7.3.*",
         "symfony/ux-icons": "^2.22",
         "symfony/ux-live-component": "^2.22",
-        "symfony/yaml": "7.2.*",
+        "symfony/yaml": "7.3.*",
         "twig/extra-bundle": "^2.12 || ^3.0",
         "twig/twig": "^2.12 || ^3.0",
         "web-token/jwt-library": "^4.0"
@@ -111,7 +111,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.2.*"
+            "require": "7.3.*"
         }
     },
     "require-dev": {
@@ -122,11 +122,11 @@
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^12.1",
-        "symfony/browser-kit": "7.2.*",
-        "symfony/css-selector": "7.2.*",
-        "symfony/debug-bundle": "7.2.*",
-        "symfony/stopwatch": "7.2.*",
-        "symfony/web-profiler-bundle": "7.2.*",
+        "symfony/browser-kit": "7.3.*",
+        "symfony/css-selector": "7.3.*",
+        "symfony/debug-bundle": "7.3.*",
+        "symfony/stopwatch": "7.3.*",
+        "symfony/web-profiler-bundle": "7.3.*",
         "zenstruck/foundry": "^2.3"
     }
 }
