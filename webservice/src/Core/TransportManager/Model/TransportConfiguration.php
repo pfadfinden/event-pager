@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Core\TransportManager\Model;
 
 use App\Core\TransportContract\Model\SystemTransportConfig;
-use App\Core\TransportContract\Port\Transport;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
 use function assert;
