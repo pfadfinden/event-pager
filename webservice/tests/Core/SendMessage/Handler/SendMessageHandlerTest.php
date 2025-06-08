@@ -14,11 +14,14 @@ use App\Core\SendMessage\Port\IncomingMessageRepository;
 use Brick\DateTime\Clock\FixedClock;
 use Brick\DateTime\DefaultClock;
 use Brick\DateTime\Instant;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
 #[Group('unit')]
+#[CoversClass(SendMessage::class)]
+#[CoversClass(SendMessageHandler::class)]
 final class SendMessageHandlerTest extends TestCase
 {
     public function testProcessNew(): void
