@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Cli;
 
-use App\Core\SendMessage\Command\AddPager;
+use App\Core\SendMessage\Command\SendMessage;
 use App\Core\SendMessage\Handler\SendMessageHandler;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -65,7 +65,7 @@ final class SendMessageCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $command = new AddPager(
+        $command = new SendMessage(
             $input->getArgument(self::ARG_MESSAGE),
             $input->getOption(self::OPT_FROM),
             (int) $input->getOption(self::OPT_PRIO),
