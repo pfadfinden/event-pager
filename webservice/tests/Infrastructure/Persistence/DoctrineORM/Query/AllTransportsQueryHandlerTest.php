@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\Persistence\DoctrineORM\Query;
 
 use App\Core\TransportManager\Model\TransportConfiguration;
-use App\Core\TransportManager\Query\AllPager;
+use App\Core\TransportManager\Query\AllTransports;
 use App\Infrastructure\Persistence\DoctrineORM\Query\AllTransportsQueryHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -40,7 +40,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
 
         $sut = new AllTransportsQueryHandler($em);
 
-        $query = AllPager::withoutFilter();
+        $query = AllTransports::withoutFilter();
 
         // Act
         $result = iterator_to_array($sut->__invoke($query));
@@ -58,7 +58,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
 
         $sut = new AllTransportsQueryHandler($em);
 
-        $query = AllPager::thatAreEnabled();
+        $query = AllTransports::thatAreEnabled();
 
         // Act
         $result = iterator_to_array($sut->__invoke($query));
@@ -77,7 +77,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
 
         $sut = new AllTransportsQueryHandler($em);
 
-        $query = AllPager::thatAreDisabled();
+        $query = AllTransports::thatAreDisabled();
 
         // Act
         $result = iterator_to_array($sut->__invoke($query));
