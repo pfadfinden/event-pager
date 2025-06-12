@@ -8,4 +8,14 @@
 			{% block main %}{% endblock %}
 		</div>
 	</div>
+
+	<div class="d-print-none position-fixed bottom-0 end-0 z-3">
+	{% for type, messages in app.flashes %}
+		{% for message in messages %}
+			<div class="m-3 alert alert-{{ type }} alert-dismissable fade show" role="alert">
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+	</div>
 {% endblock %}
