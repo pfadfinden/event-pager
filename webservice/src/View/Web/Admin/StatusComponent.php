@@ -8,10 +8,12 @@ use App\Core\Contracts\Bus\QueryBus;
 use App\Core\SendMessage\Query\CountOfSendMessages;
 use Brick\DateTime\Duration;
 use Brick\DateTime\Instant;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('Status', template: 'admin/_component/status.html.twig')]
+#[IsGranted('ROLE_ACCESS_WEB_ADMIN')]
 class StatusComponent
 {
     use DefaultActionTrait;

@@ -19,6 +19,12 @@ final class LoginControllerTest extends WebTestCase
 
         // Validate a successful response and some content
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Login');
+        self::assertSelectorTextContains('h1', 'Event Pager System');
+
+        /*$crawler = $client->submitForm('Log in with local account',
+            ['_username' => 'admin', '_password' => 'admin']
+        );
+
+        self::assertResponseIsSuccessful();*/
     }
 }

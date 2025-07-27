@@ -10,54 +10,61 @@
 
 		{{ component('Status') }}
 
-		<h2 class="mt-5 mb-4">Organisation</h2>
+		{% if is_granted('ROLE_VIEW_RECIPIENTS') %}
+			<h2 class="mt-5 mb-4">Organisation</h2>
+			{{ component('OrgStats') }}
 
-		{{ component('OrgStats') }}
+			<br/>
 
-		<br/>
+			ToDo: Browse Add /Search?
+		{% endif %}
 
-		ToDo: Browse Add /Search?
+		{% if is_granted('ROLE_TRANSPORT_CONFIGURATION_VIEWER') %}
+			<h2 class="mt-5">Transports</h2>
 
-		<h2 class="mt-5">Transports</h2>
+			ToDo: List of Transports with status light, number of channels
 
-		ToDo: List of Transports with status light, number of channels
-
-		<div class="d-flex flex-column gap-2 mt-4">
-			<div class="card card-body">
-				<h3>IntelPage Pager</h3>
-			</div>
-			<div class="card card-body">
-				<h3>Ntify</h3>
-			</div>
-		</div>
-
-		<h2 class="mt-5">Benutzer</h2>
-		ToDo: link to manage
-
-		<h2 class="mt-5">System</h2>
-
-		<div class="d-flex gap-4 my-4 flex-wrap ">
-
-			<div class="card flex-grow-1">
-				<div class="card-body">
-					<h5 class="card-title">Import</h5>
-
+			<div class="d-flex flex-column gap-2 mt-4">
+				<div class="card card-body">
+					<h3>IntelPage Pager</h3>
+				</div>
+				<div class="card card-body">
+					<h3>Ntify</h3>
 				</div>
 			</div>
+		{% endif %}
 
-			<div class="card flex-grow-1">
-				<div class="card-body">
-					<h5 class="card-title">Export</h5>
+		{% if is_granted('ROLE_USERMANAGEMENT_VIEW') %}
+			<h2 class="mt-5">Benutzer</h2>
+			ToDo: link to manage
+		{% endif %}
 
+		{% if is_granted('ROLE_VIEW_SYSTEM_INFO') %}
+			<h2 class="mt-5">System</h2>
+
+			<div class="d-flex gap-4 my-4 flex-wrap ">
+
+				<div class="card flex-grow-1">
+					<div class="card-body">
+						<h5 class="card-title">Import</h5>
+
+					</div>
 				</div>
+
+				<div class="card flex-grow-1">
+					<div class="card-body">
+						<h5 class="card-title">Export</h5>
+
+					</div>
+				</div>
+
+				<a class="card flex-grow-1 text-decoration-none" role="button" href="/admin/system-info">
+					<div class="card-body">
+						<h5 class="card-title">System Info</h5>
+
+					</div>
+				</a>
 			</div>
-
-			<a class="card flex-grow-1 text-decoration-none" role="button" href="/admin/system-info">
-				<span class="card-body">
-					<h5 class="card-title">System Info</h5>
-
-				</span>
-			</a>
-		</div>
+		{% endif %}
 	</main>
 {% endblock %}
