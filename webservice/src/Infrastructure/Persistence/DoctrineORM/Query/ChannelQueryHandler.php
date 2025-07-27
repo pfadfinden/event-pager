@@ -15,7 +15,7 @@ final readonly class ChannelQueryHandler
     {
     }
 
-    public function __invoke(Channel $query): \App\Core\IntelPage\ReadModel\Channel
+    public function __invoke(Channel $query): ?\App\Core\IntelPage\ReadModel\Channel
     {
         $dql = sprintf(
             'SELECT NEW %s(ch.id, ch.name, ch.capCode.code, ch.audible, ch.vibration) FROM %s ch WHERE ch.id = :channelId',

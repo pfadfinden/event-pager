@@ -7,7 +7,7 @@
 		<h1>{% trans %}Pager Administration{% endtrans %}</h1>
 
 		<div class="mt-4">
-			<h2>{% trans %}Kanal{% endtrans %}: {{ channel.name }}</h2>
+			<h2>{% trans %}Channel{% endtrans %}: {{ channel.name }}</h2>
 		</div>
 
 		<div class="row gx-5">
@@ -22,6 +22,7 @@
 				<dt>{% trans %}Vibration{% endtrans %}</dt>
 				<dd>{{ channel.vibration ? 'Yes' : 'No' }}</dd>
 			</dl>
+
 			{% if is_granted('ROLE_MANAGE_PAGER_CONFIGURATION') %}
 				<a href="{{ path('web_pager_management_channel_edit', {id: channel.id} ) }}" class="mt-3 btn btn-sm btn-secondary"><twig:ux:icon name="bi:pencil" height="16" width="16" aria-hidden="true" class="bi me-2"/>Edit</a>
 			{% endif %}
@@ -32,7 +33,7 @@
 		<div class="mt-5">
 			<h3>{% trans %}Pager{% endtrans %}</h3>
 
-			<table class="table">
+			<table class="table align-middle">
 				<thead>
 					<tr>
 						<th scope="col">#</th>
@@ -46,18 +47,18 @@
 				{% for p in pager %}
 					<tr>
 						<th scope="row">{{ p.number }}</th>
-						<td>{{ p.label }}</td>
+						<td><a href="{{ path('web_pager_management_pager_details', {id: p.id} ) }}">{{ p.label }}</a></td>
 						<td>
 							{% if p.isActive %}
-								<span class="d-inline rounded-pill ps-2 pe-1 text-bg-success fs-6 fw-semibold text-uppercase">{% trans %}Active{% endtrans %}
+								<span class="d-inline rounded-pill text-nowrap ps-2 pe-1 text-bg-success fs-6 fw-semibold text-uppercase">{% trans %}Active{% endtrans %}
 								<twig:ux:icon name="bi:play-circle" height="16" width="16" aria-hidden="true" class="bi ms-1"/></span>
 							{% else %}
-								<div class="d-inline rounded-pill ps-2 pe-1 text-bg-danger fs-6 fw-semibold text-uppercase">{% trans %}Inactive{% endtrans %}
+								<div class="d-inline rounded-pill text-nowrap ps-2 pe-1 text-bg-danger fs-6 fw-semibold text-uppercase">{% trans %}Inactive{% endtrans %}
 									<twig:ux:icon name="bi:pause-circle" height="16" width="16" aria-hidden="true" class="bi ms-1"/></div>
 							{% endif %}
 						</td>
 						<td>{{ p.carriedByName }}</td>
-						<td>{{ p.slot }}</td>
+						<td>{{ p.slot + 1 }}</td>
 					</tr>
 				{% else %}
 					<tr><td colspan="5">No Pager</td></tr>

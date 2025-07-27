@@ -9,22 +9,23 @@ use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\IntelPage\Command\UpdateChannel;
 use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\Channel;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Core\IntelPage\Port\ChannelRepository;
 use RuntimeException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler(bus: Bus::COMMAND)]
 final readonly class UpdateChannelHandler
 {
     public function __construct(
-        private EntityManagerInterface $repository,
+        private ChannelRepository $repository,
         private UnitOfWork $uow,
     ) {
     }
 
     public function __invoke(UpdateChannel $cmd): void
     {
-        $channel = $this->repository->getRepository(Channel::class)->find($cmd->id);
+        $channel = $this->repository->getById(Ulid::fromString($cmd->id));
 
         if (!$channel instanceof Channel) {
             throw new RuntimeException('Channel not found');

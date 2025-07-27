@@ -28,7 +28,7 @@ Add: Hinzufügen
 Label: Bezeichnung
 Active: Aktiv
 Inactive: Inaktiv
-Search: __Search
+Search: Suche
 'List Pagination': 'Listen Paginierung'
 Previous: Vorherige
 Next: Nächste
@@ -37,3 +37,29 @@ Assignment: Zuweisung
 Assignments: Zuweisungen
 Channels: Kanäle
 Actions: Aktionen
+'Pager deleted.': 'Pager entfernt.'
+'Add Pager': 'Pager hinzufügen'
+'Channel Assignment': Kanalzuweisung
+'Individual Assignment': 'Individuelle Zuweisung'
+Name: __Name
+'Cap Code': 'Cap Code'
+Audible: Laut
+Vibration: Vibration
+'Edit Channel': 'Kanal bearbeiten'
+'Edit Pager': 'Pager bearbeiten'
+'Add Channel': 'Kanal hinzufügen'
+'Pager Assignment': 'Pager Zuweisung'
+Number: Nummer
+Comment: Kommentar
+Change: Ändern
+Status: Status
+'Change state & assignment': 'Status & Zuweisung ändern'
+Configuration: Konfiguration
+'Cap Assignments': 'Cap Code Zuweisungen'
+Slot: Slot
+Edit: Bearbeiten
+'Danger Zone': Gefahrenzone
+'Slot cleared.': 'Zuweisung gelöscht.'
+'Individual Cap Code assigned.': 'Individuellen Cap Code zugewiesen.'
+'Channel assigned.': 'Kanal zugewiesen.'
+'Status & Assignment saved.': 'Status & Zuweisung gespeichert.'
