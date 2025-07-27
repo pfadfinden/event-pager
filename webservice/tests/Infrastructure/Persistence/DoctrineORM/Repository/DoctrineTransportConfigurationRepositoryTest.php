@@ -32,6 +32,9 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
         // Act
         $sut->persist($configuration);
 
+        $em->flush();
+        $em->clear();
+
         // Assert
         /** @var TransportConfiguration $result */
         $result = $em->find(TransportConfiguration::class, 'test-dummy');
@@ -39,7 +42,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
         self::assertEquals('Hello World', $result->getTitle());
 
         // Cleanup
-        $em->remove($configuration);
+        $em->remove($result);
         $em->flush();
     }
 
@@ -68,6 +71,46 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
         // Cleanup
         $em->remove($result);
         $em->flush();
+    }
+
+    public function testRemoveByKey(): void
+    {
+        // Arrange
+        self::bootKernel();
+        $container = static::getContainer();
+
+        $configuration = $this->newMinimalTransportConfiguration();
+
+        $em = $container->get(EntityManagerInterface::class);
+        $em->persist($configuration);
+        $em->flush();
+        $em->clear();
+
+        $sut = new DoctrineTransportConfigurationRepository($em);
+
+        // Act
+        $sut->removeByKey('test-dummy');
+        $em->flush();
+
+        // Assert
+        self::assertNull($sut->getByKey('test-dummy'));
+    }
+
+    public function testRemoveByKeyDosNotFailIfNotFound(): void
+    {
+        // Arrange
+        self::bootKernel();
+        $container = static::getContainer();
+        $em = $container->get(EntityManagerInterface::class);
+
+        $sut = new DoctrineTransportConfigurationRepository($em);
+
+        // Act
+        $sut->removeByKey('test-dummy');
+        $em->flush();
+
+        // Assert
+        self::assertNull($sut->getByKey('test-dummy'));
     }
 
     private function newMinimalTransportConfiguration(): TransportConfiguration

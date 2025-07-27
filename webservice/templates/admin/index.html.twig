@@ -18,18 +18,10 @@
 
 		ToDo: Browse Add /Search?
 
-		<h2 class="mt-5">Transports</h2>
-
-		ToDo: List of Transports with status light, number of channels
-
-		<div class="d-flex flex-column gap-2 mt-4">
-			<div class="card card-body">
-				<h3>IntelPage Pager</h3>
-			</div>
-			<div class="card card-body">
-				<h3>Ntify</h3>
-			</div>
-		</div>
+		{% if is_granted('ROLE_TRANSPORT_CONFIGURATION_VIEWER') %}
+			<h2 class="mt-5">Transports</h2>
+			{{ component('TransportList') }}
+		{% endif %}
 
 		<h2 class="mt-5">Benutzer</h2>
 		ToDo: link to manage
