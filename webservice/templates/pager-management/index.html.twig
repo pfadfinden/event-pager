@@ -114,18 +114,6 @@
 								{% endif %}
 
 							</a>
-
-							{% if is_granted('ROLE_MANAGE_PAGER_STATUS') %}
-								{% if p.isActive %}
-									<!-- TODO make button do something -->
-									<button type="button" class="btn btn-outline-danger btn-sm">
-										<twig:ux:icon name="bi:pause" height="16" width="16" aria-hidden="true" class="bi"/>
-									</button>
-								{% else %}
-									<button type="button" class="btn btn-outline-success btn-sm">
-										<twig:ux:icon name="bi:play" height="16" width="16" aria-hidden="true" class="bi"/></button>
-								{% endif %}
-							{% endif %}
 						</td>
 					</tr>
 				{% endfor %}

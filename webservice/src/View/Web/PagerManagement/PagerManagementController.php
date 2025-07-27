@@ -23,8 +23,6 @@ final class PagerManagementController extends AbstractController
     {
         $pager = $this->queryBus->get(AllPager::withoutFilter());
 
-        // $this->denyAccessUnlessGranted('ROLE_MANAGE_PAGER_CONFIGURATION', null, 'User tried to access a page without having ROLE_MANAGE_PAGER_CONFIGURATION');
-
         return $this->render('pager-management/index.html.twig', ['pager' => $pager]);
     }
 }
