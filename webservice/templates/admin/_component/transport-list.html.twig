@@ -1,0 +1,33 @@
+<div{{ attributes }} data-poll="delay(180000)|$render" class="gap-3">
+    {% for transport in computed.transports %}
+
+    <div class="d-flex flex-column gap-2 mt-4">
+        <div class="card">
+            <div class="card-body d-flex flex-row">
+                <div class="me-3 pt-1">
+                    <div class="dot fs-3 {{ transport.enabled ? 'text-success' : 'text-secondary' }}"></div>
+                </div>
+                <div class="w-100">
+                    <h3>{{ transport.title }}</h3>
+
+                    <dl class="d-flex gap-2 mb-0 justify-content-start text-break flex-wrap">
+                        <dt class="text-muted">Key</dt>
+                        <dd clasS="">{{ transport.key }}</dd>
+
+                        <dt class="text-muted">Type</dt>
+                        <dd>{{ transport.transport|split('\\')|last }}</dd>
+                    </dl>
+
+                </div>
+            </div>
+            {% if is_granted('ROLE_TRANSPORT_ADMINISTRATOR') %}
+                <div class="card-footer p-0 bg-body-tertiary">
+                    <button class="rounded-start-0 rounded-top-0 d-block ms-auto btn btn-sm btn-primary">
+                        <twig:ux:icon name="bi:pencil" height="16" width="16" aria-hidden="true"
+                                      class="bi me-2"/>{% trans %}Edit{% endtrans %}</button>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
