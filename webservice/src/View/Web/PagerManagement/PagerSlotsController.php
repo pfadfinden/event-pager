@@ -26,6 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use function Symfony\Component\Translation\t;
 
 #[Route('/pager-management/pager/{id}/slots/{index}', name: 'web_pager_management_pager_slot')]
 #[IsGranted('ROLE_MANAGE_PAGER_CONFIGURATION')]
@@ -61,7 +62,7 @@ class PagerSlotsController extends AbstractController
             switch ($form->get('assignment_type')->getData()) {
                 case 0:
                     $this->commandBus->do(new ClearSlot($pager->id, $index));
-                    $this->addFlash('success', 'Slot cleared.');
+                    $this->addFlash('success', t('Slot cleared.'));
                     break;
                 case 1:
                     $this->commandBus->do(new AssignIndividualCapCode(
@@ -72,14 +73,14 @@ class PagerSlotsController extends AbstractController
                         (bool) $form->get('audible')->getData(),
                         (bool) $form->get('vibration')->getData(),
                     ));
-                    $this->addFlash('success', 'Individual Cap Code assigned.');
+                    $this->addFlash('success', t('Individual Cap Code assigned.'));
                     break;
                 case 2:
                     $this->commandBus->do(new AssignChannel(
                         /** @phpstan-ignore-next-line cast.string too strict, no workaround */
                         $pager->id, $index, (string) $form->get('channel_id')->getViewData()
                     ));
-                    $this->addFlash('success', 'Channel assigned.');
+                    $this->addFlash('success', t('Channel assigned.'));
                     break;
             }
 

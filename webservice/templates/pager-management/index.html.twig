@@ -95,10 +95,10 @@
 						<td>{{ p.label }}</td>
 						<td>
 							{% if p.isActive %}
-								<span class="d-inline rounded-pill ps-2 pe-1 text-bg-success fs-6 fw-semibold text-uppercase">{% trans %}Active{% endtrans %}
+								<span class="d-inline rounded-pill text-nowrap ps-2 pe-1 text-bg-success fs-6 fw-semibold text-uppercase">{% trans %}Active{% endtrans %}
 								<twig:ux:icon name="bi:play-circle" height="16" width="16" aria-hidden="true" class="bi ms-1"/></span>
 							{% else %}
-								<div class="d-inline rounded-pill ps-2 pe-1 text-bg-danger fs-6 fw-semibold text-uppercase">{% trans %}Inactive{% endtrans %}
+								<div class="d-inline rounded-pill text-nowrap ps-2 pe-1 text-bg-danger fs-6 fw-semibold text-uppercase">{% trans %}Inactive{% endtrans %}
 									<twig:ux:icon name="bi:pause-circle" height="16" width="16" aria-hidden="true" class="bi ms-1"/></div>
 							{% endif %}
 						</td>

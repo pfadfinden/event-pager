@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
+use function Symfony\Component\Translation\t;
 
 #[Route('/pager-management/pager/{id}', name: 'web_pager_management_pager_details')]
 #[IsGranted('ROLE_VIEW_PAGER')]
@@ -40,9 +41,9 @@ class PagerDetailsController extends AbstractController
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             $this->denyAccessUnlessGranted('ROLE_MANAGE_PAGER_CONFIGURATION', null, 'User tried to access a page without having ROLE_MANAGE_PAGER_CONFIGURATION');
             $this->commandBus->do(new RemovePager($pager->id));
-            $this->addFlash('success', 'Channel deleted.');
+            $this->addFlash('success', t('Pager deleted.'));
 
-            return $this->redirectToRoute('web_pager_management_channel');
+            return $this->redirectToRoute('web_pager_management_pager');
         }
 
         $capAssignments = $this->queryBus->get(CapAssignments::forPagerWithId($pagerId->toString()));

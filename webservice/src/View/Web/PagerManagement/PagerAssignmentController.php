@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
+use function Symfony\Component\Translation\t;
 
 #[Route('/pager-management/pager/{id}/assignment', name: 'web_pager_management_pager_assignment')]
 #[IsGranted('ROLE_MANAGE_PAGER_STATUS')]
@@ -54,7 +55,7 @@ final class PagerAssignmentController extends AbstractController
             /** @phpstan-ignore-next-line method.notFound */
             if ($form->get('changeAndActivate')->isClicked()) {
                 $this->commandBus->do(new ActivatePager($pager->id));
-                $this->addFlash('success', 'Slot cleared.');
+                $this->addFlash('success', t('Status & Assignment saved.'));
             }
 
             // TODO other options

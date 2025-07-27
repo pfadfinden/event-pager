@@ -9,7 +9,7 @@ use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\IntelPage\Command\AddChannel;
 use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\Channel;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Core\IntelPage\Port\ChannelRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Ulid;
 final readonly class AddChannelHandler
 {
     public function __construct(
-        private EntityManagerInterface $repository,
+        private ChannelRepository $repository,
         private UnitOfWork $uow,
     ) {
     }

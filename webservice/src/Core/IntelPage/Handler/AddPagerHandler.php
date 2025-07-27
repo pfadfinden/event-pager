@@ -8,7 +8,7 @@ use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\IntelPage\Command\AddPager;
 use App\Core\IntelPage\Model\Pager;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Core\IntelPage\Port\PagerRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Uid\Ulid;
 final readonly class AddPagerHandler
 {
     public function __construct(
-        private EntityManagerInterface $repository,
+        private PagerRepository $repository,
         private UnitOfWork $uow,
     ) {
     }
