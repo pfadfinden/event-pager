@@ -11,8 +11,9 @@ final class PagerInChannel
         public string $label,
         public int $number,
         public int $slot,
-        // TODO isActive
-        // TODO carriedBy
+        public bool $isActive = false,
+        public ?string $carriedById = 'Jane Doe',
+        public ?string $carriedByName = 'Jane Doe',
     ) {
     }
 }

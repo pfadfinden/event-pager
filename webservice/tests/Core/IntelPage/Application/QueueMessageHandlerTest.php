@@ -6,8 +6,8 @@ namespace App\Tests\Core\IntelPage\Application;
 
 use App\Core\Contracts\Bus\EventBus;
 use App\Core\Contracts\Persistence\UnitOfWork;
-use App\Core\IntelPage\Application\QueueMessageHandler;
 use App\Core\IntelPage\Command\QueueMessage;
+use App\Core\IntelPage\Handler\QueueMessageHandler;
 use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\IntelPage\Port\PagerMessageRepository;
