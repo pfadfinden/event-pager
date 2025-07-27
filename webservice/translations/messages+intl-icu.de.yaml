@@ -5,7 +5,7 @@ Welcome: 'Herzlich Willkommen'
 Home: Startseite
 Send: Senden
 Inbox: Postfach
-'Pager Administration': 'Pagerverwaltung'
+'Pager Administration': Pagerverwaltung
 Administration: Administration
 Light: Hell
 Dark: Dunkel
@@ -13,3 +13,12 @@ Auto: Auto
 Settings: Einstellungen
 Account: Benutzerkonto
 'Sign out': Abmelden
+'Event Pager - Login': 'Event Pager - Anmeldung'
+'Event Pager System': 'Event Pager System'
+'Pager Icon': 'Pager Icon'
+'Log in with SSO': 'Anmeldung per SSO'
+or: oder
+Username: Benutzername
+Password: Passwort
+'Remember me': 'Anmeldung merken'
+'Log in with local account': 'Mit lokalem Konto anmelden'
