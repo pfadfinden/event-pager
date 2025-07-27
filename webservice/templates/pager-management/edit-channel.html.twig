@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Pager Administration{% endtrans %} - {% trans %}Edit Channel{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Edit Channel{% endtrans %}</h1>
+
+		<div class="d-flex gap-3 mt-4">
+
+			{{ form(form) }}
+
+		</div>
+	</main>
+{% endblock %}

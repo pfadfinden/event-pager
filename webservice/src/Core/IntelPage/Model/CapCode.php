@@ -13,9 +13,9 @@ readonly class CapCode
     #[ORM\Column]
     private int $code;
 
-    private const int CAP_CODE_MAX = 9999;
+    public const int CAP_CODE_MAX = 9999;
 
-    private const int CAP_CODE_MIN = 1;
+    public const int CAP_CODE_MIN = 1;
 
     public function isInBounds(int $code): bool
     {

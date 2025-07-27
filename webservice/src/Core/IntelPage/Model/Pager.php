@@ -53,7 +53,7 @@ class Pager
         mappedBy: 'pager',
         cascade: ['persist', 'remove'],
         orphanRemoval: true,
-        indexBy: 'slot'
+        indexBy: 'slot.slot'
     )]
     private Collection $slots;
 
@@ -130,10 +130,11 @@ class Pager
 
     public function clearSlot(Slot $slot): static
     {
-        // NOTE: Should probably inform the caller, that, if the slot is already taken,
-        //       the previous assignment is now overwritten (or provide an option not
-        //       to do that)
-        $this->slots->remove($slot->getSlot());
+        $element = $this->getCapAssignment($slot);
+
+        if ($element instanceof AbstractCapAssignment) {
+            $this->slots->removeElement($element);
+        }
 
         return $this;
     }
