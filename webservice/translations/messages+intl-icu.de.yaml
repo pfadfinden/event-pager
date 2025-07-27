@@ -5,7 +5,7 @@ Welcome: 'Herzlich Willkommen'
 Home: Startseite
 Send: Senden
 Inbox: Postfach
-'Pager Administration': 'Pagerverwaltung'
+'Pager Administration': Pagerverwaltung
 Administration: Administration
 Light: Hell
 Dark: Dunkel
@@ -13,3 +13,18 @@ Auto: Auto
 Settings: Einstellungen
 Account: Benutzerkonto
 'Sign out': Abmelden
+Pager: Pager
+Channel: Kanal
+Add: Hinzufügen
+Label: Bezeichnung
+Active: Aktiv
+Inactive: Inaktiv
+Search: __Search
+'List Pagination': 'Listen Paginierung'
+Previous: Vorherige
+Next: Nächste
+'Select all': 'Alle auswählen'
+Assignment: Zuweisung
+Assignments: Zuweisungen
+Channels: Kanäle
+Actions: Aktionen

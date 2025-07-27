@@ -6,7 +6,6 @@ namespace App\View\Web\PagerManagement;
 
 use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
-use App\Core\IntelPage\Command\AddChannel;
 use App\Core\IntelPage\Command\UpdateChannel;
 use App\Core\IntelPage\Query\Channel;
 use App\View\Web\PagerManagement\Form\ChannelFormType;
@@ -16,9 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
 #[Route('/pager-management/channel/{id}/edit', name: 'web_pager_management_channel_edit')]
+#[IsGranted('ROLE_MANAGE_PAGER_CONFIGURATION')]
 final class EditChannelController extends AbstractController
 {
     public function __construct(private readonly CommandBus $commandBus, private readonly QueryBus $queryBus)

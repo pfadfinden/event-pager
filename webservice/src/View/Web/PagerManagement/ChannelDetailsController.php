@@ -15,12 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
 #[Route('/pager-management/channel/{id}', name: 'web_pager_management_channel_details')]
+#[IsGranted('ROLE_VIEW_PAGER')]
 class ChannelDetailsController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus, private readonly COmmandBus $commandBus)
+    public function __construct(private readonly QueryBus $queryBus, private readonly CommandBus $commandBus)
     {
     }
 
@@ -36,11 +38,12 @@ class ChannelDetailsController extends AbstractController
         $deleteForm = $this->createFormBuilder()->add('delete', SubmitType::class)->getForm();
         $deleteForm->handleRequest($request);
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
-            // TODO $this->commandBus->do(new RemoveChannel($channel->id));
-            $this->addFlash('success', 'Channel deleted.');
+            $this->denyAccessUnlessGranted('ROLE_MANAGE_PAGER_CONFIGURATION', null, 'User tried to access a page without having ROLE_MANAGE_PAGER_CONFIGURATION');
+            $this->commandBus->do(new RemoveChannel($channel->id));
+            $this->addFlash('success', 'Channel deleted'); // TODO i18n
+
             return $this->redirectToRoute('web_pager_management_channel');
         }
-
 
         $pager = $this->queryBus->get(AllPagerWithChannel::withId($channelId->toString()));
 

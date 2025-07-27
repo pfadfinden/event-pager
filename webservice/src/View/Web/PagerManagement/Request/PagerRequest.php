@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 use const PHP_INT_MAX;
 
-final class AddPagerRequest
+final class PagerRequest
 {
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
@@ -18,4 +18,7 @@ final class AddPagerRequest
     #[Assert\NotBlank]
     #[Assert\Range(min: 0, max: PHP_INT_MAX)]
     public int $number;
+
+    #[NoSuspiciousCharacters(restrictionLevel: NoSuspiciousCharacters::RESTRICTION_LEVEL_ASCII)]
+    public string $comment;
 }

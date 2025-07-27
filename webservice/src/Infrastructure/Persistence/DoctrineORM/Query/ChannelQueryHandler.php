@@ -15,9 +15,6 @@ final readonly class ChannelQueryHandler
     {
     }
 
-    /**
-     * @return iterable<\App\Core\IntelPage\ReadModel\Channel>
-     */
     public function __invoke(Channel $query): \App\Core\IntelPage\ReadModel\Channel
     {
         $dql = sprintf(
@@ -29,6 +26,7 @@ final readonly class ChannelQueryHandler
         $doctrineQuery = $this->em->createQuery($dql);
         $doctrineQuery->setParameters(['channelId' => Ulid::fromString($query->id)->toRfc4122()]);
 
+        // @phpstan-ignore return.type
         return $doctrineQuery->getSingleResult();
     }
 }

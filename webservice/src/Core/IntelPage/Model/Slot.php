@@ -22,14 +22,14 @@ readonly class Slot
         return ($slot >= self::SLOT_MIN) && ($slot <= self::SLOT_MAX);
     }
 
-    public static function fromString(string $cap): self
+    public static function fromString(string $slot): self
     {
-        return new self((int) $cap);
+        return new self((int) $slot);
     }
 
-    public static function fromInt(int $cap): self
+    public static function fromInt(int $slot): self
     {
-        return new self($cap);
+        return new self($slot);
     }
 
     public function __construct(int $slot)

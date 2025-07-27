@@ -11,7 +11,8 @@ final class Pager
         public string $label,
         public int $number,
         public bool $isActive = false,
-        public string $carriedBy = 'Jane Doe',
+        public ?string $carriedById = 'Jane Doe',
+        public ?string $carriedByName = 'Jane Doe',
         // TODO channel
     ) {
     }
