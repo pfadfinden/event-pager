@@ -12,30 +12,38 @@
 					{% trans %}Home{% endtrans %}
 				</a>
 			</li>
+			{% if is_granted('ROLE_ACCESS_WEB_SEND') %}
 			<li>
 				<a href="/send" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_sendmessage_sendmessage__invoke' %}active{% endif %}">
 					<twig:ux:icon name="bi:chat-quote" height="16" width="16" aria-hidden="true" class="bi me-2" />
 					{% trans %}Send{% endtrans %}
 				</a>
 			</li>
+			{% endif %}
+			{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_RECEIVED') %}
 			<li>
 				<a href="/inbox" class="nav-link">
 					<twig:ux:icon name="bi:envelope" height="16" width="16" aria-hidden="true" class="bi me-2" />
 					{% trans %}Inbox{% endtrans %}
 				</a>
 			</li>
+			{% endif %}
+			{% if is_granted('ROLE_VIEW_PAGER') %}
 			<li>
 				<a href="/pager-management" class="nav-link">
 					<twig:ux:icon name="bi:table" height="16" width="16" aria-hidden="true" class="bi me-2" />
 					{% trans %}Pager Administration{% endtrans %}
 				</a>
 			</li>
+			{% endif %}
+			{% if is_granted('ROLE_ACCESS_WEB_ADMIN') %}
 			<li>
 				<a href="/admin" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_admin_adminhome__invoke' %}active{% endif %}">
 					<twig:ux:icon name="bi:tools" height="16" width="16" aria-hidden="true" class="bi me-2" />
 					{% trans %}Administration{% endtrans %}
 				</a>
 			</li>
+			{% endif %}
 		</ul>
 
 		<div data-controller="dark-mode" data-action="dark-mode:change->dark-mode#updateColorScheme">
