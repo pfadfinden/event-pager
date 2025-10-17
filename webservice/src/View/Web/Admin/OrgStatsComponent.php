@@ -6,10 +6,12 @@ namespace App\View\Web\Admin;
 
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\MessageRecipient\Query\CountOfMessageRecipients;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('OrgStats', template: 'admin/_component/org-stats.html.twig')]
+#[IsGranted('ROLE_VIEW_RECIPIENTS')]
 class OrgStatsComponent
 {
     use DefaultActionTrait;
