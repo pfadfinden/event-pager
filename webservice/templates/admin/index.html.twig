@@ -21,17 +21,7 @@
 
 		{% if is_granted('ROLE_TRANSPORT_CONFIGURATION_VIEWER') %}
 			<h2 class="mt-5">Transports</h2>
-
-			ToDo: List of Transports with status light, number of channels
-
-			<div class="d-flex flex-column gap-2 mt-4">
-				<div class="card card-body">
-					<h3>IntelPage Pager</h3>
-				</div>
-				<div class="card card-body">
-					<h3>Ntify</h3>
-				</div>
-			</div>
+			{{ component('TransportList') }}
 		{% endif %}
 
 		{% if is_granted('ROLE_USERMANAGEMENT_VIEW') %}
