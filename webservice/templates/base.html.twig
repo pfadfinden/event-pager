@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html data-bs-theme="light">
+<html data-bs-theme="light" lang="{{ app.request.locale }}">
 	<head>
 		<meta charset="UTF-8">
 		<title>{% block title %}Welcome!{% endblock %}</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-		
+
+		<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="theme-color" content="#ffffff">
+
 		{% block stylesheets %}
 		{% endblock %}
 
