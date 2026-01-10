@@ -44,4 +44,30 @@ final class RemoveChannelHandlerTest extends TestCase
         // ACT
         $sut->__invoke($cmd);
     }
+
+    public function testDoesNotThrowWhenChannelNotFound(): void
+    {
+        $id = '01JT62N5PE9HBQTEZ1PPE6CJ4F';
+        $ulid = Ulid::fromString($id);
+
+        $channelRepositoryMock = self::createMock(ChannelRepository::class);
+        $channelRepositoryMock->expects(self::once())->method('getById')
+            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->willReturn(null);
+        $channelRepositoryMock->expects(self::never())->method('remove');
+
+        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock->expects(self::never())->method('commit');
+
+        // sut = Subject Under Test i.e. the class we are testing
+        $sut = new RemoveChannelHandler($channelRepositoryMock, $unitOfWorkMock);
+
+        $cmd = new RemoveChannel($id);
+
+        // ACT - should not throw any exception
+        $sut->__invoke($cmd);
+
+        // ASSERT - If we reach here, the test passes (no exception was thrown)
+        // The mock expectations above verify that remove and commit are never called
+    }
 }

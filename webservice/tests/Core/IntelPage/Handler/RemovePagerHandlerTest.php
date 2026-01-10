@@ -43,4 +43,30 @@ final class RemovePagerHandlerTest extends TestCase
         // ACT
         $sut->__invoke($cmd);
     }
+
+    public function testDoesNotThrowWhenPagerNotFound(): void
+    {
+        $id = '01JT62N5PE9HBQTEZ1PPE6CJ4F';
+        $ulid = Ulid::fromString($id);
+
+        $pagerRepositoryMock = self::createMock(PagerRepository::class);
+        $pagerRepositoryMock->expects(self::once())->method('getById')
+            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->willReturn(null);
+        $pagerRepositoryMock->expects(self::never())->method('remove');
+
+        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock->expects(self::never())->method('commit');
+
+        // sut = Subject Under Test i.e. the class we are testing
+        $sut = new RemovePagerHandler($pagerRepositoryMock, $unitOfWorkMock);
+
+        $cmd = new RemovePager($id);
+
+        // ACT - should not throw any exception
+        $sut->__invoke($cmd);
+
+        // ASSERT - If we reach here, the test passes (no exception was thrown)
+        // The mock expectations above verify that remove and commit are never called
+    }
 }

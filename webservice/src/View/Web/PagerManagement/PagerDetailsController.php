@@ -9,6 +9,7 @@ use App\Core\Contracts\Bus\QueryBus;
 use App\Core\IntelPage\Command\RemovePager;
 use App\Core\IntelPage\Query\CapAssignments;
 use App\Core\IntelPage\Query\Pager;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,17 +34,22 @@ class PagerDetailsController extends AbstractController
 
         $pager = $this->queryBus->get(Pager::withId($pagerId->toString()));
         if (null === $pager) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('Pager not found');
         }
 
         $deleteForm = $this->createFormBuilder()->add('delete', SubmitType::class)->getForm();
         $deleteForm->handleRequest($request);
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             $this->denyAccessUnlessGranted('ROLE_MANAGE_PAGER_CONFIGURATION', null, 'User tried to access a page without having ROLE_MANAGE_PAGER_CONFIGURATION');
-            $this->commandBus->do(new RemovePager($pager->id));
-            $this->addFlash('success', t('Pager deleted.'));
 
-            return $this->redirectToRoute('web_pager_management_pager');
+            try {
+                $this->commandBus->do(new RemovePager($pager->id));
+                $this->addFlash('success', t('Pager deleted.'));
+
+                return $this->redirectToRoute('web_pager_management_pager');
+            } catch (RuntimeException $e) {
+                $this->addFlash('error', t('Failed to delete pager: {message}', ['message' => $e->getMessage()]));
+            }
         }
 
         $capAssignments = $this->queryBus->get(CapAssignments::forPagerWithId($pagerId->toString()));

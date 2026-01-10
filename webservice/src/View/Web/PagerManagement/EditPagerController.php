@@ -8,17 +8,17 @@ use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\IntelPage\Command\UpdatePager;
 use App\Core\IntelPage\Query\Pager;
+use App\View\Web\PagerManagement\Form\PagerFormType;
 use App\View\Web\PagerManagement\Request\PagerRequest;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
+use function Symfony\Component\Translation\t;
 
 #[Route('/pager-management/pager/{id}/edit', name: 'web_pager_management_pager_edit')]
 #[IsGranted('ROLE_MANAGE_PAGER_CONFIGURATION')]
@@ -34,7 +34,7 @@ final class EditPagerController extends AbstractController
 
         $pager = $this->queryBus->get(Pager::withId($pagerId->toString()));
         if (null === $pager) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('Pager not found');
         }
 
         $pagerRequest = new PagerRequest();
@@ -42,21 +42,22 @@ final class EditPagerController extends AbstractController
         $pagerRequest->number = $pager->number;
         $pagerRequest->comment = $pager->comment;
 
-        $form = $this->createFormBuilder($pagerRequest)
-            ->add('number', NumberType::class)
-            ->add('label', TextType::class)
-            ->add('comment', TextType::class, ['required' => false])
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-            ->getForm();
+        $form = $this->createForm(PagerFormType::class, $pagerRequest);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var PagerRequest $pagerRequest */
             $pagerRequest = $form->getData();
 
-            $this->commandBus->do(new UpdatePager($pagerId->toString(), $pagerRequest->label, $pagerRequest->number, $pagerRequest->comment, $pager->carriedById));
+            try {
+                $this->commandBus->do(new UpdatePager($pagerId->toString(), $pagerRequest->label, $pagerRequest->number, $pagerRequest->comment, $pager->carriedById));
 
-            return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
+                $this->addFlash('success', t('Pager updated successfully'));
+
+                return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
+            } catch (RuntimeException $e) {
+                $this->addFlash('error', t('Failed to update pager: {message}', ['message' => $e->getMessage()]));
+            }
         }
 
         return $this->render('pager-management/edit-pager.html.twig', [

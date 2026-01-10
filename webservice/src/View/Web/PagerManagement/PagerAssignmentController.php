@@ -10,6 +10,7 @@ use App\Core\IntelPage\Command\ActivatePager;
 use App\Core\IntelPage\Query\Pager;
 use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -35,7 +36,7 @@ final class PagerAssignmentController extends AbstractController
 
         $pager = $this->queryBus->get(Pager::withId($pagerId->toString()));
         if (null === $pager) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('Pager not found');
         }
 
         $assignableToRecipients = iterator_to_array($this->queryBus->get(ListOfMessageRecipients::onlyPeople()));
@@ -52,15 +53,19 @@ final class PagerAssignmentController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @phpstan-ignore-next-line method.notFound */
-            if ($form->get('changeAndActivate')->isClicked()) {
-                $this->commandBus->do(new ActivatePager($pager->id));
-                $this->addFlash('success', t('Status & Assignment saved.'));
+            try {
+                /** @phpstan-ignore-next-line method.notFound */
+                if ($form->get('changeAndActivate')->isClicked()) {
+                    $this->commandBus->do(new ActivatePager($pager->id));
+                    $this->addFlash('success', t('Status & Assignment saved.'));
+                }
+
+                // TODO other options - implement changeOnly and changeAndDeactivate
+
+                return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
+            } catch (RuntimeException $e) {
+                $this->addFlash('error', t('Failed to update assignment: {message}', ['message' => $e->getMessage()]));
             }
-
-            // TODO other options
-
-            return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
         }
 
         return $this->render('pager-management/edit-assignment.html.twig', [

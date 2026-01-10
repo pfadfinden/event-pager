@@ -7,10 +7,10 @@ namespace App\Core\IntelPage\Handler;
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\IntelPage\Command\UpdateChannel;
+use App\Core\IntelPage\Exception\ChannelNotFound;
 use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\Channel;
 use App\Core\IntelPage\Port\ChannelRepository;
-use RuntimeException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
@@ -28,7 +28,7 @@ final readonly class UpdateChannelHandler
         $channel = $this->repository->getById(Ulid::fromString($cmd->id));
 
         if (!$channel instanceof Channel) {
-            throw new RuntimeException('Channel not found');
+            throw ChannelNotFound::withId($cmd->id);
         }
 
         $channel->setName($cmd->name);
