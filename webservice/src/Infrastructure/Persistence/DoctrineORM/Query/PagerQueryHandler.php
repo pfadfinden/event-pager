@@ -18,7 +18,7 @@ final readonly class PagerQueryHandler
     public function __invoke(Pager $query): \App\Core\IntelPage\ReadModel\Pager
     {
         $dql = sprintf(
-            'SELECT NEW %s(p.id, p.label, p.number, p.activated, r.id, r.name) FROM %s p LEFT JOIN p.carriedBy as r WHERE p.id = :pagerId',
+            'SELECT NEW %s(p.id, p.label, p.number, p.comment, p.activated, r.id, r.name) FROM %s p LEFT JOIN p.carriedBy as r WHERE p.id = :pagerId',
             \App\Core\IntelPage\ReadModel\Pager::class,
             \App\Core\IntelPage\Model\Pager::class
         );

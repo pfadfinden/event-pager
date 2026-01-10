@@ -36,6 +36,12 @@ class Pager
     private int $number;
 
     /**
+     * @var string human identifier describing pager use
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $comment;
+
+    /**
      * @var bool shows whether the pager is activated or not
      *
      * Deactivated pagers will be skipped when sending messages
@@ -158,6 +164,18 @@ class Pager
     public function setNumber(int $number): static
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment ?? '';
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

@@ -12,12 +12,22 @@ use App\Core\IntelPage\ReadModel\Pager;
  */
 final readonly class AllPager implements Query
 {
-    public static function withoutFilter(): self
+    public const DEFAULT_PAGE_LENGTH = 25;
+
+    public static function withoutFilter(?int $page = null, ?int $perPage = null): self
     {
-        return new self();
+        return new self(page: $page, perPage: $perPage);
     }
 
-    private function __construct()
+    public static function withTextSearch(string $textFilter, ?int $page = null, ?int $perPage = null): self
     {
+        return new self($textFilter, $page, $perPage);
+    }
+
+    private function __construct(
+        public ?string $textFilter = null,
+        public ?int $page = null,
+        public ?int $perPage = null,
+    ) {
     }
 }

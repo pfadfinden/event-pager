@@ -40,12 +40,12 @@ final class EditPagerController extends AbstractController
         $pagerRequest = new PagerRequest();
         $pagerRequest->label = $pager->label;
         $pagerRequest->number = $pager->number;
-        $pagerRequest->comment = '';
+        $pagerRequest->comment = $pager->comment;
 
         $form = $this->createFormBuilder($pagerRequest)
             ->add('number', NumberType::class)
             ->add('label', TextType::class)
-            ->add('comment', TextType::class)
+            ->add('comment', TextType::class, ['required' => false])
             ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
 
@@ -54,9 +54,8 @@ final class EditPagerController extends AbstractController
             /** @var PagerRequest $pagerRequest */
             $pagerRequest = $form->getData();
 
-            $this->commandBus->do(new UpdatePager($pagerId->toString(), $pagerRequest->label, $pagerRequest->number, $pager->carriedById));
+            $this->commandBus->do(new UpdatePager($pagerId->toString(), $pagerRequest->label, $pagerRequest->number, $pagerRequest->comment, $pager->carriedById));
 
-            // TODO sort editing cabailities correctly
             return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
         }
 

@@ -31,6 +31,7 @@ final readonly class UpdatePagerHandler
 
         $pager->setLabel($cmd->label);
         $pager->setNumber($cmd->number);
+        $pager->setComment($cmd->comment);
         // TODO $pager->setCarriedBy(Ulid::fromString($cmd->carriedBy));
 
         $this->repository->persist($pager);

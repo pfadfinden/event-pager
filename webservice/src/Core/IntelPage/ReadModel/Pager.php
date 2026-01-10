@@ -10,9 +10,10 @@ final class Pager
         public string $id,
         public string $label,
         public int $number,
+        public ?string $comment = null,
         public bool $isActive = false,
-        public ?string $carriedById = 'Jane Doe',
-        public ?string $carriedByName = 'Jane Doe',
+        public ?string $carriedById = null,
+        public ?string $carriedByName = null,
         // TODO channel
     ) {
     }

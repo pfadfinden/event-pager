@@ -19,7 +19,7 @@
 				<dt>{% trans %}Label{% endtrans %}</dt>
 				<dd>{{ pager.label }}</dd>
 				<dt>{% trans %}Comment{% endtrans %}</dt>
-				<dd>-</dd>
+				<dd>{{ pager.comment ?? '-' }}</dd>
 			</dl>
 			{% if is_granted('ROLE_MANAGE_PAGER_CONFIGURATION') %}
 			<a href="{{ path('web_pager_management_pager_edit', {id: pager.id} ) }}" class="btn btn-outline-primary btn-sm">

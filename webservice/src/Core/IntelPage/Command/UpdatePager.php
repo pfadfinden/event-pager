@@ -10,7 +10,8 @@ final readonly class UpdatePager
         public string $id,
         public string $label,
         public int $number,
-        public string $carriedBy,
+        public ?string $comment,
+        public ?string $carriedBy,
     ) {
     }
 }

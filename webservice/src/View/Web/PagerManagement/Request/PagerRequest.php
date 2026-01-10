@@ -20,5 +20,5 @@ final class PagerRequest
     public int $number;
 
     #[NoSuspiciousCharacters(restrictionLevel: NoSuspiciousCharacters::RESTRICTION_LEVEL_ASCII)]
-    public string $comment;
+    public ?string $comment;
 }

@@ -1,0 +1,100 @@
+<div{{ attributes }} data-poll="delay(180000)|$render">
+    <div class="d-flex gap-3 mb-3 mt-3">
+        <div class="btn-group">
+            <a href="{{ path('web_pager_management_pager') }}" class="btn btn-primary" title="{{ 'Pager'|trans}}">
+                <twig:ux:icon name="bi:tablet-landscape-fill" height="16" width="16" aria-hidden="true" class="bi"/>
+            </a>
+            <a href="{{ path('web_pager_management_channel') }}" class="btn active btn-primary" title="{{ 'Channel'|trans}}">
+                <twig:ux:icon name="bi:broadcast" height="16" width="16" aria-hidden="true" class="bi"/>
+            </a>
+        </div>
+        {% if is_granted('ROLE_MANAGE_PAGER_CONFIGURATION') %}
+            <div>
+                <a href="{{ path('web_pager_management_channel_add') }}" class="btn btn-secondary" title="{{ 'Add'|trans }}">
+                    <twig:ux:icon name="bi:plus" height="16" width="16" aria-hidden="true" class="bi"/>
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="input-group flex-grow-1">
+				<span class="input-group-text" id="basic-addon2">
+					<twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
+				</span>
+            <input name="q" data-model="q" type="search" class="form-control" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}" aria-describedby="basic-addon2">
+
+        </div>
+
+        <nav aria-label="{{ 'List Pagination'|trans }}">
+            <ul class="pagination mb-0">
+                <li class="page-item">
+                    <button class="page-link {% if page <= 1 %} disabled{% endif %}"
+                            data-model="page"
+                            data-value="{{ page - 1 }}"
+                            data-action="live#update" aria-label="{{ 'Previous'|trans }}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                <li class="page-item active">
+                    <button class="page-link"
+                            data-model="page"
+                            data-value="{{ page }}"
+                            data-action="live#update">{{ page }}</button>
+                </li>
+                <li class="page-item">
+                    <button class="page-link {% if page >= computed.maxPages %} disabled{% endif %}" data-model="page"
+                            data-value="{{ page + 1 }}"
+                            data-action="live#update" aria-label="{{ 'Next'|trans }}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="input-group flex-shrink-1 w-25">
+            <select data-model="perPage" class="form-select" aria-label="{{ 'Number of channel per page' | trans }}">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col"><input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="{{ 'Select all'|trans }}"/></th>
+                <th scope="col">{% trans %}Name{% endtrans %}</th>
+                <th scope="col">{% trans %}Cap Code{% endtrans %}</th>
+                <th scope="col">{% trans %}Audible{% endtrans %}</th>
+                <th scope="col">{% trans %}Vibration{% endtrans %}</th>
+                <th scope="col">{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+            {% for c in computed.channel %}
+                <tr>
+                    <th>
+                        <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value="" aria-label="..."/></th>
+                    <th scope="row">{{ c.name }}</th>
+                    <td>{{ c.capCode }}</td>
+                    <td>{{ c.audible ? 'Yes' : 'No' }}</td>
+                    <td>{{  c.vibration ? 'Yes' : 'No' }}</td>
+                    <td><!-- TODO button title -->
+                        <a href="{{ path('web_pager_management_channel_details', {id: c.id} ) }}" class="btn btn-outline-primary btn-sm">
+                            <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
+                        </a>
+                        {% if is_granted('ROLE_MANAGE_PAGER_CONFIGURATION') %}
+                            <a href="{{ path('web_pager_management_channel_edit', {id: c.id} ) }}" class="btn btn-outline-primary btn-sm">
+                                <twig:ux:icon name="bi:pencil" height="16" width="16" aria-hidden="true" class="bi"/>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
