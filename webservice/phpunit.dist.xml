@@ -3,16 +3,18 @@
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
          colors="true"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         failOnWarning="true"
          bootstrap="tests/bootstrap.php"
-         cacheDirectory="var/phpunit"
-         displayDetailsOnTestsThatTriggerDeprecations="true"
+         cacheDirectory=".phpunit.cache"
 >
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
+        <server name="APP_SECRET" value="$ecretf0rt3st" />
         <server name="KERNEL_CLASS" value="App\Kernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
     </php>
@@ -23,10 +25,20 @@
         </testsuite>
     </testsuites>
 
-    <source>
+    <source ignoreSuppressionOfDeprecations="true"
+            ignoreIndirectDeprecations="true"
+            restrictNotices="true"
+            restrictWarnings="true"
+    >
         <include>
             <directory suffix=".php">src</directory>
         </include>
+
+        <deprecationTrigger>
+            <method>Doctrine\Deprecations\Deprecation::trigger</method>
+            <method>Doctrine\Deprecations\Deprecation::delegateTriggerToBackend</method>
+            <function>trigger_deprecation</function>
+        </deprecationTrigger>
     </source>
 
     <coverage>
@@ -38,4 +50,8 @@
     <logging>
         <testdoxText outputFile="dist/phpunit/testdox.txt" />
     </logging>
+
+    <extensions>
+        <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension" />
+    </extensions>
 </phpunit>
