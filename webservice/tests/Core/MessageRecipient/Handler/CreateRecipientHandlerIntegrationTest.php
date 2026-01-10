@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 #[CoversClass(CreateRecipientHandler::class)]
@@ -40,6 +41,7 @@ final class CreateRecipientHandlerIntegrationTest extends KernelTestCase
         $cmdBus = $container->get(CommandBus::class);
 
         $command = new CreateRecipient(
+            Ulid::generate(),
             'role',
             'Role A',
         );

@@ -14,6 +14,7 @@ use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Uid\Ulid;
 
 #[\PHPUnit\Framework\Attributes\Group('unit')]
 #[CoversClass(CreateRecipientHandler::class)]
@@ -24,6 +25,7 @@ final class CreateRecipientHandlerTest extends TestCase
     {
         // Arrange
         $command = new CreateRecipient(
+            Ulid::generate(),
             'role',
             'Role A',
         );
@@ -49,6 +51,7 @@ final class CreateRecipientHandlerTest extends TestCase
     {
         // Arrange
         $command = new CreateRecipient(
+            Ulid::generate(),
             'person',
             'Peter',
         );
@@ -74,6 +77,7 @@ final class CreateRecipientHandlerTest extends TestCase
     {
         // Arrange
         $command = new CreateRecipient(
+            Ulid::generate(),
             'group',
             'Group 1',
         );
@@ -100,6 +104,7 @@ final class CreateRecipientHandlerTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         // Arrange
         $command = new CreateRecipient(
+            Ulid::generate(),
             'test',
             'testRecepient',
         );

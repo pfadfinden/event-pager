@@ -23,7 +23,7 @@ abstract class AbstractMessageRecipient implements MessageRecipient
 {
     #[ORM\Column(type: UlidType::NAME)]
     #[ORM\Id]
-    public readonly Ulid $id;
+    private Ulid $id;
 
     #[ORM\Column]
     private string $name;

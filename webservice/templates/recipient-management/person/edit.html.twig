@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Recipient Management{% endtrans %} - {% trans %}Edit Person{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('web_recipient_management_overview') }}">{% trans %}Recipients{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="{{ path('web_recipient_management_person_details', {id: recipient.id}) }}">{{ recipient.name }}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{% trans %}Edit{% endtrans %}</li>
+			</ol>
+		</nav>
+
+		<h1>{% trans %}Edit Person{% endtrans %}</h1>
+
+		<div class="d-flex gap-3 mt-4">
+			{{ form(form) }}
+		</div>
+	</main>
+{% endblock %}

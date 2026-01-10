@@ -31,14 +31,33 @@ final readonly class ListOfMessageRecipientsQueryHandler
      else 'unknown'
    end) as type, r.name) FROM %s r", RecipientListEntry::class, Group::class, Role::class, Person::class, AbstractMessageRecipient::class);
         $parameters = [];
+        $whereClauses = [];
 
         if (null !== $query->filterType) {
-            $dql .= ' WHERE r INSTANCE OF :type';
+            $whereClauses[] = 'r INSTANCE OF :type';
             $parameters['type'] = $this->em->getClassMetadata($query->filterType);
         }
 
+        if (null !== $query->textFilter && '' !== $query->textFilter) {
+            $whereClauses[] = 'LOWER(r.name) LIKE LOWER(:textFilter)';
+            $parameters['textFilter'] = '%'.$query->textFilter.'%';
+        }
+
+        if ([] !== $whereClauses) {
+            $dql .= ' WHERE '.implode(' AND ', $whereClauses);
+        }
+
+        $dql .= ' ORDER BY r.name ASC';
+
         $doctrineQuery = $this->em->createQuery($dql);
         $doctrineQuery->setParameters($parameters);
+
+        if (null !== $query->page && null !== $query->perPage) {
+            $doctrineQuery->setFirstResult(($query->page - 1) * $query->perPage);
+            $doctrineQuery->setMaxResults($query->perPage);
+        } elseif (null !== $query->perPage) {
+            $doctrineQuery->setMaxResults($query->perPage);
+        }
 
         return $doctrineQuery->getResult();
     }
