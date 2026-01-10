@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Recipient Management{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Recipients{% endtrans %}</h1>
+
+		{{ component('RecipientList') }}
+
+	</main>
+{% endblock %}

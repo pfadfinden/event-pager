@@ -14,30 +14,42 @@ use App\Core\MessageRecipient\Model\Role;
  */
 final readonly class CountOfMessageRecipients implements Query
 {
-    public static function onlyGroups(): self
+    public static function onlyGroups(?string $textFilter = null): self
     {
-        return new self(Group::class);
+        return new self(Group::class, $textFilter);
     }
 
-    public static function onlyPeople(): self
+    public static function onlyPeople(?string $textFilter = null): self
     {
-        return new self(Person::class);
+        return new self(Person::class, $textFilter);
     }
 
-    public static function onlyRoles(): self
+    public static function onlyRoles(?string $textFilter = null): self
     {
-        return new self(Role::class);
+        return new self(Role::class, $textFilter);
     }
 
-    public static function all(): self
+    public static function all(?string $textFilter = null): self
     {
-        return new self(null);
+        return new self(null, $textFilter);
+    }
+
+    public static function withoutFilter(): self
+    {
+        return new self(null, null);
+    }
+
+    public static function withTextSearch(string $textFilter): self
+    {
+        return new self(null, $textFilter);
     }
 
     /**
      * @param class-string|null $filterType
      */
-    private function __construct(public ?string $filterType = null)
-    {
+    private function __construct(
+        public ?string $filterType = null,
+        public ?string $textFilter = null,
+    ) {
     }
 }

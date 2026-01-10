@@ -28,6 +28,14 @@
 				</a>
 			</li>
 			{% endif %}
+			{% if is_granted('ROLE_VIEW_RECIPIENTS') %}
+				<li>
+					<a href="/recipients" class="nav-link {% if app.request.attributes.get('_route') starts with 'web_recipient_management' %}active{% endif %}">
+						<twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi me-2" />
+						{% trans %}Recipients{% endtrans %}
+					</a>
+				</li>
+			{% endif %}
 			{% if is_granted('ROLE_VIEW_PAGER') %}
 			<li>
 				<a href="/pager-management" class="nav-link">

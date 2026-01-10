@@ -41,7 +41,7 @@ Actions: Aktionen
 'Add Pager': 'Pager hinzufügen'
 'Channel Assignment': Kanalzuweisung
 'Individual Assignment': 'Individuelle Zuweisung'
-Name: __Name
+Name: Name
 'Cap Code': 'Cap Code'
 Audible: Laut
 Vibration: Vibration
@@ -77,3 +77,67 @@ Edit: Bearbeiten
 'Number is required': 'Nummer ist erforderlich'
 'Number must be positive': 'Nummer muss positiv sein'
 'Label is required': 'Bezeichnung ist erforderlich'
+Recipients: Empfänger
+'Recipient Management': Empfängerverwaltung
+Person: Person
+Persons: Personen
+Group: Gruppe
+Groups: Gruppen
+Role: Rolle
+Roles: Rollen
+All: Alle
+'Add Person': 'Person hinzufügen'
+'Add Group': 'Gruppe hinzufügen'
+'Add Role': 'Rolle hinzufügen'
+'Edit Person': 'Person bearbeiten'
+'Edit Group': 'Gruppe bearbeiten'
+'Edit Role': 'Rolle bearbeiten'
+Members: Mitglieder
+'Add Member': 'Mitglied hinzufügen'
+'Remove Member': 'Mitglied entfernen'
+Remove: Entfernen
+'Assigned Person': 'Zugewiesene Person'
+'Assigned Roles': 'Zugewiesene Rollen'
+'Assign Person': 'Person zuweisen'
+'Bind Person': 'Person zuweisen'
+Bind: Zuweisen
+'Unbind Person': 'Zuweisung aufheben'
+'No members': 'Keine Mitglieder'
+'No person assigned': 'Keine Person zugewiesen'
+'No recipients found': 'Keine Empfänger gefunden'
+'Number of items per page': 'Anzahl Einträge pro Seite'
+'Member of Groups': 'Mitglied in Gruppen'
+Details: Details
+Type: Typ
+View: Anzeigen
+'Select recipient...': 'Empfänger auswählen...'
+'Select person...': 'Person auswählen...'
+'This action is destructive and cannot be undone.': 'Diese Aktion ist destruktiv und kann nicht rückgängig gemacht werden.'
+'This person is assigned to roles and cannot be deleted.': 'Diese Person ist Rollen zugewiesen und kann nicht gelöscht werden.'
+'Are you sure you want to remove this member?': 'Möchten Sie dieses Mitglied wirklich entfernen?'
+Delete: Löschen
+Save: Speichern
+'Person created successfully': 'Person erfolgreich erstellt'
+'Person updated successfully': 'Person erfolgreich aktualisiert'
+'Person deleted successfully': 'Person erfolgreich gelöscht'
+'Group created successfully': 'Gruppe erfolgreich erstellt'
+'Group updated successfully': 'Gruppe erfolgreich aktualisiert'
+'Group deleted successfully': 'Gruppe erfolgreich gelöscht'
+'Role created successfully': 'Rolle erfolgreich erstellt'
+'Role updated successfully': 'Rolle erfolgreich aktualisiert'
+'Role deleted successfully': 'Rolle erfolgreich gelöscht'
+'Member added successfully': 'Mitglied erfolgreich hinzugefügt'
+'Member removed successfully': 'Mitglied erfolgreich entfernt'
+'Person bound to role successfully': 'Person erfolgreich der Rolle zugewiesen'
+'Person unbound from role successfully': 'Zuweisung erfolgreich aufgehoben'
+'Failed to delete person: {message}': 'Fehler beim Löschen der Person: {message}'
+'Failed to delete group: {message}': 'Fehler beim Löschen der Gruppe: {message}'
+'Failed to delete role: {message}': 'Fehler beim Löschen der Rolle: {message}'
+'Failed to update person: {message}': 'Fehler beim Aktualisieren der Person: {message}'
+'Failed to update group: {message}': 'Fehler beim Aktualisieren der Gruppe: {message}'
+'Failed to update role: {message}': 'Fehler beim Aktualisieren der Rolle: {message}'
+'Failed to add member: {message}': 'Fehler beim Hinzufügen des Mitglieds: {message}'
+'Failed to remove member: {message}': 'Fehler beim Entfernen des Mitglieds: {message}'
+'Failed to bind person: {message}': 'Fehler beim Zuweisen der Person: {message}'
+'Failed to unbind person: {message}': 'Fehler beim Aufheben der Zuweisung: {message}'
+'Name is required': 'Name ist erforderlich'

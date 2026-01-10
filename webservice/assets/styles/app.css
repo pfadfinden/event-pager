@@ -5,3 +5,11 @@
     border-radius: 50%;
     display: inline-block;
 }
+
+.icon-plus-double {
+    white-space: nowrap;
+}
+
+.icon-plus-double svg~svg {
+    margin-inline-start: -0.4rem;
+}
