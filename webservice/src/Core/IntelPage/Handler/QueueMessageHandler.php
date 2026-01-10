@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\IntelPage\Application;
+namespace App\Core\IntelPage\Handler;
 
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Bus\EventBus;

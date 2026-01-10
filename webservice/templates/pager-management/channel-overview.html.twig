@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Pager Administration{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Pager Administration{% endtrans %}</h1>
+
+
+		<div class="d-flex gap-3 mt-4">
+			<h2>{% trans %}Channel{% endtrans %}</h2>
+		</div>
+
+		{{ component('ChannelList') }}
+	</main>
+{% endblock %}

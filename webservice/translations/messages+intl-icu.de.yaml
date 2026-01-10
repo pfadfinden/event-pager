@@ -22,3 +22,58 @@ Username: Benutzername
 Password: Passwort
 'Remember me': 'Anmeldung merken'
 'Log in with local account': 'Mit lokalem Konto anmelden'
+Pager: Pager
+Channel: Kanal
+Add: Hinzufügen
+Label: Bezeichnung
+Active: Aktiv
+Inactive: Inaktiv
+Search: Suche
+'List Pagination': 'Listen Paginierung'
+Previous: Vorherige
+Next: Nächste
+'Select all': 'Alle auswählen'
+Assignment: Zuweisung
+Assignments: Zuweisungen
+Channels: Kanäle
+Actions: Aktionen
+'Pager deleted.': 'Pager entfernt.'
+'Add Pager': 'Pager hinzufügen'
+'Channel Assignment': Kanalzuweisung
+'Individual Assignment': 'Individuelle Zuweisung'
+Name: __Name
+'Cap Code': 'Cap Code'
+Audible: Laut
+Vibration: Vibration
+'Edit Channel': 'Kanal bearbeiten'
+'Edit Pager': 'Pager bearbeiten'
+'Add Channel': 'Kanal hinzufügen'
+'Pager Assignment': 'Pager Zuweisung'
+Number: Nummer
+Comment: Kommentar
+Change: Ändern
+Status: Status
+'Change state & assignment': 'Status & Zuweisung ändern'
+Configuration: Konfiguration
+'Cap Assignments': 'Cap Code Zuweisungen'
+Slot: Slot
+Edit: Bearbeiten
+'Danger Zone': Gefahrenzone
+'Slot cleared.': 'Zuweisung gelöscht.'
+'Individual Cap Code assigned.': 'Individuellen Cap Code zugewiesen.'
+'Channel assigned.': 'Kanal zugewiesen.'
+'Status & Assignment saved.': 'Status & Zuweisung gespeichert.'
+'Number of pager per page': 'Anzahl an Pager pro Seite'
+'Number of channel per page': 'Anzahl an Kanälen pro Seite'
+'Pager updated successfully': 'Pager erfolgreich aktualisiert'
+'Failed to update pager: {message}': 'Fehler beim Aktualisieren des Pagers: {message}'
+'Channel updated successfully': 'Kanal erfolgreich aktualisiert'
+'Failed to update channel: {message}': 'Fehler beim Aktualisieren des Kanals: {message}'
+'Channel deleted successfully': 'Kanal erfolgreich gelöscht'
+'Failed to delete channel: {message}': 'Fehler beim Löschen des Kanals: {message}'
+'Failed to delete pager: {message}': 'Fehler beim Löschen des Pagers: {message}'
+'Failed to update assignment: {message}': 'Fehler beim Aktualisieren der Zuweisung: {message}'
+'Failed to assign slot: {message}': 'Fehler beim Zuweisen des Slots: {message}'
+'Number is required': 'Nummer ist erforderlich'
+'Number must be positive': 'Nummer muss positiv sein'
+'Label is required': 'Bezeichnung ist erforderlich'

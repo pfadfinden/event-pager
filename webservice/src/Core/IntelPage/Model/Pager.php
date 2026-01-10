@@ -36,6 +36,12 @@ class Pager
     private int $number;
 
     /**
+     * @var string human identifier describing pager use
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $comment;
+
+    /**
      * @var bool shows whether the pager is activated or not
      *
      * Deactivated pagers will be skipped when sending messages
@@ -53,7 +59,7 @@ class Pager
         mappedBy: 'pager',
         cascade: ['persist', 'remove'],
         orphanRemoval: true,
-        indexBy: 'slot'
+        indexBy: 'slot.slot'
     )]
     private Collection $slots;
 
@@ -130,10 +136,11 @@ class Pager
 
     public function clearSlot(Slot $slot): static
     {
-        // NOTE: Should probably inform the caller, that, if the slot is already taken,
-        //       the previous assignment is now overwritten (or provide an option not
-        //       to do that)
-        $this->slots->remove($slot->getSlot());
+        $element = $this->getCapAssignment($slot);
+
+        if ($element instanceof AbstractCapAssignment) {
+            $this->slots->removeElement($element);
+        }
 
         return $this;
     }
@@ -157,6 +164,18 @@ class Pager
     public function setNumber(int $number): static
     {
         $this->number = $number;
+
+        return $this;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment ?? '';
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

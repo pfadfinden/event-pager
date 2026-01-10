@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Pager Administration{% endtrans %} - {% trans %}Add Pager{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Pager Administration{% endtrans %}</h1>
+		<h2>{{ pager.number| format_number({min_integer_digit:'2'}) }}: {{ pager.label }}</h2>
+		<h3>Edit Pager Assignment</h3>
+
+		<div class="d-flex gap-3 mt-4">
+			{{ form_start(form) }}
+			<div class="my-custom-class-for-errors">
+				{{ form_errors(form) }}
+			</div>
+
+			<fieldset class="form-group form-fieldset">
+
+				<legend>{% trans %}Pager Assignment{% endtrans %}</legend>
+				<div class="row">
+					<div class="col">
+						{{ form_row(form.assign) }}
+					</div>
+					<div class="col">
+						{{ form_row(form.changeOnly) }}
+					</div>
+				</div>
+			</fieldset>
+
+			{% if pager.isActive %}
+				<div class="row">
+					<div class="col">
+						{{ form_row(form.changeAndDeactivate) }}
+					</div>
+				</div>
+			{% else %}
+				<div class="row">
+					<div class="col">
+						{{ form_row(form.changeAndActivate) }}
+					</div>
+				</div>
+			{% endif %}
+
+{{ form_end(form, {render_rest: false}) }}
+		</div>
+	</main>
+{% endblock %}

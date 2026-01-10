@@ -36,6 +36,22 @@ final class PagerTest extends TestCase
         self::assertInstanceOf(ChannelCapAssignment::class, $assignments[7]);
     }
 
+    public function testClearCapAssignment(): void
+    {
+        $pager = new Pager(Ulid::fromString(Ulid::generate()), 'Pager 1', 3);
+        $channel = new Channel(Ulid::fromString(Ulid::generate()), 'Channel 1', CapCode::fromInt(2));
+
+        $pager
+            ->assignIndividualCap(Slot::fromInt(1), CapCode::fromInt(1), false, false)
+            ->assignChannel(Slot::fromInt(7), $channel)
+            ->clearSlot(Slot::fromInt(0));
+
+        $assignments = iterator_to_array($pager->getCapAssignments());
+        self::assertArrayNotHasKey(0, $assignments);
+        self::assertInstanceOf(IndividualCapAssignment::class, $assignments[1]);
+        self::assertInstanceOf(ChannelCapAssignment::class, $assignments[7]);
+    }
+
     public function testSlotOutOfBoundsUpper(): void
     {
         self::expectException(InvalidArgumentException::class);

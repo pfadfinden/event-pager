@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\View\Web\PagerManagement;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+#[Route('/pager-management/channel', name: 'web_pager_management_channel', methods: ['GET'])]
+#[IsGranted('ROLE_VIEW_PAGER')]
+final class ChannelOverviewController extends AbstractController
+{
+    public function __construct()
+    {
+    }
+
+    public function __invoke(): Response
+    {
+        return $this->render('pager-management/channel-overview.html.twig');
+    }
+}

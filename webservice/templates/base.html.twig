@@ -8,6 +8,14 @@
 		{% block stylesheets %}
 		{% endblock %}
 
+		{% if app.debug %}
+		<style>
+				.sf-toolbar-clearer {
+				height: 0 !important;
+				}
+		</style>
+		{% endif %}
+
 		{% block javascripts %}
 			{% block importmap %}{{ importmap('app') }}{% endblock %}
 		{% endblock %}
