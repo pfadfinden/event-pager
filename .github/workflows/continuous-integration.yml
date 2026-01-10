@@ -42,7 +42,7 @@ jobs:
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webservice/vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -72,7 +72,7 @@ jobs:
 
       - name: Restore cached composer packages
         id: composer-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: webservice/vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -170,7 +170,7 @@ jobs:
 
       - name: Restore cached composer packages
         id: composer-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: webservice/vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
