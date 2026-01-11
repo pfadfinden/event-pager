@@ -1,0 +1,30 @@
+<div{{ attributes }}>
+    <h6 class="mb-3">{% trans %}Outgoing Messages{% endtrans %}</h6>
+
+    <table class="table table-sm table-bordered mb-0">
+        <thead>
+        <tr>
+            <th scope="col">{% trans %}Recipient{% endtrans %}</th>
+            <th scope="col">{% trans %}Status{% endtrans %}</th>
+            <th scope="col">{% trans %}Last Update{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for outgoing in computed.outgoingMessages %}
+            <tr>
+                <td>{{ outgoing.recipientName }}</td>
+                <td>
+                    <span class="badge {% if outgoing.latestStatus == 'TRANSMITTED' or outgoing.latestStatus == 'DELIVERED' or outgoing.latestStatus == 'READ' or outgoing.latestStatus == 'ACK' %}bg-success{% elseif outgoing.latestStatus == 'ERROR' or outgoing.latestStatus == 'TIMEOUT' %}bg-danger{% elseif outgoing.latestStatus == 'QUEUED' or outgoing.latestStatus == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
+                        {{ outgoing.latestStatus|trans }}
+                    </span>
+                </td>
+                <td>{{ outgoing.latestStatusAt|date("d.m.y H:i:s") }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">{% trans %}No outgoing messages{% endtrans %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

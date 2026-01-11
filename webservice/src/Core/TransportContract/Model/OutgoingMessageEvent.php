@@ -15,8 +15,6 @@ use Symfony\Component\Uid\Ulid;
  */
 readonly class OutgoingMessageEvent
 {
-    public Ulid $incomingMessageId;
-
     public Ulid $outgoingMessageId;
 
     public Instant $at;
@@ -24,33 +22,34 @@ readonly class OutgoingMessageEvent
     public OutgoingMessageStatus $status;
 
     public static function queued(
-        Ulid $incomingMessageId,
         Ulid $outgoingMessageId,
     ): self {
-        return new self($incomingMessageId, $outgoingMessageId, Instant::now(), OutgoingMessageStatus::QUEUED);
+        return new self($outgoingMessageId, Instant::now(), OutgoingMessageStatus::QUEUED);
     }
 
     public static function failedToQueue(
-        Ulid $incomingMessageId,
         Ulid $outgoingMessageId,
     ): self {
-        return new self($incomingMessageId, $outgoingMessageId, Instant::now(), OutgoingMessageStatus::ERROR);
+        return new self($outgoingMessageId, Instant::now(), OutgoingMessageStatus::ERROR);
+    }
+
+    public static function failedToTransmit(
+        Ulid $outgoingMessageId,
+    ): self {
+        return new self($outgoingMessageId, Instant::now(), OutgoingMessageStatus::ERROR);
     }
 
     public static function transmitted(
-        Ulid $incomingMessageId,
         Ulid $outgoingMessageId,
     ): self {
-        return new self($incomingMessageId, $outgoingMessageId, Instant::now(), OutgoingMessageStatus::TRANSMITTED);
+        return new self($outgoingMessageId, Instant::now(), OutgoingMessageStatus::TRANSMITTED);
     }
 
     private function __construct(
-        Ulid $incomingMessageId,
         Ulid $outgoingMessageId,
         Instant $at,
         OutgoingMessageStatus $status,
     ) {
-        $this->incomingMessageId = $incomingMessageId;
         $this->outgoingMessageId = $outgoingMessageId;
         $this->status = $status;
         $this->at = $at;

@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Message History{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Message History{% endtrans %}</h1>
+
+		{{ component('MessageHistoryList') }}
+
+	</main>
+{% endblock %}

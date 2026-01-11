@@ -1,0 +1,115 @@
+<div{{ attributes }} data-poll="delay(180000)|$render">
+    <div class="d-flex flex-wrap gap-2 gap-md-3 mt-3 mb-3 align-items-center">
+        {# Left group: View toggle (personal/all) #}
+        {% if computed.canViewAll %}
+            <div class="btn-group">
+                <button class="btn {% if not showAll %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="showAll"
+                   data-value="false"
+                   data-action="live#update"
+                   title="{{ 'My messages'|trans }}">
+                    {% trans %}My messages{% endtrans %}
+                </button>
+                <button class="btn {% if showAll %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="showAll"
+                   data-value="true"
+                   data-action="live#update"
+                   title="{{ 'All messages'|trans }}">
+                    {% trans %}All messages{% endtrans %}
+                </button>
+            </div>
+        {% endif %}
+
+        {# Center: Search bar - grows to fill available space #}
+        <div class="input-group flex-grow-1" style="flex-basis: 8rem">
+            <span class="input-group-text">
+                <twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
+            </span>
+            <input name="q" data-model="q" type="search" class="form-control" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}">
+        </div>
+
+        {# Right group: Pagination & Per-page selector - stay together #}
+            <nav aria-label="{{ 'List Pagination'|trans }}">
+                <ul class="pagination mb-0">
+                    <li class="page-item">
+                        <button class="page-link {% if page <= 1 %} disabled{% endif %}"
+                           data-model="page"
+                           data-value="{{ page - 1 }}"
+                           data-action="live#update" aria-label="{{ 'Previous'|trans }}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item active">
+                        <button class="page-link"
+                           data-model="page"
+                           data-value="{{ page }}"
+                           data-action="live#update">{{ page }}</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link {% if page >= computed.maxPages %} disabled{% endif %}" data-model="page"
+                           data-value="{{ page + 1 }}"
+                           data-action="live#update" aria-label="{{ 'Next'|trans }}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <select data-model="perPage" class="form-select" style="width: auto;" aria-label="{{ 'Number of items per page' | trans }}">
+                <option value="10" {% if perPage == 10 %}selected{% endif %}>10</option>
+                <option value="25" {% if perPage == 25 %}selected{% endif %}>25</option>
+                <option value="50" {% if perPage == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if perPage == 100 %}selected{% endif %}>100</option>
+            </select>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 40px;"></th>
+                <th scope="col">{% trans %}Sent on{% endtrans %}</th>
+                <th scope="col">{% trans %}Content{% endtrans %}</th>
+                <th scope="col">{% trans %}Priority{% endtrans %}</th>
+                <th scope="col">{% trans %}Status{% endtrans %}</th>
+            </tr>
+            </thead>
+
+            {% for message in computed.messages %}
+                <tbody class="table-group-divider" data-controller="collapse">
+                    <tr data-action="click->collapse#toggle" aria-expanded="false" style="cursor: pointer;">
+                        <td>
+                            <twig:ux:icon name="bi:chevron-right" height="14" width="14" aria-hidden="true" class="bi expand-icon"/>
+                        </td>
+                        <td>{{ message.sentOn|date("d.m.y H:i") }}</td>
+                        <td>{{ message.content|length > 50 ? message.content|slice(0, 50) ~ '...' : message.content }}</td>
+                        <td>{{ message.priority }}</td>
+                        <td>
+                            {% for statusName, count in message.statusCounts %}
+                                <span class="badge {% if statusName == 'TRANSMITTED' or statusName == 'DELIVERED' or statusName == 'READ' or statusName == 'ACK' %}bg-success{% elseif statusName == 'ERROR' or statusName == 'TIMEOUT' %}bg-danger{% elseif statusName == 'QUEUED' or statusName == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
+                                    {{ statusName|trans }}: {{ count }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary">{% trans %}No status{% endtrans %}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr class="d-none" data-collapse-target="content">
+                        <td colspan="5" class="p-0">
+                            <div class="p-3 bg-body-tertiary">
+                                {{ component('MessageHistoryDetail', { incomingMessageId: message.messageId }) }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            {% else %}
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">{% trans %}No messages found{% endtrans %}</td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Core\IntelPage\Application;
 
-use App\Core\IntelPage\Events\OutgoingMessageTransmissionFailed;
-use App\Core\IntelPage\Events\OutgoingMessageTransmitted;
 use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\IntelPage\Port\IntelPageTransmitterInterface;
 use App\Core\IntelPage\Port\SendPagerMessageServiceInterface;
+use App\Core\TransportContract\Model\OutgoingMessageEvent;
 use Brick\DateTime\Instant;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -60,7 +59,7 @@ final readonly class SendPagerMessageService implements SendPagerMessageServiceI
 
         $this->markMessageSend($message);
         $this->logger?->debug(sprintf('Successfully send IntelPage PagerMessage "%s"', $message->getId()->toString()));
-        $this->eventBus?->dispatch(new OutgoingMessageTransmitted($message->getId()->toString()));
+        $this->eventBus?->dispatch(OutgoingMessageEvent::transmitted($message->getId()));
     }
 
     private function markMessageSend(PagerMessage $message): void
@@ -85,7 +84,7 @@ final readonly class SendPagerMessageService implements SendPagerMessageServiceI
 
         if (self::RETRY_LIMIT === $message->getAttemptedToSend()) {
             // -- reached retry limit, do not retry again and mark as failed
-            $this->eventBus?->dispatch(new OutgoingMessageTransmissionFailed($message->getId()->toString(), $e->getMessage()));
+            $this->eventBus?->dispatch(OutgoingMessageEvent::failedToTransmit($message->getId()));
         }
     }
 }
