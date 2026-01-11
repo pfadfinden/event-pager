@@ -11,6 +11,147 @@
     background-color: var(--recipient-person-bg);
     color: var(--recipient-badge-color);
 }
+.h2-productive {
+    font-size: calc(var(--bs-body-font-size, 1rem) * 1 + 1vw);
+    font-weight: 550;
+}
+
+.h3-productive {
+    font-size: calc(var(--bs-body-font-size, 1rem) * 0.8 + 1vw);
+    font-weight: 550;
+}
+
+.send-message-form {
+    display: flex;
+    max-height: 100vh; /* TODO only for displays with height > x */
+    overflow: hidden;
+
+    height: 100%
+}
+
+.send-message-form__container {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.send-message-form__container form {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+    height: 100%
+}
+
+.send-message-form__container form > * {
+    height: 100%;
+    display: flex;
+    flex-basis: min-content;
+}
+
+.send-message-form__select-recipient-container {
+    flex-shrink: 2;
+    flex-basis: 1px;
+    flex-grow: 1;
+}
+
+.send-message-form__select-recipient-container > div {
+    min-height: 1px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.send-message-form__selected {
+    flex-grow: 1;
+    flex-basis: 1px;
+}
+
+
+
+.end-border-arrow {
+    --eba-style: solid;
+    --eba-col: currentColor;
+    border-right: 2px var(--eba-style) var(--eba-col);
+    position: relative;
+}
+
+.end-border-arrow__triangle {
+    position: absolute;
+    right: -10px;
+    top: 2.5rem;
+}
+
+.end-border-arrow__triangle:before,
+.end-border-arrow__triangle:after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+}
+
+.end-border-arrow__triangle:before {
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid var(--eba-col);
+}
+
+.end-border-arrow__triangle:after {
+    position: absolute;
+    right: 2px;
+    top: 1.5px;
+    border-top: 8px solid transparent;
+    border-left: 8px solid var(--bs-secondary-bg);
+    border-bottom: 8px solid transparent;
+}
+
+.btn-sm-table {
+    --bs-btn-padding-y: .25rem;
+    --bs-btn-padding-x: .5rem;
+    --bs-btn-font-size: .75rem;
+}
+
+.fixw-2_4rem {
+    width: 2.4rem;
+}
+
+.combobox {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.combobox input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    flex: 0;
+}
+
+.combobox select {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: 0;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    padding: 0 !important;
+    overflow: scroll;
+}
+
+.combobox option {
+    padding-left: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    /* the following overwrites the optgroup styles */
+    text-align: start;
+    background-color: var(--bs-body-bg);
+}
+
+.combobox optgroup {
+    text-align: center;
+    background-color: var(--bs-tertiary-bg);
+    font-style: normal;
+}
 
 .badge-recipient-group {
     background-color: var(--recipient-group-bg);
@@ -36,4 +177,17 @@
 
 .icon-plus-double svg~svg {
     margin-inline-start: -0.4rem;
+}
+
+
+.show-parent-mo,  .show-parent-focus  {
+    display:none;
+}
+
+*:hover > .show-parent-mo {
+    display: block;
+}
+
+*:focus-within:not(:hover) > .show-parent-focus {
+    display: block;
 }
