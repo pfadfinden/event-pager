@@ -18,10 +18,20 @@ final readonly class CountMessageRecipientsQueryHandler
     {
         $dql = 'SELECT COUNT(r.id) FROM '.AbstractMessageRecipient::class.' r';
         $parameters = [];
+        $whereClauses = [];
 
         if (null !== $query->filterType) {
-            $dql .= ' WHERE r INSTANCE OF :type';
+            $whereClauses[] = 'r INSTANCE OF :type';
             $parameters['type'] = $this->em->getClassMetadata($query->filterType);
+        }
+
+        if (null !== $query->textFilter && '' !== $query->textFilter) {
+            $whereClauses[] = 'LOWER(r.name) LIKE LOWER(:textFilter)';
+            $parameters['textFilter'] = '%'.$query->textFilter.'%';
+        }
+
+        if ([] !== $whereClauses) {
+            $dql .= ' WHERE '.implode(' AND ', $whereClauses);
         }
 
         $doctrineQuery = $this->em->createQuery($dql);

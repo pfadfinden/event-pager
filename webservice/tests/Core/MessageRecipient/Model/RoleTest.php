@@ -34,9 +34,9 @@ final class RoleTest extends TestCase
         $role = new Role($name, $person, $id);
 
         if (null === $id) {
-            $role->id->toString();
+            $role->getId()->toString();
         } else {
-            self::assertSame($id, $role->id);
+            self::assertSame($id, $role->getId());
         }
         self::assertSame($name, $role->getName());
         self::assertSame($person, $role->person);

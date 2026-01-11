@@ -32,8 +32,8 @@ class Group extends AbstractMessageRecipient implements Delegated
 
     public function addMember(AbstractMessageRecipient $member): void
     {
-        if ($this->id->equals($member->id)) {
-            throw new InvalidArgumentException('Cannot add group to itself: '.$this->id);
+        if ($this->getId()->equals($member->getId())) {
+            throw new InvalidArgumentException('Cannot add group to itself: '.$this->getId());
         }
         $this->members->add($member);
     }

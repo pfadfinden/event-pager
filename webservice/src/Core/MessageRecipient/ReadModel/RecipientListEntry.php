@@ -10,7 +10,7 @@ namespace App\Core\MessageRecipient\ReadModel;
 final class RecipientListEntry
 {
     /**
-     * @param "Group"|"Role"|"Person" $type
+     * @param "GROUP"|"ROLE"|"PERSON" $type
      */
     public function __construct(
         public string $id,

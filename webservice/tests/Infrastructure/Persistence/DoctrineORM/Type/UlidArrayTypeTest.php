@@ -35,7 +35,7 @@ final class UlidArrayTypeTest extends TestCase
     #[DataProvider('convertProvider')]
     public function testConvert(?array $input): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new UlidArrayType();
 
         $dbValue = $type->convertToDatabaseValue($input, $platform);

@@ -15,30 +15,46 @@ use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
  */
 final readonly class ListOfMessageRecipients implements Query
 {
-    public static function onlyGroups(): self
+    public const DEFAULT_PAGE_LENGTH = 25;
+
+    public static function onlyGroups(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {
-        return new self(Group::class);
+        return new self(Group::class, $textFilter, $page, $perPage);
     }
 
-    public static function onlyPeople(): self
+    public static function onlyPeople(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {
-        return new self(Person::class);
+        return new self(Person::class, $textFilter, $page, $perPage);
     }
 
-    public static function onlyRoles(): self
+    public static function onlyRoles(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {
-        return new self(Role::class);
+        return new self(Role::class, $textFilter, $page, $perPage);
     }
 
-    public static function all(): self
+    public static function all(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {
-        return new self(null);
+        return new self(null, $textFilter, $page, $perPage);
+    }
+
+    public static function withoutFilter(?int $page = null, ?int $perPage = null): self
+    {
+        return new self(null, null, $page, $perPage);
+    }
+
+    public static function withTextSearch(string $textFilter, ?int $page = null, ?int $perPage = null): self
+    {
+        return new self(null, $textFilter, $page, $perPage);
     }
 
     /**
      * @param class-string|null $filterType
      */
-    private function __construct(public ?string $filterType = null)
-    {
+    private function __construct(
+        public ?string $filterType = null,
+        public ?string $textFilter = null,
+        public ?int $page = null,
+        public ?int $perPage = null,
+    ) {
     }
 }

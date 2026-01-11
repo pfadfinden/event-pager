@@ -36,7 +36,7 @@ final class LocalDateTimeTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueProvider')]
     public function testConvertToDatabaseValue(?string $expected, ?LocalDateTime $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalDateTimeType();
 
         $result = $type->convertToDatabaseValue($value, $platform);
@@ -58,7 +58,7 @@ final class LocalDateTimeTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
     public function testConvertToDatabaseValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalDateTimeType();
 
         self::expectException(ConversionException::class);
@@ -82,7 +82,7 @@ final class LocalDateTimeTypeTest extends TestCase
     #[DataProvider('convertToPhpValueProvider')]
     public function testConvertToPhpValue(?LocalDateTime $expected, ?string $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalDateTimeType();
 
         $result = $type->convertToPHPValue($value, $platform);
@@ -110,7 +110,7 @@ final class LocalDateTimeTypeTest extends TestCase
     #[DataProvider('convertToPhpValueExceptionProvider')]
     public function testConvertToPhpValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalDateTimeType();
 
         self::expectException(ConversionException::class);

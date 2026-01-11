@@ -1,7 +1,39 @@
+:root {
+    /* Recipient type badge colors - custom palette */
+    --recipient-person-bg: #6f42c1;    /* Purple */
+    --recipient-group-bg: #20c997;     /* Teal */
+    --recipient-role-bg: #fd7e14;      /* Orange */
+    --recipient-badge-color: #ffffff;  /* White text for all badges */
+}
+
+/* Recipient type badges */
+.badge-recipient-person {
+    background-color: var(--recipient-person-bg);
+    color: var(--recipient-badge-color);
+}
+
+.badge-recipient-group {
+    background-color: var(--recipient-group-bg);
+    color: var(--recipient-badge-color);
+}
+
+.badge-recipient-role {
+    background-color: var(--recipient-role-bg);
+    color: var(--recipient-badge-color);
+}
+
 .dot {
     height: 1em;
     width: 1em;
     background-color: currentColor;
     border-radius: 50%;
     display: inline-block;
+}
+
+.icon-plus-double {
+    white-space: nowrap;
+}
+
+.icon-plus-double svg~svg {
+    margin-inline-start: -0.4rem;
 }

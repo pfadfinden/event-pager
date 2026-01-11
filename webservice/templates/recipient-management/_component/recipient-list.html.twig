@@ -1,0 +1,162 @@
+<div{{ attributes }} data-poll="delay(180000)|$render">
+    <div class="d-flex flex-wrap gap-2 gap-md-3 mt-3 mb-3 align-items-center">
+        {# Left group: Type filters & Add buttons - stay together #}
+            <div class="btn-group">
+                <button class="btn {% if type is null or type == "" %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="type"
+                   data-value=""
+                   data-action="live#update"
+                   title="{{ 'All'|trans }}">
+                    {% trans %}All{% endtrans %}
+                </button>
+                <button class="btn {% if type == 'person' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="type"
+                   data-value="person"
+                   data-action="live#update"
+                   title="{{ 'Persons'|trans }}">
+                    <twig:ux:icon name="bi:person" height="16" width="16" aria-hidden="true" class="bi"/>
+                </button>
+                <button class="btn {% if type == 'group' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="type"
+                   data-value="group"
+                   data-action="live#update"
+                   title="{{ 'Groups'|trans }}">
+                    <twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi"/>
+                </button>
+                <button class="btn {% if type == 'role' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                   data-model="type"
+                   data-value="role"
+                   data-action="live#update"
+                   title="{{ 'Roles'|trans }}">
+                    <twig:ux:icon name="bi:person-badge" height="16" width="16" aria-hidden="true" class="bi"/>
+                </button>
+            </div>
+
+            {% set hasPersonAddBtn = is_granted('ROLE_MANAGE_RECIPIENT_INDIVIDUALS') and (type is null or type == '' or type == 'person') %}
+            {% set hasGroupAddBtn = is_granted('ROLE_MANAGE_RECIPIENT_GROUPS') and (type is null or type == '' or type == 'group') %}
+            {% set hasRoleAddBtn = is_granted('ROLE_MANAGE_RECIPIENT_ROLES') and (type is null or type == '' or type == 'role') %}
+            {% set hasAddBtn = hasPersonAddBtn or hasGroupAddBtn or hasRoleAddBtn %}
+
+            {% if hasAddBtn %}
+                <div class="btn-group">
+                    {% if hasPersonAddBtn %}
+                        <a href="{{ path('web_recipient_management_person_add') }}" class="btn btn-secondary" title="{{ 'Add Person'|trans }}">
+                            <twig:ux:icon name="bi:person-plus" height="16" width="16" aria-hidden="true" class="bi"/>
+                        </a>
+                    {% endif %}
+                    {% if hasGroupAddBtn %}
+                        <a href="{{ path('web_recipient_management_group_add') }}" class="btn btn-secondary icon-plus-double" title="{{ 'Add Group'|trans }}">
+                            <twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi"/>
+                            <twig:ux:icon name="bi:plus" height="12" width="12" aria-hidden="true" class="bi"/>
+                        </a>
+                    {% endif %}
+                    {% if hasRoleAddBtn %}
+                        <a href="{{ path('web_recipient_management_role_add') }}" class="btn btn-secondary icon-plus-double" title="{{ 'Add Role'|trans }}">
+                            <twig:ux:icon name="bi:person-badge" height="16" width="16" aria-hidden="true" class="bi"/>
+                            <twig:ux:icon name="bi:plus" height="12" width="12" aria-hidden="true" class="bi"/>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        {# Center: Search bar - grows to fill available space #}
+        <div class="input-group flex-grow-1" style="flex-basis: 8rem">
+            <span class="input-group-text">
+                <twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
+            </span>
+            <input name="q" data-model="q" type="search" class="form-control" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}">
+        </div>
+
+        {# Right group: Pagination & Per-page selector - stay together #}
+            <nav aria-label="{{ 'List Pagination'|trans }}">
+                <ul class="pagination mb-0">
+                    <li class="page-item">
+                        <button class="page-link {% if page <= 1 %} disabled{% endif %}"
+                           data-model="page"
+                           data-value="{{ page - 1 }}"
+                           data-action="live#update" aria-label="{{ 'Previous'|trans }}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item active">
+                        <button class="page-link"
+                           data-model="page"
+                           data-value="{{ page }}"
+                           data-action="live#update">{{ page }}</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link {% if page >= computed.maxPages %} disabled{% endif %}" data-model="page"
+                           data-value="{{ page + 1 }}"
+                           data-action="live#update" aria-label="{{ 'Next'|trans }}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <select data-model="perPage" class="form-select" style="width: auto;" aria-label="{{ 'Number of items per page' | trans }}">
+                <option value="10" {% if perPage == 10 %}selected{% endif %}>10</option>
+                <option value="25" {% if perPage == 25 %}selected{% endif %}>25</option>
+                <option value="50" {% if perPage == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if perPage == 100 %}selected{% endif %}>100</option>
+            </select>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %}Type{% endtrans %}</th>
+                <th scope="col">{% trans %}Name{% endtrans %}</th>
+                <th scope="col">{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+            {% for r in computed.recipients %}
+                <tr>
+                    <td>
+                        {% if r.type == 'PERSON' %}
+                            <span class="badge badge-recipient-person">
+                                <twig:ux:icon name="bi:person" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+                                {% trans %}Person{% endtrans %}
+                            </span>
+                        {% elseif r.type == 'GROUP' %}
+                            <span class="badge badge-recipient-group">
+                                <twig:ux:icon name="bi:people" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+                                {% trans %}Group{% endtrans %}
+                            </span>
+                        {% elseif r.type == 'ROLE' %}
+                            <span class="badge badge-recipient-role">
+                                <twig:ux:icon name="bi:person-badge" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+                                {% trans %}Role{% endtrans %}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>{{ r.name }}</td>
+                    <td>
+                        {% if r.type == 'PERSON' %}
+                            <a href="{{ path('web_recipient_management_person_details', {id: r.id}) }}" class="btn btn-outline-primary btn-sm" title="{{ 'View'|trans }}">
+                                <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
+                            </a>
+                        {% elseif r.type == 'GROUP' %}
+                            <a href="{{ path('web_recipient_management_group_details', {id: r.id}) }}" class="btn btn-outline-primary btn-sm" title="{{ 'View'|trans }}">
+                                <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
+                            </a>
+                        {% elseif r.type == 'ROLE' %}
+                            <a href="{{ path('web_recipient_management_role_details', {id: r.id}) }}" class="btn btn-outline-primary btn-sm" title="{{ 'View'|trans }}">
+                                <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">{% trans %}No recipients found{% endtrans %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

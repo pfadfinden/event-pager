@@ -13,6 +13,7 @@ use App\Core\MessageRecipient\Model\Role;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler(bus: Bus::COMMAND)]
 final readonly class CreateRecipientHandler
@@ -25,10 +26,11 @@ final readonly class CreateRecipientHandler
 
     public function __invoke(CreateRecipient $newRecipient): void
     {
+        $id = Ulid::fromString($newRecipient->id);
         $recipient = match ($newRecipient->recipientType) {
-            'group' => new Group($newRecipient->name),
-            'role' => new Role($newRecipient->name, null),
-            'person' => new Person($newRecipient->name),
+            'group' => new Group($newRecipient->name, $id),
+            'role' => new Role($newRecipient->name, null, $id),
+            'person' => new Person($newRecipient->name, $id),
             default => throw new InvalidArgumentException('Invalid recipient type: '.$newRecipient->recipientType),
         };
         $this->repository->add($recipient);
