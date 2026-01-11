@@ -20,6 +20,14 @@
 				</a>
 			</li>
 			{% endif %}
+			{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_SENT_PERSONAL') %}
+			<li>
+				<a href="/message-history" class="nav-link {% if app.request.attributes.get('_route') == 'web_message_history' %}active{% endif %}">
+					<twig:ux:icon name="bi:clock-history" height="16" width="16" aria-hidden="true" class="bi me-2" />
+					{% trans %}Message History{% endtrans %}
+				</a>
+			</li>
+			{% endif %}
 			{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_RECEIVED') %}
 			<li>
 				<a href="/inbox" class="nav-link">

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Core\SendMessage\Handler;
 
 use App\Core\Contracts\Bus\Bus;
+use App\Core\Contracts\Bus\EventBus;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use App\Core\SendMessage\Command\ProcessIncomingMessage;
 use App\Core\SendMessage\Model\IncomingMessage;
 use App\Core\SendMessage\Port\IncomingMessageRepository;
 use App\Core\TransportContract\Model\Message;
+use App\Core\TransportContract\Model\NewOutgoingMessageInitiated;
 use App\Core\TransportContract\Model\OutgoingMessage;
 use App\Core\TransportContract\Model\Priority;
 use App\Core\TransportContract\Port\TransportManager;
@@ -30,6 +32,7 @@ final readonly class ProcessIncomingMessageHandler
         private IncomingMessageRepository $incomingMessageRepository,
         private MessageRecipientRepository $messageRecipientRepository,
         private TransportManager $transportManager,
+        private EventBus $eventBus,
     ) {
     }
 
@@ -51,7 +54,9 @@ final readonly class ProcessIncomingMessageHandler
             }
             foreach ($this->transportManager->activeTransports() as $transport) {
                 if ($transport->canSendTo($messageRecipient, $message)) {
-                    $transport->send(OutgoingMessage::for($messageRecipient, $message));
+                    $outgoingMessage = OutgoingMessage::for($messageRecipient, $message);
+                    $this->eventBus->publish(NewOutgoingMessageInitiated::for($outgoingMessage));
+                    $transport->send($outgoingMessage);
                 }
             }
         }

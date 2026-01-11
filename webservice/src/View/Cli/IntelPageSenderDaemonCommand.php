@@ -11,6 +11,7 @@ use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\TransportContract\Port\TransportManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Messenger\MessageBusInterface;
 use function sprintf;
 use const SIGINT;
 use const SIGTERM;
@@ -53,6 +55,8 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         private readonly int $defaultMicrosecondsAfterNoNewMessage,
         private readonly EntityManagerInterface $em,
         private readonly TransportManager $transportManager,
+        private readonly ?MessageBusInterface $eventBus = null,
+        private readonly ?LoggerInterface $logger = null,
     ) {
         parent::__construct();
     }
@@ -126,7 +130,7 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
         $transmitterPort = $port ?? $this->defaultTransmitterPort;
         $transmitter = new IntelPageTransmitter($transmitterHost, $transmitterPort);
 
-        return new SendPagerMessageService($this->em, $transmitter);
+        return new SendPagerMessageService($this->em, $transmitter, $this->eventBus, $this->logger);
 
         /*
              TODO future improvement

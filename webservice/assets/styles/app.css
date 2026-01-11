@@ -191,3 +191,10 @@
 *:focus-within:not(:hover) > .show-parent-focus {
     display: block;
 }
+
+.expand-icon {
+    transition: transform 0.2s ease-in-out;
+}
+tr[aria-expanded="true"] .expand-icon {
+    transform: rotate(90deg);
+}

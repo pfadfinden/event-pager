@@ -167,6 +167,6 @@ final readonly class IntelPageTransport implements Transport
      */
     private function failedToSend(OutgoingMessage $message): void
     {
-        $this->eventBus->publish(OutgoingMessageEvent::failedToQueue($message->id, $message->incomingMessage->messageId));
+        $this->eventBus->publish(OutgoingMessageEvent::failedToQueue($message->id));
     }
 }

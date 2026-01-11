@@ -98,7 +98,6 @@ final readonly class TelegramTransport implements Transport
 
             $this->eventBus->publish(OutgoingMessageEvent::transmitted(
                 $message->id,
-                $message->incomingMessage->messageId,
             ));
         } catch (TelegramSendFailed) {
             $this->publishFailedEvent($message);
@@ -108,8 +107,7 @@ final readonly class TelegramTransport implements Transport
     private function publishFailedEvent(OutgoingMessage $message): void
     {
         $this->eventBus->publish(OutgoingMessageEvent::failedToQueue(
-            $message->id,
-            $message->incomingMessage->messageId,
+            $message->id
         ));
     }
 }

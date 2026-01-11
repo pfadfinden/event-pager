@@ -17,21 +17,21 @@ final class OutgoingMessageEventTest extends TestCase
 {
     public function testFailedToQueue(): void
     {
-        $sut = OutgoingMessageEvent::failedToQueue(Ulid::fromString(Ulid::generate()), Ulid::fromString(Ulid::generate()));
+        $sut = OutgoingMessageEvent::failedToQueue(Ulid::fromString(Ulid::generate()));
 
         self::assertEquals(OutgoingMessageStatus::ERROR, $sut->status);
     }
 
     public function testQueued(): void
     {
-        $sut = OutgoingMessageEvent::queued(Ulid::fromString(Ulid::generate()), Ulid::fromString(Ulid::generate()));
+        $sut = OutgoingMessageEvent::queued(Ulid::fromString(Ulid::generate()));
 
         self::assertEquals(OutgoingMessageStatus::QUEUED, $sut->status);
     }
 
     public function testTransmitted(): void
     {
-        $sut = OutgoingMessageEvent::transmitted(Ulid::fromString(Ulid::generate()), Ulid::fromString(Ulid::generate()));
+        $sut = OutgoingMessageEvent::transmitted(Ulid::fromString(Ulid::generate()));
 
         self::assertEquals(OutgoingMessageStatus::TRANSMITTED, $sut->status);
     }

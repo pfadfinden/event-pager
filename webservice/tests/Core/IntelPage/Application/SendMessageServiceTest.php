@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Core\IntelPage\Application;
 
 use App\Core\IntelPage\Application\SendPagerMessageService;
-use App\Core\IntelPage\Events\OutgoingMessageTransmissionFailed;
-use App\Core\IntelPage\Events\OutgoingMessageTransmitted;
 use App\Core\IntelPage\Exception\IntelPageTransmitterNotAvailable;
 use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\IntelPage\Port\IntelPageTransmitterInterface;
+use App\Core\TransportContract\Model\OutgoingMessageEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -40,7 +39,7 @@ final class SendMessageServiceTest extends TestCase
         $transmitter->expects(self::once())->method('transmit')->with($message->getCap(), $message->getMessage());
 
         $eventBus = $this->createMock(MessageBusInterface::class);
-        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageTransmitted::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
+        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 
@@ -71,7 +70,7 @@ final class SendMessageServiceTest extends TestCase
             ->willThrowException(new IntelPageTransmitterNotAvailable('test'));
 
         $eventBus = $this->createMock(MessageBusInterface::class);
-        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageTransmissionFailed::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
+        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 

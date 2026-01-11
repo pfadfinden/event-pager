@@ -29,6 +29,6 @@ final readonly class QueueMessageHandler
         $this->pagerMessageRepository->add($pagerMessage);
         $this->uow->commit();
 
-        $this->eventBus->publish(OutgoingMessageEvent::queued($cmd->incomingMessageId, $cmd->id));
+        $this->eventBus->publish(OutgoingMessageEvent::queued($cmd->id));
     }
 }

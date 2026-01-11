@@ -63,6 +63,7 @@ Edit: Bearbeiten
 'Individual Cap Code assigned.': 'Individuellen Cap Code zugewiesen.'
 'Channel assigned.': 'Kanal zugewiesen.'
 'Status & Assignment saved.': 'Status & Zuweisung gespeichert.'
+'Assignment saved.': 'Zuweisung gespeichert.'
 'Number of pager per page': 'Anzahl an Pager pro Seite'
 'Number of channel per page': 'Anzahl an Kanälen pro Seite'
 'Pager updated successfully': 'Pager erfolgreich aktualisiert'
@@ -163,3 +164,23 @@ Cancel: Abbrechen
 'Failed to update transport configuration: {message}': 'Fehler beim Aktualisieren der Transportkonfiguration: {message}'
 'Failed to remove transport configuration: {message}': 'Fehler beim Entfernen der Transportkonfiguration: {message}'
 'Are you sure you want to remove this transport configuration?': 'Möchten Sie diese Transportkonfiguration wirklich entfernen?'
+'Message History': Nachrichtenverlauf
+'My messages': 'Meine Nachrichten'
+'All messages': 'Alle Nachrichten'
+'Sent on': 'Gesendet am'
+Content: Inhalt
+Priority: Priorität
+'No messages found': 'Keine Nachrichten gefunden'
+'Outgoing Messages': 'Ausgehende Nachrichten'
+Recipient: Empfänger
+'Last Update': 'Letzte Aktualisierung'
+'No outgoing messages': 'Keine ausgehenden Nachrichten'
+'No status': 'Kein Status'
+INITIATED: Initialisiert
+QUEUED: 'In Warteschlange'
+TRANSMITTED: Gesendet
+DELIVERED: Zugestellt
+READ: Gelesen
+ACK: Bestätigt
+ERROR: Fehler
+TIMEOUT: 'Zeitüberschreitung'

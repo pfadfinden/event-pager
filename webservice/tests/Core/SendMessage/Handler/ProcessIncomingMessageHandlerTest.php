@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\SendMessage\Handler;
 
+use App\Core\Contracts\Bus\EventBus;
 use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use App\Core\SendMessage\Command\ProcessIncomingMessage;
@@ -48,7 +49,9 @@ final class ProcessIncomingMessageHandlerTest extends TestCase
         // This Test *does not* test the message adressing part of the handler since it is preliminary
         $transportManager->expects(self::atLeast(1))->method('activeTransports')->willReturn([]);
 
-        $sut = new ProcessIncomingMessageHandler($repoM, $repoR, $transportManager);
+        $eventBus = $this->createMock(EventBus::class);
+
+        $sut = new ProcessIncomingMessageHandler($repoM, $repoR, $transportManager, $eventBus);
 
         // Act
         $sut($command);
