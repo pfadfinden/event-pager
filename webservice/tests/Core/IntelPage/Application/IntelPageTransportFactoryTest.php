@@ -20,9 +20,9 @@ final class IntelPageTransportFactoryTest extends TestCase
     public function testCanInstantiateTransport(): void
     {
         // Arrange
-        $queryBus = self::createMock(QueryBus::class);
-        $commandBus = self::createMock(CommandBus::class);
-        $eventBus = self::createMock(EventBus::class);
+        $queryBus = self::createStub(QueryBus::class);
+        $commandBus = self::createStub(CommandBus::class);
+        $eventBus = self::createStub(EventBus::class);
 
         $factory = new IntelPageTransportFactory(
             $queryBus,
@@ -30,7 +30,7 @@ final class IntelPageTransportFactoryTest extends TestCase
             $eventBus,
         );
 
-        $systemTransportConfig = self::createMock(SystemTransportConfig::class);
+        $systemTransportConfig = self::createStub(SystemTransportConfig::class);
         $systemTransportConfig->method('getKey')->willReturn('some_key');
 
         // Act

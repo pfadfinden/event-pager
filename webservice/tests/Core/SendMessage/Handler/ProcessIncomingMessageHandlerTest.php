@@ -40,7 +40,7 @@ final class ProcessIncomingMessageHandlerTest extends TestCase
         );
 
         $repoR = $this->createMock(MessageRecipientRepository::class);
-        $mockRecipient = $this->createMock(AbstractMessageRecipient::class);
+        $mockRecipient = self::createStub(AbstractMessageRecipient::class);
         $repoR->expects(self::atLeast(2))->method('getRecipientFromID')->willReturn($mockRecipient);
 
         $transportManager = $this->createMock(TransportManager::class);

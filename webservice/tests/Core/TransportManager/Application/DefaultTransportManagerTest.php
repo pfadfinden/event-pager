@@ -109,9 +109,9 @@ final class DefaultTransportManagerTest extends TestCase
     // @phpstan-ignore-next-line missingType.iterableValue
     public function mockTransportFactory(array $supportsMap, ?SystemTransportConfig $config = null): TransportFactory
     {
-        $factory = $this->createMock(TransportFactory::class);
+        $factory = self::createStub(TransportFactory::class);
         $factory->method('supports')->willReturnMap($supportsMap);
-        $mockTransport = $this->createMock(Transport::class);
+        $mockTransport = self::createStub(Transport::class);
         $mockTransport->method('acceptsNewMessages')->willReturn(null !== $config);
         $factory->method('withSystemConfiguration')
             ->with()->willReturn($mockTransport);

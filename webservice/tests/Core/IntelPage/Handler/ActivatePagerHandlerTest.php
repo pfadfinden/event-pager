@@ -68,7 +68,7 @@ final class ActivatePagerHandlerTest extends TestCase
             ->with(Pager::class)
             ->willReturn($repositoryMock);
 
-        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock = self::createStub(UnitOfWork::class);
 
         $sut = new ActivatePagerHandler($entityManagerMock, $unitOfWorkMock);
 

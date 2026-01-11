@@ -17,8 +17,8 @@ final class OutgoingMessageTest extends TestCase
 {
     public function testFor(): void
     {
-        $recipient = $this->createMock(MessageRecipient::class);
-        $message = $this->createMock(Message::class);
+        $recipient = self::createStub(MessageRecipient::class);
+        $message = self::createStub(Message::class);
         $sut = OutgoingMessage::for($recipient, $message);
 
         self::assertEquals($message, $sut->incomingMessage);

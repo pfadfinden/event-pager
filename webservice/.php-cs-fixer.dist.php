@@ -47,6 +47,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_to_comment' => false, // differs from @Symfony, needed for higher PHPStan / lower PSalm levels
         'pow_to_exponentiation' => true,
     ])
-    ->setCacheFile('./var/build-cache/.php-cs-fixer.cache')
+    ->setCacheFile('./var/.php-cs-fixer.cache')
     ->setFinder($finder)
 ;

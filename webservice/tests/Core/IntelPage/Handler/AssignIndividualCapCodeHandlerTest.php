@@ -71,7 +71,7 @@ final class AssignIndividualCapCodeHandlerTest extends TestCase
             ->with(Pager::class)
             ->willReturn($repositoryMock);
 
-        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock = self::createStub(UnitOfWork::class);
 
         $sut = new AssignIndividualCapCodeHandler($entityManagerMock, $unitOfWorkMock);
 

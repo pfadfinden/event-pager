@@ -66,7 +66,7 @@ final class UpdateChannelHandlerTest extends TestCase
             ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
             ->willReturn(null);
 
-        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock = self::createStub(UnitOfWork::class);
 
         $sut = new UpdateChannelHandler($channelRepositoryMock, $unitOfWorkMock);
 

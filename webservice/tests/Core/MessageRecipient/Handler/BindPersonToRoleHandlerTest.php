@@ -32,7 +32,7 @@ final class BindPersonToRoleHandlerTest extends TestCase
             $personID,
         );
 
-        $person = $this->createMock(Person::class);
+        $person = self::createStub(Person::class);
         $role = $this->createMock(Role::class);
         $role->expects(self::once())->method('bindPerson')->with($person);
 
@@ -92,11 +92,11 @@ final class BindPersonToRoleHandlerTest extends TestCase
             $personID,
         );
 
-        $role = $this->createMock(Role::class);
+        $role = self::createStub(Role::class);
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('getRecipientFromID')->willReturn($role);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new BindPersonToRoleHandler($repo, $uow);
 
@@ -121,7 +121,7 @@ final class BindPersonToRoleHandlerTest extends TestCase
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('getRecipientFromID')->willReturn(null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new BindPersonToRoleHandler($repo, $uow);
 
@@ -144,10 +144,10 @@ final class BindPersonToRoleHandlerTest extends TestCase
         );
 
         $repo = $this->createMock(MessageRecipientRepository::class);
-        $role = $this->createMock(Role::class);
+        $role = self::createStub(Role::class);
         $repo->expects(self::exactly(2))->method('getRecipientFromID')->willReturnOnConsecutiveCalls($role, null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new BindPersonToRoleHandler($repo, $uow);
 

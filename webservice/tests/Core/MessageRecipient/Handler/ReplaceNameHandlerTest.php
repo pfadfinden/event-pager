@@ -57,11 +57,10 @@ final class ReplaceNameHandlerTest extends TestCase
             $name,
         );
 
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('getRecipientFromID')->willReturn(null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new ReplaceNameHandler($repo, $uow);
 
