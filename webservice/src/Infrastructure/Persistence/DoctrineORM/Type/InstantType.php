@@ -6,7 +6,8 @@ namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 
 use Brick\DateTime\Instant;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
 use function preg_match;
 use function str_pad;
@@ -29,11 +30,11 @@ final class InstantType extends Type
         }
 
         if (!$value instanceof Instant) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', Instant::class]);
+            throw InvalidType::new($value, $this->getName(), ['null', Instant::class]);
         }
 
         if ($value->getEpochSecond() >= 10_000_000_000 || $value->getEpochSecond() <= -10_000_000_000) {
-            throw ConversionException::conversionFailedFormat($value->toDecimal(), self::NAME, '-10M to 10M seconds around Unix epoch.');
+            throw InvalidFormat::new($value->toDecimal(), self::NAME, '-10M to 10M seconds around Unix epoch.');
         }
 
         return $value->toDecimal();
@@ -51,7 +52,7 @@ final class InstantType extends Type
         }
 
         if (!is_numeric($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string', 'int', 'float']);
+            throw InvalidType::new($value, $this->getName(), ['null', 'string', 'int', 'float']);
         }
 
         $matches = [];
@@ -62,7 +63,7 @@ final class InstantType extends Type
             );
         }
 
-        throw ConversionException::conversionFailedFormat($value, $this->getName(), '/\d{1,10}(\.\d{0,9})?/');
+        throw InvalidFormat::new((string) $value, $this->getName(), '/\d{1,10}(\.\d{0,9})?/');
     }
 
     public function getName(): string

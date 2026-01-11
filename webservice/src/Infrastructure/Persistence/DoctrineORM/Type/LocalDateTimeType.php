@@ -6,7 +6,8 @@ namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 
 use Brick\DateTime\LocalDateTime;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
 use Throwable;
 use function is_string;
@@ -32,7 +33,7 @@ final class LocalDateTimeType extends Type
             return $value->toISOString();
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', LocalDateTime::class]);
+        throw InvalidType::new($value, $this->getName(), ['null', LocalDateTime::class]);
     }
 
     /**
@@ -47,13 +48,13 @@ final class LocalDateTimeType extends Type
         }
 
         if (!is_string($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
+            throw InvalidType::new($value, $this->getName(), ['null', 'string']);
         }
 
         try {
             return LocalDateTime::parse($value);
         } catch (Throwable $ex) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), 'ISO 8601', $ex);
+            throw InvalidFormat::new($value, $this->getName(), 'ISO 8601', $ex);
         }
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function count;
@@ -47,7 +47,7 @@ final class UlidArrayType extends Type
         $ulidType = self::ulidType();
 
         if (false === is_string($value)) {
-            throw ConversionException::conversionFailed($value, 'Ulid[]');
+            throw ValueNotConvertible::new($value, 'Ulid[]');
         }
 
         /* @phpstan-ignore return.type */
