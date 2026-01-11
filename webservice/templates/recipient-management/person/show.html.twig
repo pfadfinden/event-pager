@@ -12,7 +12,7 @@
 		</nav>
 
 		<h1>
-			<span class="badge text-bg-info me-2">
+			<span class="badge badge-recipient-person me-2">
 				<twig:ux:icon name="bi:person" height="20" width="20" aria-hidden="true" class="bi"/>
 			</span>
 			{{ recipient.name }}
@@ -72,6 +72,12 @@
 			</ul>
 		</div>
 		{% endif %}
+
+		{{ include('recipient-management/_transport/_list.html.twig', {
+			recipient: recipient,
+			recipientType: 'person',
+			manageRole: 'ROLE_MANAGE_RECIPIENT_INDIVIDUALS'
+		}) }}
 
 		{% if is_granted('ROLE_MANAGE_RECIPIENT_INDIVIDUALS') %}
 		<div class="row gx-5">

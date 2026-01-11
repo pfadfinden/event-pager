@@ -45,6 +45,16 @@ class RecipientTransportConfiguration
         $this->key = $key;
     }
 
+    public function getId(): Ulid
+    {
+        return $this->id;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
     /**
      * @returns ?array vendor-specific json-compatible configuration data, e.g. API Keys
      */

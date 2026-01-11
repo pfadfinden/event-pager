@@ -1,0 +1,66 @@
+{# Reusable transport configuration list partial #}
+{# Required variables: recipient, recipientType, manageRole #}
+
+<div class="mt-5">
+    <h3>{% trans %}Transport Configurations{% endtrans %}</h3>
+
+    {% if recipient.transportConfigurations|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">{% trans %}Transport{% endtrans %}</th>
+                        <th scope="col">{% trans %}Status{% endtrans %}</th>
+                        <th scope="col">{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for key, config in recipient.transportConfigurations %}
+                        <tr>
+                            <td>
+                                <twig:ux:icon name="bi:send" height="16" width="16" aria-hidden="true" class="bi me-2"/>
+                                {{ key }}
+                            </td>
+                            <td>
+                                {% if config.isEnabled %}
+                                    <span class="badge text-bg-success">{% trans %}Enabled{% endtrans %}</span>
+                                {% else %}
+                                    <span class="badge text-bg-secondary">{% trans %}Disabled{% endtrans %}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if is_granted(manageRole) %}
+                                    <a href="{{ path('web_recipient_management_transport_edit', {recipientType: recipientType, id: recipient.id, transportKey: key}) }}"
+                                       class="btn btn-outline-primary btn-sm"
+                                       title="{{ 'Edit'|trans }}">
+                                        <twig:ux:icon name="bi:pencil" height="14" width="14" aria-hidden="true" class="bi"/>
+                                    </a>
+                                    <form action="{{ path('web_recipient_management_transport_remove', {recipientType: recipientType, id: recipient.id, transportKey: key}) }}"
+                                          method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-outline-danger btn-sm"
+                                                title="{{ 'Remove'|trans }}"
+                                                onclick="return confirm('{{ 'Are you sure you want to remove this transport configuration?'|trans }}')">
+                                            <twig:ux:icon name="bi:trash" height="14" width="14" aria-hidden="true" class="bi"/>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">{% trans %}No transport configurations{% endtrans %}</p>
+    {% endif %}
+
+    {% if is_granted(manageRole) %}
+        <a href="{{ path('web_recipient_management_transport_add', {recipientType: recipientType, id: recipient.id}) }}"
+           class="btn btn-secondary mt-2">
+            <twig:ux:icon name="bi:plus" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+            {% trans %}Add Transport Configuration{% endtrans %}
+        </a>
+    {% endif %}
+</div>

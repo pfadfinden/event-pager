@@ -109,9 +109,9 @@ final class CreateRecipientHandlerTest extends TestCase
             'testRecepient',
         );
 
-        $repo = $this->createMock(MessageRecipientRepository::class);
+        $repo = self::createStub(MessageRecipientRepository::class);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new CreateRecipientHandler($repo, $uow);
 

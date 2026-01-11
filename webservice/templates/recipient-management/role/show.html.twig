@@ -12,7 +12,7 @@
 		</nav>
 
 		<h1>
-			<span class="badge text-bg-warning me-2">
+			<span class="badge badge-recipient-role me-2">
 				<twig:ux:icon name="bi:person-badge" height="20" width="20" aria-hidden="true" class="bi"/>
 			</span>
 			{{ recipient.name }}
@@ -41,7 +41,7 @@
 				<div class="card">
 					<div class="card-body d-flex justify-content-between align-items-center">
 						<span>
-							<span class="badge text-bg-info me-2">
+							<span class="badge badge-recipient-person me-2">
 								<twig:ux:icon name="bi:person" height="14" width="14" aria-hidden="true" class="bi"/>
 							</span>
 							{{ recipient.assignedPerson.name }}
@@ -86,6 +86,12 @@
 			</ul>
 		</div>
 		{% endif %}
+
+		{{ include('recipient-management/_transport/_list.html.twig', {
+			recipient: recipient,
+			recipientType: 'role',
+			manageRole: 'ROLE_MANAGE_RECIPIENT_ROLES'
+		}) }}
 
 		{% if is_granted('ROLE_MANAGE_RECIPIENT_ROLES') %}
 		<div class="row gx-5">

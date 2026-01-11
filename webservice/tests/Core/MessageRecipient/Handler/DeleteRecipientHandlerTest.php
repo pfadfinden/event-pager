@@ -28,7 +28,7 @@ final class DeleteRecipientHandlerTest extends TestCase
             $idToDelete
         );
 
-        $person = $this->createMock(Person::class);
+        $person = self::createStub(Person::class);
         $person->method('getRoles')->willReturn([]);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -57,13 +57,10 @@ final class DeleteRecipientHandlerTest extends TestCase
             $idToDelete
         );
 
-        $person = $this->createMock(Person::class);
-        $person->method('getRoles')->willReturn([]);
-
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('getRecipientFromID')->willReturn(null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new DeleteRecipientHandler($repo, $uow);
 
@@ -82,7 +79,7 @@ final class DeleteRecipientHandlerTest extends TestCase
             $idToDelete
         );
 
-        $person = $this->createMock(Person::class);
+        $person = self::createStub(Person::class);
         $person->method('getRoles')->willReturn(['Role1', 'Role2']);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -90,7 +87,7 @@ final class DeleteRecipientHandlerTest extends TestCase
             ->with(self::callback(fn (Ulid $id) => $id->equals(Ulid::fromString($idToDelete))))
             ->willReturn($person);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new DeleteRecipientHandler($repo, $uow);
 

@@ -118,17 +118,17 @@
                 <tr>
                     <td>
                         {% if r.type == 'PERSON' %}
-                            <span class="badge text-bg-info">
+                            <span class="badge badge-recipient-person">
                                 <twig:ux:icon name="bi:person" height="14" width="14" aria-hidden="true" class="bi me-1"/>
                                 {% trans %}Person{% endtrans %}
                             </span>
                         {% elseif r.type == 'GROUP' %}
-                            <span class="badge text-bg-success">
+                            <span class="badge badge-recipient-group">
                                 <twig:ux:icon name="bi:people" height="14" width="14" aria-hidden="true" class="bi me-1"/>
                                 {% trans %}Group{% endtrans %}
                             </span>
                         {% elseif r.type == 'ROLE' %}
-                            <span class="badge text-bg-warning">
+                            <span class="badge badge-recipient-role">
                                 <twig:ux:icon name="bi:person-badge" height="14" width="14" aria-hidden="true" class="bi me-1"/>
                                 {% trans %}Role{% endtrans %}
                             </span>

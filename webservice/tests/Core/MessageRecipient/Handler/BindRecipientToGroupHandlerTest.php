@@ -31,7 +31,7 @@ final class BindRecipientToGroupHandlerTest extends TestCase
             $recipientID,
         );
 
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
+        $recipient = self::createStub(AbstractMessageRecipient::class);
         $group = $this->createMock(Group::class);
         $group->expects(self::once())->method('addMember')->with($recipient);
 
@@ -63,13 +63,10 @@ final class BindRecipientToGroupHandlerTest extends TestCase
             $recipientID,
         );
 
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
-        $group = $this->createMock(Group::class);
-
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('getRecipientFromID')->willReturn(null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new BindRecipientToGroupHandler($repo, $uow);
 
@@ -93,13 +90,12 @@ final class BindRecipientToGroupHandlerTest extends TestCase
             $recipientID,
         );
 
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
-        $group = $this->createMock(Group::class);
+        $group = self::createStub(Group::class);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::exactly(2))->method('getRecipientFromID')->willReturnOnConsecutiveCalls($group, null);
 
-        $uow = $this->createMock(UnitOfWork::class);
+        $uow = self::createStub(UnitOfWork::class);
 
         $sut = new BindRecipientToGroupHandler($repo, $uow);
 
