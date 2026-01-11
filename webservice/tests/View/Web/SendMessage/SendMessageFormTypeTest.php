@@ -9,12 +9,14 @@ use App\View\Web\SendMessage\Form\RecipientsChoiceLoader;
 use App\View\Web\SendMessage\Form\SendMessageFormType;
 use App\View\Web\SendMessage\SendMessageRecipientRequest;
 use App\View\Web\SendMessage\SendMessageRequest;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 #[Group('unit')]
+#[AllowMockObjectsWithoutExpectations]
 final class SendMessageFormTypeTest extends TypeTestCase
 {
     use FormValidationTrait;
@@ -135,7 +137,7 @@ final class SendMessageFormTypeTest extends TypeTestCase
     // @phpstan-ignore missingType.iterableValue (no array literal type available)
     public function init(): array
     {
-        $mockChoiceLoader = $this->createMock(RecipientsChoiceLoader::class);
+        $mockChoiceLoader = self::createStub(RecipientsChoiceLoader::class);
 
         $model = new SendMessageRequest();
         // $model will retrieve data from the form submission; pass it as the second argument

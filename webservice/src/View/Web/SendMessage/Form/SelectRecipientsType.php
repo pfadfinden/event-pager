@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * Requires a ChoiceLoader providing a list of RecipientListEntry
  *
- * @extends AbstractType<RecipientListEntry>
+ * @extends AbstractType<RecipientListEntry[]>
  */
 final class SelectRecipientsType extends AbstractType
 {

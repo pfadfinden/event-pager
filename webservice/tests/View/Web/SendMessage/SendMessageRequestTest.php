@@ -7,12 +7,14 @@ namespace App\Tests\View\Web\SendMessage;
 use App\Tests\TestUtilities\FormValidationTrait;
 use App\View\Web\SendMessage\SendMessageRecipientRequest;
 use App\View\Web\SendMessage\SendMessageRequest;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 #[CoversClass(SendMessageRequest::class)]
 #[Group('unit')]
+#[AllowMockObjectsWithoutExpectations]
 final class SendMessageRequestTest extends TypeTestCase
 {
     use FormValidationTrait;

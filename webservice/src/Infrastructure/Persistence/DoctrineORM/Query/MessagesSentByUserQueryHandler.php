@@ -34,6 +34,7 @@ final readonly class MessagesSentByUserQueryHandler
                 'Unknown' )
             FROM $source m
             WHERE m.by = :sentBy
+            ORDER BY m.sentOn DESC
             EOF;
         // Doctrine currently uses UUID format to store ULIDs, therefore we have to convert here:
         $parameters = ['sentBy' => Ulid::fromString($query->sentBy)->toRfc4122()];
