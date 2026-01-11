@@ -32,9 +32,9 @@ final class PersonTest extends TestCase
         $person = new Person($name, $id);
 
         if (null === $id) {
-            $person->id->toString();
+            $person->getId()->toString();
         } else {
-            self::assertSame($id, $person->id);
+            self::assertSame($id, $person->getId());
         }
         self::assertSame($name, $person->getName());
         self::assertSame([], $person->getRoles());

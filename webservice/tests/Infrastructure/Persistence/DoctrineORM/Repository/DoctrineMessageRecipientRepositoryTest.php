@@ -36,7 +36,7 @@ final class DoctrineMessageRecipientRepositoryTest extends KernelTestCase
 
         // Assert
         $em->clear();
-        $result = $em->find(AbstractMessageRecipient::class, $recipient->id);
+        $result = $em->find(AbstractMessageRecipient::class, $recipient->getId());
 
         self::assertInstanceOf(Role::class, $result);
         self::assertEquals('Role A', $result->getName());

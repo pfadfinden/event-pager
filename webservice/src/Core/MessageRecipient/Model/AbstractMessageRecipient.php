@@ -8,6 +8,7 @@ use App\Core\TransportContract\Port\Transport;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
@@ -90,5 +91,32 @@ abstract class AbstractMessageRecipient implements MessageRecipient
     public function getTransportConfiguration(): array
     {
         return $this->transportConfiguration->toArray();
+    }
+
+    public function hasTransportConfiguration(string $key): bool
+    {
+        return $this->transportConfiguration->containsKey($key);
+    }
+
+    public function addTransportConfiguration(string $key): RecipientTransportConfiguration
+    {
+        if ($this->transportConfiguration->containsKey($key)) {
+            throw new InvalidArgumentException("Transport configuration for key '{$key}' already exists.");
+        }
+
+        $config = new RecipientTransportConfiguration($this, $key);
+        $this->transportConfiguration->set($key, $config);
+
+        return $config;
+    }
+
+    public function getTransportConfigurationByKey(string $key): ?RecipientTransportConfiguration
+    {
+        return $this->transportConfiguration->get($key);
+    }
+
+    public function removeTransportConfiguration(string $key): void
+    {
+        $this->transportConfiguration->remove($key);
     }
 }

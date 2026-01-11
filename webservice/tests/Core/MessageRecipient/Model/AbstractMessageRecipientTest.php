@@ -32,9 +32,9 @@ final class AbstractMessageRecipientTest extends TestCase
         $recipient = new class($name, $id) extends AbstractMessageRecipient {};
 
         if (null === $id) {
-            $recipient->id->toString();
+            $recipient->getId()->toString();
         } else {
-            self::assertSame($id, $recipient->id);
+            self::assertSame($id, $recipient->getId());
         }
         self::assertSame($name, $recipient->getName());
         self::assertSame([], $recipient->getGroups());

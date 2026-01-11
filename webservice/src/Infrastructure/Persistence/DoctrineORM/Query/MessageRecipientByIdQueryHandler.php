@@ -11,6 +11,7 @@ use App\Core\MessageRecipient\Model\Role;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
 use App\Core\MessageRecipient\ReadModel\RecipientDetail;
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
+use App\Core\MessageRecipient\ReadModel\TransportConfigurationEntry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
@@ -77,6 +78,17 @@ final readonly class MessageRecipientByIdQueryHandler
             }
         }
 
+        // Get transport configurations
+        $transportConfigurations = [];
+        foreach ($recipient->getTransportConfiguration() as $key => $config) {
+            $transportConfigurations[$key] = new TransportConfigurationEntry(
+                $config->getId()->toString(),
+                $config->getKey(),
+                $config->isEnabled,
+                $config->getVendorSpecificConfig(),
+            );
+        }
+
         return new RecipientDetail(
             $recipient->getId()->toString(),
             $type,
@@ -85,6 +97,7 @@ final readonly class MessageRecipientByIdQueryHandler
             $groups,
             $assignedPerson,
             $assignedRoles,
+            $transportConfigurations,
         );
     }
 

@@ -10,11 +10,12 @@ namespace App\Core\MessageRecipient\ReadModel;
 final class RecipientDetail
 {
     /**
-     * @param "GROUP"|"ROLE"|"PERSON"   $type
-     * @param array<RecipientListEntry> $members        For groups: list of direct members
-     * @param array<RecipientListEntry> $groups         Groups this recipient belongs to
-     * @param RecipientListEntry|null   $assignedPerson For roles: the person assigned to this role
-     * @param array<RecipientListEntry> $assignedRoles  For persons: roles assigned to this person
+     * @param "GROUP"|"ROLE"|"PERSON"                    $type
+     * @param array<RecipientListEntry>                  $members                 For groups: list of direct members
+     * @param array<RecipientListEntry>                  $groups                  Groups this recipient belongs to
+     * @param RecipientListEntry|null                    $assignedPerson          For roles: the person assigned to this role
+     * @param array<RecipientListEntry>                  $assignedRoles           For persons: roles assigned to this person
+     * @param array<string, TransportConfigurationEntry> $transportConfigurations Transport configurations keyed by transport key
      */
     public function __construct(
         public string $id,
@@ -24,6 +25,7 @@ final class RecipientDetail
         public array $groups = [],
         public ?RecipientListEntry $assignedPerson = null,
         public array $assignedRoles = [],
+        public array $transportConfigurations = [],
     ) {
     }
 

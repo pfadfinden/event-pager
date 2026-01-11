@@ -141,3 +141,25 @@ Save: Speichern
 'Failed to bind person: {message}': 'Fehler beim Zuweisen der Person: {message}'
 'Failed to unbind person: {message}': 'Fehler beim Aufheben der Zuweisung: {message}'
 'Name is required': 'Name ist erforderlich'
+'Transport Configurations': Transportkonfigurationen
+Transport: Transport
+Enabled: Aktiviert
+Disabled: Deaktiviert
+'No transport configurations': 'Keine Transportkonfigurationen'
+'Add Transport Configuration': 'Transportkonfiguration hinzufügen'
+'Edit Transport Configuration': 'Transportkonfiguration bearbeiten'
+'Configuration (JSON)': 'Konfiguration (JSON)'
+'Enter valid JSON configuration data, or leave empty.': 'Gültige JSON-Konfigurationsdaten eingeben oder leer lassen.'
+'Select transport...': 'Transport auswählen...'
+'Configure a transport for': 'Transport konfigurieren für'
+'Editing transport': 'Transport bearbeiten'
+for: für
+'Add Configuration': 'Konfiguration hinzufügen'
+Cancel: Abbrechen
+'Transport configuration added successfully': 'Transportkonfiguration erfolgreich hinzugefügt'
+'Transport configuration updated successfully': 'Transportkonfiguration erfolgreich aktualisiert'
+'Transport configuration removed successfully': 'Transportkonfiguration erfolgreich entfernt'
+'Failed to add transport configuration: {message}': 'Fehler beim Hinzufügen der Transportkonfiguration: {message}'
+'Failed to update transport configuration: {message}': 'Fehler beim Aktualisieren der Transportkonfiguration: {message}'
+'Failed to remove transport configuration: {message}': 'Fehler beim Entfernen der Transportkonfiguration: {message}'
+'Are you sure you want to remove this transport configuration?': 'Möchten Sie diese Transportkonfiguration wirklich entfernen?'

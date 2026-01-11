@@ -35,9 +35,9 @@ final class GroupTest extends TestCase
         $group = new Group($name, $id);
 
         if (null === $id) {
-            $group->id->toString();
+            $group->getId()->toString();
         } else {
-            self::assertSame($id, $group->id);
+            self::assertSame($id, $group->getId());
         }
         self::assertSame($name, $group->getName());
         self::assertSame([], $group->getMembers());
