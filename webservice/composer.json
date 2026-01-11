@@ -20,6 +20,7 @@
         "symfony/flex": "^2",
         "symfony/form": "8.0.*",
         "symfony/framework-bundle": "8.0.*",
+        "symfony/http-client": "8.0.*",
         "symfony/messenger": "8.0.*",
         "symfony/monolog-bundle": "^v4",
         "symfony/runtime": "8.0.*",

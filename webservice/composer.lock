@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "174144ff59e42e4e92ab88a1824b385f",
+    "content-hash": "7f2eba5ddceff0902b52f7582b01cefe",
     "packages": [
         {
             "name": "brick/date-time",
