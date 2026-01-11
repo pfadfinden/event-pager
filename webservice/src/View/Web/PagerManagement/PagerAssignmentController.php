@@ -7,6 +7,8 @@ namespace App\View\Web\PagerManagement;
 use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\IntelPage\Command\ActivatePager;
+use App\Core\IntelPage\Command\AssignCarrier;
+use App\Core\IntelPage\Command\DeactivatePager;
 use App\Core\IntelPage\Query\Pager;
 use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
@@ -42,9 +44,23 @@ final class PagerAssignmentController extends AbstractController
         $assignableToRecipients = iterator_to_array($this->queryBus->get(ListOfMessageRecipients::onlyPeople()));
         array_push($assignableToRecipients, ...$this->queryBus->get(ListOfMessageRecipients::onlyRoles()));
 
+        $currentRecipient = null;
+        if (null !== $pager->carriedById) {
+            foreach ($assignableToRecipients as $recipient) {
+                if ($recipient->id === $pager->carriedById) {
+                    $currentRecipient = $recipient;
+                    break;
+                }
+            }
+        }
+
         $form = $this->createFormBuilder()
            ->add('assign', ChoiceType::class, [
-               'choices' => $assignableToRecipients, 'required' => false, 'choice_label' => fn (?RecipientListEntry $recipient) => $recipient?->name, 'choice_value' => fn (?RecipientListEntry $recipient) => $recipient?->id,
+               'choices' => $assignableToRecipients,
+               'required' => false,
+               'choice_label' => fn (?RecipientListEntry $recipient) => $recipient?->name,
+               'choice_value' => fn (?RecipientListEntry $recipient) => $recipient?->id,
+               'data' => $currentRecipient,
            ])
             ->add('changeOnly', SubmitType::class)
             ->add('changeAndActivate', SubmitType::class)
@@ -54,13 +70,24 @@ final class PagerAssignmentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                /** @var RecipientListEntry|null $selectedRecipient */
+                $selectedRecipient = $form->get('assign')->getData();
+                $recipientId = $selectedRecipient?->id;
+
+                $this->commandBus->do(new AssignCarrier($pager->id, $recipientId));
+
                 /** @phpstan-ignore-next-line method.notFound */
                 if ($form->get('changeAndActivate')->isClicked()) {
                     $this->commandBus->do(new ActivatePager($pager->id));
                     $this->addFlash('success', t('Status & Assignment saved.'));
-                }
 
-                // TODO other options - implement changeOnly and changeAndDeactivate
+                    /** @phpstan-ignore-next-line method.notFound */
+                } elseif ($form->get('changeAndDeactivate')->isClicked()) {
+                    $this->commandBus->do(new DeactivatePager($pager->id));
+                    $this->addFlash('success', t('Status & Assignment saved.'));
+                } else {
+                    $this->addFlash('success', t('Assignment saved.'));
+                }
 
                 return $this->redirectToRoute('web_pager_management_pager_details', ['id' => $pagerId->toString()]);
             } catch (RuntimeException $e) {
