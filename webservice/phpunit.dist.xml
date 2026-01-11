@@ -17,6 +17,9 @@
         <server name="APP_SECRET" value="$ecretf0rt3st" />
         <server name="KERNEL_CLASS" value="App\Kernel" />
         <server name="SHELL_VERBOSITY" value="-1" />
+
+        <!-- ###+ symfony/telegram-notifier ### -->
+        <!-- ###- symfony/telegram-notifier ### -->
     </php>
 
     <testsuites>
