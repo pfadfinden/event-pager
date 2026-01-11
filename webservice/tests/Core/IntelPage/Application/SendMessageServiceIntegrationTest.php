@@ -47,8 +47,8 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
         // T= 10minutes
         DefaultClock::set(new FixedClock(Instant::of(60 * 10)));
 
-        $transmitter = $this->createMock(IntelPageTransmitterInterface::class);
-        $eventBus = $this->createMock(MessageBusInterface::class);
+        $transmitter = self::createStub(IntelPageTransmitterInterface::class);
+        $eventBus = self::createStub(MessageBusInterface::class);
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 
@@ -88,8 +88,8 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
         // T= 10minutes
         DefaultClock::set(new FixedClock(Instant::of(60 * 10)));
 
-        $transmitter = $this->createMock(IntelPageTransmitterInterface::class);
-        $eventBus = $this->createMock(MessageBusInterface::class);
+        $transmitter = self::createStub(IntelPageTransmitterInterface::class);
+        $eventBus = self::createStub(MessageBusInterface::class);
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 
@@ -138,8 +138,8 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
         // T= 10minutes
         DefaultClock::set(new FixedClock(Instant::of(60 * 10)));
 
-        $transmitter = $this->createMock(IntelPageTransmitterInterface::class);
-        $eventBus = $this->createMock(MessageBusInterface::class);
+        $transmitter = self::createStub(IntelPageTransmitterInterface::class);
+        $eventBus = self::createStub(MessageBusInterface::class);
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 
@@ -174,8 +174,8 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
         // T= 10minutes
         DefaultClock::set(new FixedClock(Instant::of(60 * 10)));
 
-        $transmitter = $this->createMock(IntelPageTransmitterInterface::class);
-        $eventBus = $this->createMock(MessageBusInterface::class);
+        $transmitter = self::createStub(IntelPageTransmitterInterface::class);
+        $eventBus = self::createStub(MessageBusInterface::class);
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 

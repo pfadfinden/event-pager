@@ -36,7 +36,7 @@ final class InstantTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueProvider')]
     public function testConvertToDatabaseValue(?string $expected, ?Instant $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new InstantType();
 
         $result = $type->convertToDatabaseValue($value, $platform);
@@ -61,7 +61,7 @@ final class InstantTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
     public function testConvertToDatabaseValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new InstantType();
 
         self::expectException(ConversionException::class);
@@ -92,7 +92,7 @@ final class InstantTypeTest extends TestCase
     #[DataProvider('convertToPhpValueProvider')]
     public function testConvertToPhpValue(?Instant $expected, mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new InstantType();
 
         $result = $type->convertToPHPValue($value, $platform);
@@ -120,7 +120,7 @@ final class InstantTypeTest extends TestCase
     #[DataProvider('convertToPhpValueExceptionProvider')]
     public function testConvertToPhpValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new InstantType();
 
         self::expectException(ConversionException::class);

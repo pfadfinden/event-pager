@@ -35,7 +35,7 @@ final class LocalTimeTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueProvider')]
     public function testConvertToDatabaseValue(?string $expected, ?LocalTime $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalTimeType();
 
         $result = $type->convertToDatabaseValue($value, $platform);
@@ -59,7 +59,7 @@ final class LocalTimeTypeTest extends TestCase
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
     public function testConvertToDatabaseValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalTimeType();
 
         self::expectException(ConversionException::class);
@@ -86,7 +86,7 @@ final class LocalTimeTypeTest extends TestCase
     #[DataProvider('convertToPhpValueProvider')]
     public function testConvertToPhpValue(?LocalTime $expected, ?string $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalTimeType();
 
         $result = $type->convertToPHPValue($value, $platform);
@@ -116,7 +116,7 @@ final class LocalTimeTypeTest extends TestCase
     #[DataProvider('convertToPhpValueExceptionProvider')]
     public function testConvertToPhpValueException(mixed $value): void
     {
-        $platform = $this->createMock(AbstractPlatform::class);
+        $platform = self::createStub(AbstractPlatform::class);
         $type = new LocalTimeType();
 
         self::expectException(ConversionException::class);
