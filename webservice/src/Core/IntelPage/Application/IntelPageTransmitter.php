@@ -37,7 +37,7 @@ final readonly class IntelPageTransmitter implements IntelPageTransmitterInterfa
 
         $errno = 0;
         $errstr = '';
-        $fp = fsockopen($this->transmitterHost, $this->transmitterPort, $errno, $errstr, $this->transmitterConnectionTimout);
+        $fp = @fsockopen($this->transmitterHost, $this->transmitterPort, $errno, $errstr, $this->transmitterConnectionTimout);
         if (false === $fp) {
             throw new IntelPageTransmitterNotAvailable('The transmitter "'.$this->transmitterHost.':'.$this->transmitterPort.'" is not reachable. Error number: '.$errno.' Error string: '.$errstr);
         }

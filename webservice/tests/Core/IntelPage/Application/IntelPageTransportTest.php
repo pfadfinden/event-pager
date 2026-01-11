@@ -33,11 +33,11 @@ final class IntelPageTransportTest extends TestCase
 {
     private function initTransport(?QueryBus $queryBus = null, ?CommandBus $commandBus = null, ?EventBus $eventBus = null): IntelPageTransport
     {
-        $systemTransportConfigMock = self::createMock(SystemTransportConfig::class);
+        $systemTransportConfigMock = self::createStub(SystemTransportConfig::class);
         $systemTransportConfigMock->method('getKey')->willReturn('custom-key');
-        $queryBusMock = $queryBus ?? self::createMock(QueryBus::class);
-        $commandBusMock = $commandBus ?? self::createMock(CommandBus::class);
-        $eventBusMock = $eventBus ?? self::createMock(EventBus::class);
+        $queryBusMock = $queryBus ?? self::createStub(QueryBus::class);
+        $commandBusMock = $commandBus ?? self::createStub(CommandBus::class);
+        $eventBusMock = $eventBus ?? self::createStub(EventBus::class);
 
         return new IntelPageTransport(
             $systemTransportConfigMock,
@@ -63,7 +63,7 @@ final class IntelPageTransportTest extends TestCase
     {
         $transport = self::initTransport();
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn(null);
 
         $messageMock = new class implements Message {
@@ -82,12 +82,12 @@ final class IntelPageTransportTest extends TestCase
     public function testCanSendToWorksForChannels(): void
     {
         // Arrange
-        $queryBus = self::createMock(QueryBus::class);
+        $queryBus = self::createStub(QueryBus::class);
         $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
 
         $transport = self::initTransport($queryBus);
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn(['channel' => '01JT62N5PE9HBQTEZ1PPE6CJ4F']);
 
         $messageMock = new class implements Message {
@@ -107,17 +107,17 @@ final class IntelPageTransportTest extends TestCase
     public function testCanSendToWorksForIndividuals(): void
     {
         // Arrange
-        $pagerMock = self::createMock(Pager::class);
+        $pagerMock = self::createStub(Pager::class);
         $pagerMock->method('isActivated')->willReturn(true);
         $pagerMock->method('individualAlertCap')->willReturn(CapCode::fromInt(999));
         $pagerMock->method('individualNonAlertCap')->willReturn(CapCode::fromInt(111));
 
-        $queryBus = self::createMock(QueryBus::class);
+        $queryBus = self::createStub(QueryBus::class);
         $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
 
         $transport = self::initTransport($queryBus);
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn([]);
         $messageRecipientMock->method('getId')->willReturn(Ulid::fromString('01JT62N5PE9HBQTEZ1PPE6CJ4F'));
 
@@ -140,7 +140,7 @@ final class IntelPageTransportTest extends TestCase
         self::expectException(IntelPageMessageTooLong::class);
         self::expectExceptionMessage('The message was too long with 513 bytes, the maximum allowed is 512.');
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
 
         $messageMock = new class implements Message {
             public Ulid $messageId {
@@ -159,12 +159,12 @@ final class IntelPageTransportTest extends TestCase
     public function testCanSendToPager(): void
     {
         // Expect
-        $pagerMock = self::createMock(Pager::class);
+        $pagerMock = self::createStub(Pager::class);
         $pagerMock->method('isActivated')->willReturn(true);
         $pagerMock->method('individualAlertCap')->willReturn(CapCode::fromInt(999));
         $pagerMock->method('individualNonAlertCap')->willReturn(CapCode::fromInt(111));
 
-        $queryBus = self::createMock(QueryBus::class);
+        $queryBus = self::createStub(QueryBus::class);
         $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
 
         $commandBus = self::createMock(CommandBus::class);
@@ -173,7 +173,7 @@ final class IntelPageTransportTest extends TestCase
         // Arrange
         $transport = self::initTransport($queryBus, $commandBus);
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn([]);
         $messageRecipientMock->method('getId')->willReturn(Ulid::fromString('01JT62N5PE9HBQTEZ1PPE6CJ4F'));
 
@@ -196,7 +196,7 @@ final class IntelPageTransportTest extends TestCase
     public function testCanSendToChannel(): void
     {
         // Expect
-        $queryBus = self::createMock(QueryBus::class);
+        $queryBus = self::createStub(QueryBus::class);
         $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
 
         $commandBus = self::createMock(CommandBus::class);
@@ -205,7 +205,7 @@ final class IntelPageTransportTest extends TestCase
         // Arrange
         $transport = self::initTransport($queryBus, $commandBus);
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn(['channel' => '01JT62N5PE9HBQTEZ1PPE6CJ4F']);
 
         $messageMock = new class implements Message {
@@ -235,7 +235,7 @@ final class IntelPageTransportTest extends TestCase
         // Arrange
         $transport = self::initTransport(eventBus: $eventBus);
 
-        $messageRecipientMock = self::createMock(MessageRecipient::class);
+        $messageRecipientMock = self::createStub(MessageRecipient::class);
         $messageRecipientMock->method('getTransportConfigurationFor')->with($transport)->willReturn(null);
 
         $messageMock = new class implements Message {

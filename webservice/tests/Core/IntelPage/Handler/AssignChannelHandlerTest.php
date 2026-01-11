@@ -98,7 +98,7 @@ final class AssignChannelHandlerTest extends TestCase
                 };
             });
 
-        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock = self::createStub(UnitOfWork::class);
 
         $sut = new AssignChannelHandler($entityManagerMock, $unitOfWorkMock);
 
@@ -138,7 +138,7 @@ final class AssignChannelHandlerTest extends TestCase
                 };
             });
 
-        $unitOfWorkMock = self::createMock(UnitOfWork::class);
+        $unitOfWorkMock = self::createStub(UnitOfWork::class);
 
         $sut = new AssignChannelHandler($entityManagerMock, $unitOfWorkMock);
 

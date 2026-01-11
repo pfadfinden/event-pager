@@ -128,7 +128,7 @@ final class PagerTest extends TestCase
     public function testCarriedBy(): void
     {
         $pager = new Pager(Ulid::fromString(Ulid::generate()), 'Pager 3', 3);
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
+        $recipient = self::createStub(AbstractMessageRecipient::class);
 
         self::assertNull($pager->getCarriedBy(), 'Pager is not carried by anyone when new');
         $pager->setCarriedBy($recipient);
