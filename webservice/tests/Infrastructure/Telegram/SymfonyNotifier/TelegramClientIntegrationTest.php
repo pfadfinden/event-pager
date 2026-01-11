@@ -16,7 +16,7 @@ use Symfony\Component\HttpClient\HttpClient;
  *
  * Requires environment variables:
  * - TELEGRAM_BOT_TOKEN: The bot token from @BotFather
- * - TELEGRAM_CHAT_ID: The chat ID to send messages to (e.g., @juliusstoerrle's chat ID)
+ * - TELEGRAM_CHAT_ID: The chat ID to send messages to
  *
  * To get the chat ID, send a message to your bot and then call:
  * curl https://api.telegram.org/bot<TOKEN>/getUpdates
