@@ -182,6 +182,18 @@
             "config/packages/monolog.yaml"
         ]
     },
+    "symfony/notifier": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.0",
+            "ref": "178877daf79d2dbd62129dd03612cb1a2cb407cc"
+        },
+        "files": [
+            "config/packages/notifier.yaml"
+        ]
+    },
     "symfony/property-info": {
         "version": "7.3",
         "recipe": {
@@ -234,6 +246,15 @@
             "assets/controllers/hello_controller.js",
             "assets/stimulus_bootstrap.js"
         ]
+    },
+    "symfony/telegram-notifier": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.0",
+            "ref": "6cecb59a0e96c9e1cee469f2b82fa920101a68e8"
+        }
     },
     "symfony/translation": {
         "version": "7.3",
