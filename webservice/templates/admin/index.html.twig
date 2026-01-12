@@ -11,12 +11,33 @@
 		{{ component('Status') }}
 
 		{% if is_granted('ROLE_VIEW_RECIPIENTS') %}
-			<h2 class="mt-5 mb-4">Organisation</h2>
+			<h2 class="mt-5 mb-4">{% trans %}Organisation{% endtrans %}</h2>
 			{{ component('OrgStats') }}
 
-			<br/>
-
-			ToDo: Browse Add /Search?
+			<div class="d-flex flex-wrap gap-2 mt-3">
+				<a href="{{ path('web_recipient_management_overview') }}" class="btn btn-outline-primary">
+					<twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+					{% trans %}Manage Recipients{% endtrans %}
+				</a>
+				{% if is_granted('ROLE_MANAGE_RECIPIENT_INDIVIDUALS') %}
+					<a href="{{ path('web_recipient_management_person_add') }}" class="btn btn-outline-secondary">
+						<twig:ux:icon name="bi:person-plus" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}Add Person{% endtrans %}
+					</a>
+				{% endif %}
+				{% if is_granted('ROLE_MANAGE_RECIPIENT_GROUPS') %}
+					<a href="{{ path('web_recipient_management_group_add') }}" class="btn btn-outline-secondary">
+						<twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}Add Group{% endtrans %}
+					</a>
+				{% endif %}
+				{% if is_granted('ROLE_MANAGE_RECIPIENT_ROLES') %}
+					<a href="{{ path('web_recipient_management_role_add') }}" class="btn btn-outline-secondary">
+						<twig:ux:icon name="bi:person-badge" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}Add Role{% endtrans %}
+					</a>
+				{% endif %}
+			</div>
 		{% endif %}
 
 		{% if is_granted('ROLE_TRANSPORT_CONFIGURATION_VIEWER') %}
