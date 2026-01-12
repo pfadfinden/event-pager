@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}User Management{% endtrans %} - {% trans %}Edit User{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_home') }}">{% trans %}Administration{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_user_overview') }}">{% trans %}Users{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_user_details', {id: user.id}) }}">{{ user.displayName }}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{% trans %}Edit{% endtrans %}</li>
+			</ol>
+		</nav>
+
+		<h1>{% trans %}Edit User{% endtrans %}: {{ user.displayName }}</h1>
+
+		<div class="mt-4">
+			{{ form(form) }}
+		</div>
+	</main>
+{% endblock %}
