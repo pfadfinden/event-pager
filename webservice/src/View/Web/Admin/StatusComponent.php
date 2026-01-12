@@ -6,6 +6,7 @@ namespace App\View\Web\Admin;
 
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\SendMessage\Query\CountOfSendMessages;
+use App\Core\SendMessage\Query\CountOutgoingMessageErrors;
 use Brick\DateTime\Duration;
 use Brick\DateTime\Instant;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -34,6 +35,6 @@ class StatusComponent
 
     public function getErrorLast24Count(): int
     {
-        return rand(1, 500);
+        return $this->queryBus->get(CountOutgoingMessageErrors::since(Instant::now()->minus(Duration::ofHours(24))));
     }
 }
