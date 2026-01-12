@@ -1,0 +1,46 @@
+{# Navigation macros for sidebar and mobile menu #}
+
+{% macro nav_item(href, icon, label, active_routes, show_label = true, badge = null) %}
+    {% set is_active = app.request.attributes.get('_route') in active_routes or app.request.attributes.get('_route') starts with active_routes[0]|default('') %}
+    <a href="{{ href }}" class="nav-item-link {% if is_active %}active{% endif %}" {% if is_active %}aria-current="page"{% endif %}>
+        <twig:ux:icon name="{{ icon }}" class="nav-item-icon" aria-hidden="true" />
+        {% if show_label %}
+            <span class="nav-item-label">{{ label|trans }}</span>
+        {% endif %}
+        {% if badge is not null %}
+            <span class="nav-item-badge">{{ badge }}</span>
+        {% endif %}
+    </a>
+{% endmacro %}
+
+{% macro nav_items_main(show_labels = true) %}
+    {% import _self as nav %}
+
+    <div class="nav-items-main">
+        {{ nav.nav_item('/', 'bi:house-door', 'Home', ['app_view_web_home__invoke'], show_labels) }}
+
+        {% if is_granted('ROLE_ACCESS_WEB_SEND') %}
+            {{ nav.nav_item('/send', 'bi:chat-quote', 'Send', ['app_view_web_sendmessage_sendmessage__invoke'], show_labels) }}
+        {% endif %}
+
+        {% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_SENT_PERSONAL') %}
+            {{ nav.nav_item('/message-history', 'bi:clock-history', 'Message History', ['web_message_history'], show_labels) }}
+        {% endif %}
+
+        {% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_RECEIVED') %}
+            {{ nav.nav_item('/inbox', 'bi:envelope', 'Inbox', ['web_inbox'], show_labels) }}
+        {% endif %}
+
+        {% if is_granted('ROLE_VIEW_RECIPIENTS') %}
+            {{ nav.nav_item('/recipients', 'bi:people', 'Recipients', ['web_recipient_management'], show_labels) }}
+        {% endif %}
+
+        {% if is_granted('ROLE_VIEW_PAGER') %}
+            {{ nav.nav_item('/pager-management', 'bi:table', 'Pager Administration', ['web_pager_management'], show_labels) }}
+        {% endif %}
+
+        {% if is_granted('ROLE_ACCESS_WEB_ADMIN') %}
+            {{ nav.nav_item('/admin', 'bi:tools', 'Administration', ['app_view_web_admin_adminhome__invoke'], show_labels) }}
+        {% endif %}
+    </div>
+{% endmacro %}

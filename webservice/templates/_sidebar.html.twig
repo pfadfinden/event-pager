@@ -1,96 +1,104 @@
-<nav>
-	<div class="d-flex flex-column flex-shrink-0 p-3" style="width: 250px; height: 100vh;">
-		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-body">
-			<twig:ux:icon name="pager" height="40" width="32" aria-hidden="true" class="bi me-2" />
-			<span class="fs-4">{% trans %}Pagersystem{% endtrans %}</span>
-		</a>
-		<hr>
-		<ul class="nav nav-pills flex-column mb-auto">
-			<li class="nav-item">
-				<a href="/" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_home__invoke' %}active{% endif %}" aria-current="page">
-					<twig:ux:icon name="bi:house-door" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Home{% endtrans %}
-				</a>
-			</li>
-			{% if is_granted('ROLE_ACCESS_WEB_SEND') %}
-			<li>
-				<a href="/send" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_sendmessage_sendmessage__invoke' %}active{% endif %}">
-					<twig:ux:icon name="bi:chat-quote" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Send{% endtrans %}
-				</a>
-			</li>
-			{% endif %}
-			{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_SENT_PERSONAL') %}
-			<li>
-				<a href="/message-history" class="nav-link {% if app.request.attributes.get('_route') == 'web_message_history' %}active{% endif %}">
-					<twig:ux:icon name="bi:clock-history" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Message History{% endtrans %}
-				</a>
-			</li>
-			{% endif %}
-			{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_RECEIVED') %}
-			<li>
-				<a href="/inbox" class="nav-link">
-					<twig:ux:icon name="bi:envelope" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Inbox{% endtrans %}
-				</a>
-			</li>
-			{% endif %}
-			{% if is_granted('ROLE_VIEW_RECIPIENTS') %}
-				<li>
-					<a href="/recipients" class="nav-link {% if app.request.attributes.get('_route') starts with 'web_recipient_management' %}active{% endif %}">
-						<twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi me-2" />
-						{% trans %}Recipients{% endtrans %}
-					</a>
-				</li>
-			{% endif %}
-			{% if is_granted('ROLE_VIEW_PAGER') %}
-			<li>
-				<a href="/pager-management" class="nav-link">
-					<twig:ux:icon name="bi:table" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Pager Administration{% endtrans %}
-				</a>
-			</li>
-			{% endif %}
-			{% if is_granted('ROLE_ACCESS_WEB_ADMIN') %}
-			<li>
-				<a href="/admin" class="nav-link {% if app.request.attributes.get('_route') == 'app_view_web_admin_adminhome__invoke' %}active{% endif %}">
-					<twig:ux:icon name="bi:tools" height="16" width="16" aria-hidden="true" class="bi me-2" />
-					{% trans %}Administration{% endtrans %}
-				</a>
-			</li>
-			{% endif %}
-		</ul>
+{% import '_navigation_macros.html.twig' as nav %}
 
-		<div data-controller="dark-mode" data-action="dark-mode:change->dark-mode#updateColorScheme">
-			<select label="Select a theme" name="theme" class="form-select" value="auto" data-dark-mode-target="select" data-action="change->dark-mode#toggle">
-				<option value="light">{% trans %}Light{% endtrans %}
-				</option>
-				<option value="dark">{% trans %}Dark{% endtrans %}
-				</option>
-				<option value="auto">{% trans %}Auto{% endtrans %}
-				</option>
-			</select>
+{# Desktop Sidebar - hidden on mobile #}
+<nav class="sidebar d-none d-md-flex" aria-label="{% trans %}Main navigation{% endtrans %}">
+	<div class="sidebar-inner">
+		<a href="/" class="sidebar-brand">
+			<twig:ux:icon name="pager" class="sidebar-brand-icon" aria-hidden="true" />
+			<span class="sidebar-brand-text">{% trans %}Pagersystem{% endtrans %}</span>
+		</a>
+
+		<div class="sidebar-nav">
+			{{ nav.nav_items_main(true) }}
 		</div>
 
-		<hr>
-		<div class="dropdown dropup user-dropdown">
-			<a href="#" class="d-flex align-items-center text-body text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-				<img src="https://fastly.picsum.photos/id/478/32/32.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
-				<strong>username</strong>
-			</a>
-			<ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
-				<li>
-					<a class="dropdown-item" href="#">{% trans %}Settings{% endtrans %}</a>
-				</li>
-				<li>
-					<a class="dropdown-item" href="#">{% trans %}Account{% endtrans %}</a>
-				</li>
-				<li><hr class="dropdown-divider"></li>
-				<li>
-					<a class="dropdown-item" href="/login">{% trans %}Sign out{% endtrans %}</a>
-				</li>
-			</ul>
+		<div class="sidebar-footer">
+			<div class="sidebar-theme-switcher" data-controller="dark-mode" data-action="dark-mode:change->dark-mode#updateColorScheme">
+				<select name="theme" id="iptThemeSelectSidebar" class="form-select form-select-sm" aria-label="{% trans %}Theme{% endtrans %}" data-dark-mode-target="select" data-action="change->dark-mode#toggle">
+					<option value="light">{% trans %}Light{% endtrans %}</option>
+					<option value="dark">{% trans %}Dark{% endtrans %}</option>
+					<option value="auto">{% trans %}Auto{% endtrans %}</option>
+				</select>
+			</div>
+
+			<div class="sidebar-user dropdown dropup">
+				<button class="sidebar-user-toggle dropdown-toggle" id="sidebarUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+					<img src="https://picsum.photos/seed/picsum/32" alt="" class="sidebar-user-avatar">
+					<span class="sidebar-user-name">{{ app.user.displayname }}</span>
+				</button>
+				<ul class="dropdown-menu text-small dropdown-menu-end shadow" aria-labelledby="sidebarUserDropdown">
+					<li><a class="dropdown-item" href="#">{% trans %}Account{% endtrans %}</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="/login">{% trans %}Sign out{% endtrans %}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>
+
+{# Mobile Bottom Navigation - visible on mobile only #}
+<nav class="mobile-nav d-md-none" aria-label="{% trans %}Mobile navigation{% endtrans %}" data-controller="mobile-menu">
+	<div class="mobile-nav-bar">
+		<a href="/" class="mobile-nav-item {% if app.request.attributes.get('_route') == 'app_view_web_home__invoke' %}active{% endif %}">
+			<twig:ux:icon name="bi:house-door" class="mobile-nav-icon" aria-hidden="true" />
+			<span class="mobile-nav-label">{% trans %}Home{% endtrans %}</span>
+		</a>
+
+		{% if is_granted('ROLE_ACCESS_WEB_SEND') %}
+		<a href="/send" class="mobile-nav-item {% if app.request.attributes.get('_route') == 'app_view_web_sendmessage_sendmessage__invoke' %}active{% endif %}">
+			<twig:ux:icon name="bi:chat-quote" class="mobile-nav-icon" aria-hidden="true" />
+			<span class="mobile-nav-label">{% trans %}Send{% endtrans %}</span>
+		</a>
+		{% endif %}
+
+		{% if is_granted('ROLE_VIEW_MESSAGE_HISTORY_SENT_PERSONAL') %}
+		<a href="/message-history" class="mobile-nav-item {% if app.request.attributes.get('_route') == 'web_message_history' %}active{% endif %}">
+			<twig:ux:icon name="bi:clock-history" class="mobile-nav-icon" aria-hidden="true" />
+			<span class="mobile-nav-label">{% trans %}History{% endtrans %}</span>
+		</a>
+		{% endif %}
+
+		<button type="button" class="mobile-nav-item mobile-nav-menu-btn" data-action="mobile-menu#toggle" aria-expanded="false" aria-controls="mobileMenuOverlay">
+			<twig:ux:icon name="bi:list" class="mobile-nav-icon" aria-hidden="true" data-mobile-menu-target="iconMenu" />
+			<twig:ux:icon name="bi:x-lg" class="mobile-nav-icon d-none" aria-hidden="true" data-mobile-menu-target="iconClose" />
+			<span class="mobile-nav-label">{% trans %}Menu{% endtrans %}</span>
+		</button>
+	</div>
+
+	{# Mobile Menu Overlay #}
+	<div id="mobileMenuOverlay" class="mobile-menu-overlay" data-mobile-menu-target="overlay" aria-hidden="true">
+		<div class="mobile-menu-content">
+			<div class="mobile-menu-header">
+				<a href="/" class="mobile-menu-brand">
+					<twig:ux:icon name="pager" class="mobile-menu-brand-icon" aria-hidden="true" />
+					<span>{% trans %}Pagersystem{% endtrans %}</span>
+				</a>
+			</div>
+
+			<div class="mobile-menu-nav">
+				{{ nav.nav_items_main(true) }}
+			</div>
+
+			<div class="mobile-menu-footer">
+				<div class="mobile-menu-theme" data-controller="dark-mode" data-action="dark-mode:change->dark-mode#updateColorScheme">
+					<label class="mobile-menu-theme-label">{% trans %}Theme{% endtrans %}</label>
+					<select name="theme" class="form-select form-select-sm" aria-label="{% trans %}Theme{% endtrans %}" data-dark-mode-target="select" data-action="change->dark-mode#toggle">
+						<option value="light">{% trans %}Light{% endtrans %}</option>
+						<option value="dark">{% trans %}Dark{% endtrans %}</option>
+						<option value="auto">{% trans %}Auto{% endtrans %}</option>
+					</select>
+				</div>
+
+				<div class="mobile-menu-user">
+					<img src="https://picsum.photos/seed/picsum/32" alt="" class="mobile-menu-user-avatar">
+					<div class="mobile-menu-user-info">
+						<span class="mobile-menu-user-name">{{ app.user.displayname }}</span>
+                        <div>
+						    <a href="/login" class="mobile-menu-user-link pe-2">{% trans %}Sign out{% endtrans %}</a>|<a href="/login" class="mobile-menu-user-link ps-2">{% trans %}Account{% endtrans %}</a>
+                        </div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </nav>

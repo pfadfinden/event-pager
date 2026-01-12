@@ -287,3 +287,10 @@ No: Nein
 'No recipients selected. Use the search above to add recipients.': 'Keine Empfänger ausgewählt. Verwenden Sie die Suche oben, um Empfänger hinzuzufügen.'
 'Search and select recipients for this predefined message.': 'Suchen und wählen Sie Empfänger für diese vordefinierte Nachricht aus.'
 'Press Alt+Number to select': 'Alt+Zahl drücken zum Auswählen'
+
+# Navigation
+Menu: Menü
+Theme: Design
+History: Verlauf
+'Main navigation': Hauptnavigation
+'Mobile navigation': 'Mobile Navigation'
