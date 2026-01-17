@@ -221,11 +221,11 @@ final class NtfyTransportIntegrationTest extends TestCase
      */
     private function createSystemConfig(array $vendorConfig): SystemTransportConfig
     {
-        return new class($vendorConfig) implements SystemTransportConfig {
+        return new readonly class($vendorConfig) implements SystemTransportConfig {
             /**
              * @param array<string, string> $vendorConfig
              */
-            public function __construct(private readonly array $vendorConfig)
+            public function __construct(private array $vendorConfig)
             {
             }
 
@@ -247,13 +247,13 @@ final class NtfyTransportIntegrationTest extends TestCase
      */
     private function createRecipient(NtfyTransport $transport, array $transportConfig): MessageRecipient
     {
-        return new class($transport, $transportConfig) implements MessageRecipient {
+        return new readonly class($transport, $transportConfig) implements MessageRecipient {
             /**
              * @param array<string, string> $transportConfig
              */
             public function __construct(
-                private readonly NtfyTransport $transport,
-                private readonly array $transportConfig,
+                private NtfyTransport $transport,
+                private array $transportConfig,
             ) {
             }
 

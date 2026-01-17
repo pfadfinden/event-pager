@@ -78,7 +78,7 @@ final class SendMessageServiceTest extends TestCase
         try {
             $sut->send($message);
             self::fail('Expected exception not thrown');
-        } catch (IntelPageTransmitterNotAvailable $e) {
+        } catch (IntelPageTransmitterNotAvailable) {
             // expected
         }
 

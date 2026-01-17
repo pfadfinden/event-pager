@@ -15,7 +15,7 @@ use Traversable;
 #[ORM\Entity]
 class Group extends AbstractMessageRecipient implements Delegated
 {
-    final public const DISCRIMINATOR = 'group';
+    final public const string DISCRIMINATOR = 'group';
 
     /**
      * @var Collection<int, AbstractMessageRecipient>

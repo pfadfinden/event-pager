@@ -15,5 +15,5 @@ final class SendMessageRecipientRequest
     public string $label;
 
     #[Assert\Choice(['GROUP', 'ROLE', 'PERSON'])]
-    public ?string $type;
+    public ?string $type = null;
 }

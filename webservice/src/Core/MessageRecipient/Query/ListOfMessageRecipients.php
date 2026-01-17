@@ -15,7 +15,7 @@ use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
  */
 final readonly class ListOfMessageRecipients implements Query
 {
-    public const DEFAULT_PAGE_LENGTH = 25;
+    public const int DEFAULT_PAGE_LENGTH = 25;
 
     public static function onlyGroups(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {

@@ -11,7 +11,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 class Role extends AbstractMessageRecipient implements Delegated
 {
-    final public const DISCRIMINATOR = 'role';
+    final public const string DISCRIMINATOR = 'role';
 
     public function __construct(
         string $name,

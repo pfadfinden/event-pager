@@ -21,7 +21,7 @@ final class SymfonyQueryBusTest extends TestCase
     {
         $query = new class implements Query {};
 
-        $envelope = (new Envelope($query))->with(new HandledStamp(['result'], 'SomeHandler'));
+        $envelope = new Envelope($query)->with(new HandledStamp(['result'], 'SomeHandler'));
         $mockMessageBus = self::createMock(MessageBusInterface::class);
         $mockMessageBus->expects(self::once())
             ->method('dispatch')->with($query)

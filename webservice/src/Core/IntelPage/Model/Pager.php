@@ -39,7 +39,7 @@ class Pager
      * @var string human identifier describing pager use
      */
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $comment;
+    private ?string $comment = null;
 
     /**
      * @var bool shows whether the pager is activated or not

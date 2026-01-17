@@ -28,7 +28,7 @@ final class SendMessageFormTypeTest extends TypeTestCase
     public function testSubmitValidData(array $formData): void
     {
         /** @var Form $form */
-        list($form, $model) = $this->init();
+        [$form, $model] = $this->init();
 
         $expected = new SendMessageRequest();
         $expected->message = $formData['message'];
@@ -85,7 +85,7 @@ final class SendMessageFormTypeTest extends TypeTestCase
     #[DataProvider('provideInvalidData')]
     public function testSubmitInvalidData(array $formData): void
     {
-        list($form) = $this->init();
+        [$form] = $this->init();
         $form->submit($formData);
         self::assertTrue($form->isSynchronized());
         self::assertFalse($form->isValid(), 'Form validation should fail');

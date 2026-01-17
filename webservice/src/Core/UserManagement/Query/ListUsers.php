@@ -12,7 +12,7 @@ use App\Core\UserManagement\ReadModel\UserListEntry;
  */
 final readonly class ListUsers implements Query
 {
-    public const DEFAULT_PAGE_LENGTH = 25;
+    public const int DEFAULT_PAGE_LENGTH = 25;
 
     public static function all(?string $textFilter = null, ?int $page = null, ?int $perPage = null): self
     {

@@ -7,6 +7,7 @@ namespace App\Tests\View\Cli;
 use App\Core\UserManagement\Model\User;
 use App\View\Cli\AddUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -28,6 +29,7 @@ class AddUserCommandTest extends KernelTestCase
         self::bootKernel();
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         $em = $this->getEntityManager();

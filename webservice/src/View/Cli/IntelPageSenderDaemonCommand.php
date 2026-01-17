@@ -11,6 +11,7 @@ use App\Core\IntelPage\Model\PagerMessage;
 use App\Core\TransportContract\Port\TransportManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Override;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -106,11 +107,13 @@ final class IntelPageSenderDaemonCommand extends Command implements SignalableCo
      *
      * @return array<int>
      */
+    #[Override]
     public function getSubscribedSignals(): array
     {
         return [SIGINT, SIGTERM];
     }
 
+    #[Override]
     public function handleSignal(int $signal, false|int $previousExitCode = 0): int|false
     {
         $this->shouldContinue = false;

@@ -34,7 +34,7 @@ final class TelegramClient implements TelegramClientInterface
     ): void {
         $transport = $this->getTransportForToken($botToken);
 
-        $options = (new TelegramOptions())
+        $options = new TelegramOptions()
             ->chatId($chatId)
             ->parseMode(TelegramOptions::PARSE_MODE_HTML);
 

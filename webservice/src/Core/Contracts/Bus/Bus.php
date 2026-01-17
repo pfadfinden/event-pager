@@ -6,7 +6,7 @@ namespace App\Core\Contracts\Bus;
 
 final class Bus
 {
-    public const COMMAND = 'command.bus';
-    public const EVENT = 'event.bus';
-    public const QUERY = 'query.bus';
+    public const string COMMAND = 'command.bus';
+    public const string EVENT = 'event.bus';
+    public const string QUERY = 'query.bus';
 }

@@ -9,12 +9,13 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
+use Override;
 use Throwable;
 use function is_string;
 
 final class LocalTimeType extends Type
 {
-    public const NAME = 'local_time';
+    public const string NAME = 'local_time';
 
     /**
      * @template T
@@ -23,6 +24,7 @@ final class LocalTimeType extends Type
      *
      * @return (T is null ? null : string)
      */
+    #[Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
@@ -41,6 +43,7 @@ final class LocalTimeType extends Type
      *
      * @param T $value
      */
+    #[Override]
     public function convertToPHPValue($value, AbstractPlatform $platform): ?LocalTime
     {
         if (null === $value) {

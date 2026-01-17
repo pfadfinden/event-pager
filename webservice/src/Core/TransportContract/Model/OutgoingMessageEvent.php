@@ -15,12 +15,6 @@ use Symfony\Component\Uid\Ulid;
  */
 readonly class OutgoingMessageEvent
 {
-    public Ulid $outgoingMessageId;
-
-    public Instant $at;
-
-    public OutgoingMessageStatus $status;
-
     public static function queued(
         Ulid $outgoingMessageId,
     ): self {
@@ -45,13 +39,7 @@ readonly class OutgoingMessageEvent
         return new self($outgoingMessageId, Instant::now(), OutgoingMessageStatus::TRANSMITTED);
     }
 
-    private function __construct(
-        Ulid $outgoingMessageId,
-        Instant $at,
-        OutgoingMessageStatus $status,
-    ) {
-        $this->outgoingMessageId = $outgoingMessageId;
-        $this->status = $status;
-        $this->at = $at;
+    private function __construct(public Ulid $outgoingMessageId, public Instant $at, public OutgoingMessageStatus $status)
+    {
     }
 }

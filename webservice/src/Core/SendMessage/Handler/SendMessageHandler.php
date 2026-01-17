@@ -28,7 +28,7 @@ final readonly class SendMessageHandler
     {
         $incomingMessage = IncomingMessage::new(
             Ulid::fromString($cmd->by),
-            array_map(fn ($str) => Ulid::fromString($str), $cmd->to),
+            array_map(Ulid::fromString(...), $cmd->to),
             $cmd->message,
             $cmd->priority,
         );

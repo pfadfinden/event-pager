@@ -36,7 +36,7 @@ class RecipientTransportConfiguration
      * What ever data needs to be available to the transport centrally (e.g. API Keys).
      */
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $vendorSpecificConfig; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
+    private ?array $vendorSpecificConfig = null; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
 
     public function __construct(AbstractMessageRecipient $recipient, string $key)
     {

@@ -7,6 +7,7 @@ namespace App\Infrastructure\Persistence\DoctrineORM\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
+use Override;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function count;
 use function is_array;
@@ -15,13 +16,14 @@ use function is_string;
 
 final class UlidArrayType extends Type
 {
-    public const NAME = 'ulid_array';
+    public const string NAME = 'ulid_array';
 
     private static function ulidType(): UlidType
     {
         return new UlidType();
     }
 
+    #[Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if (!is_array($value) || 0 === count($value)) {
@@ -36,6 +38,7 @@ final class UlidArrayType extends Type
     /**
      * @return list<\Symfony\Component\Uid\Ulid>
      */
+    #[Override]
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         if (null === $value) {

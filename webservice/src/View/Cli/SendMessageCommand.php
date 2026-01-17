@@ -20,11 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class SendMessageCommand extends Command
 {
-    public const SEND_BY_CLI_ID = '01JDC3CRJ0VEFV6FMRK0R5AEMR';
-    public const ARG_MESSAGE = 'message';
-    public const OPT_FROM = 'from';
-    public const OPT_TO = 'to';
-    public const OPT_PRIO = 'priority';
+    public const string SEND_BY_CLI_ID = '01JDC3CRJ0VEFV6FMRK0R5AEMR';
+    public const string ARG_MESSAGE = 'message';
+    public const string OPT_FROM = 'from';
+    public const string OPT_TO = 'to';
+    public const string OPT_PRIO = 'priority';
 
     public function __construct(private readonly SendMessageHandler $handler)
     {

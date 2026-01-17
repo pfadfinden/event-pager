@@ -27,14 +27,14 @@ use function Symfony\Component\Translation\t;
 #[IsGranted('ROLE_USERMANAGEMENT_EDITUSER')]
 final class EditUserController extends AbstractController
 {
-    private const ASSIGNABLE_ROLES = [
+    private const array ASSIGNABLE_ROLES = [
         'ROLE_USER' => 'User (View only)',
         'ROLE_ACTIVE_USER' => 'Active User (Send messages)',
         'ROLE_SUPPORT' => 'Support (Manage recipients)',
         'ROLE_MANAGER' => 'Manager (Full recipient management)',
     ];
 
-    private const PRIVILEGED_ROLES = [
+    private const array PRIVILEGED_ROLES = [
         'ROLE_ADMIN' => 'Administrator (Full access)',
     ];
 

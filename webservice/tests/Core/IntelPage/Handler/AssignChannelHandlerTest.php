@@ -48,12 +48,10 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(function (string $class) use ($pagerRepositoryMock, $channelRepositoryMock) {
-                return match ($class) {
-                    Pager::class => $pagerRepositoryMock,
-                    Channel::class => $channelRepositoryMock,
-                    default => throw new InvalidArgumentException('Unexpected class: '.$class),
-                };
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                Pager::class => $pagerRepositoryMock,
+                Channel::class => $channelRepositoryMock,
+                default => throw new InvalidArgumentException('Unexpected class: '.$class),
             });
         $entityManagerMock->expects(self::once())->method('persist')
             ->with($pager);
@@ -90,12 +88,10 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(function (string $class) use ($pagerRepositoryMock, $channelRepositoryMock) {
-                return match ($class) {
-                    Pager::class => $pagerRepositoryMock,
-                    Channel::class => $channelRepositoryMock,
-                    default => throw new InvalidArgumentException('Unexpected class: '.$class),
-                };
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                Pager::class => $pagerRepositoryMock,
+                Channel::class => $channelRepositoryMock,
+                default => throw new InvalidArgumentException('Unexpected class: '.$class),
             });
 
         $unitOfWorkMock = self::createStub(UnitOfWork::class);
@@ -130,12 +126,10 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(function (string $class) use ($pagerRepositoryMock, $channelRepositoryMock) {
-                return match ($class) {
-                    Pager::class => $pagerRepositoryMock,
-                    Channel::class => $channelRepositoryMock,
-                    default => throw new InvalidArgumentException('Unexpected class: '.$class),
-                };
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                Pager::class => $pagerRepositoryMock,
+                Channel::class => $channelRepositoryMock,
+                default => throw new InvalidArgumentException('Unexpected class: '.$class),
             });
 
         $unitOfWorkMock = self::createStub(UnitOfWork::class);
