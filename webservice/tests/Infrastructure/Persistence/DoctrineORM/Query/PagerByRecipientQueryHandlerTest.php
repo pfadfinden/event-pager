@@ -26,7 +26,7 @@ final class PagerByRecipientQueryHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
         $carriedBy = new Person('test', Ulid::fromString('01JT62N5PE9HBQTEZ1PPE6CJ4F'));
         $em->persist($carriedBy);
@@ -40,7 +40,7 @@ final class PagerByRecipientQueryHandlerTest extends KernelTestCase
     public function testCanRetrievePagerForRecipient(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new PagerByRecipientQueryHandler($em);
@@ -58,7 +58,7 @@ final class PagerByRecipientQueryHandlerTest extends KernelTestCase
     public function testReturnsNullIfPagerNotFound(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new PagerByRecipientQueryHandler($em);

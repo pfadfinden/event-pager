@@ -25,11 +25,11 @@ final class AddOrUpdateTransportConfigurationHandlerTest extends TestCase
 
         $repository = self::createMock(TransportConfigurationRepository::class);
         $repository->expects(self::once())->method('persist')
-            ->with(self::callback(fn ($value) => $value instanceof TransportConfiguration
+            ->with(self::callback(fn ($value): bool => $value instanceof TransportConfiguration
                 && 'test-dummy' === $value->getKey()
                 && DummyTransport::class === $value->getTransport()
                 && 'Hello World' === $value->getTitle()
-                && true === $value->isEnabled()
+                && $value->isEnabled()
                 && $vendorSpecificConfiguration === $value->getVendorSpecificConfig()));
 
         $uow = self::createMock(UnitOfWork::class);
@@ -58,7 +58,7 @@ final class AddOrUpdateTransportConfigurationHandlerTest extends TestCase
             ->with('test-dummy')
             ->willReturn($transportConfiguration);
         $repository->expects(self::once())->method('persist')
-            ->with(self::callback(fn ($value) => $value === $transportConfiguration
+            ->with(self::callback(fn ($value): bool => $value === $transportConfiguration
                 && 'test-dummy' === $value->getKey()
                 && DummyTransport::class === $value->getTransport()
                 && 'Hello World' === $value->getTitle()));

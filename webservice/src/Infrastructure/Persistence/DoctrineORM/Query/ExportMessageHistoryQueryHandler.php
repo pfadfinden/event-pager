@@ -49,7 +49,7 @@ final readonly class ExportMessageHistoryQueryHandler
                 $message->messageId->toRfc4122(),
                 $message->sentOn->toISOString(),
                 $message->by->toRfc4122(),
-                implode(',', array_map(fn (Ulid $ulid) => $ulid->toRfc4122(), $message->to)),
+                implode(',', array_map(fn (Ulid $ulid): string => $ulid->toRfc4122(), $message->to)),
                 $message->content,
                 $message->priority,
                 $this->getStatusSummary($message->messageId),

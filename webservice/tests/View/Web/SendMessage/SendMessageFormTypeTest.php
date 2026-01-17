@@ -33,7 +33,7 @@ final class SendMessageFormTypeTest extends TypeTestCase
         $expected = new SendMessageRequest();
         $expected->message = $formData['message'];
         $expected->priority = $formData['priority'];
-        $expected->to = array_map(function ($r) {
+        $expected->to = array_map(function (array $r): SendMessageRecipientRequest {
             $recipientA = new SendMessageRecipientRequest();
             $recipientA->id = $r['id'];
             $recipientA->label = $r['label'];
@@ -143,6 +143,9 @@ final class SendMessageFormTypeTest extends TypeTestCase
         // $model will retrieve data from the form submission; pass it as the second argument
         $form = $this->factory->create(SendMessageFormType::class, $model, ['choice_loader' => $mockChoiceLoader]);
 
-        return [$form, $model];
+        return [
+            $form,
+            $model,
+        ];
     }
 }

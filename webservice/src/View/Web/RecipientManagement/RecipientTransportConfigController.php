@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,7 +26,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use function Symfony\Component\Translation\t;
 use const JSON_PRETTY_PRINT;
 
-#[Route('/recipients/{recipientType}/{id}/transport')]
 final class RecipientTransportConfigController extends AbstractController
 {
     public function __construct(
@@ -33,8 +33,7 @@ final class RecipientTransportConfigController extends AbstractController
         private readonly QueryBus $queryBus,
     ) {
     }
-
-    #[Route('/add', name: 'web_recipient_management_transport_add', methods: ['GET', 'POST'])]
+    #[Route('/recipients/{recipientType}/{id}/transport/add', name: 'web_recipient_management_transport_add', methods: ['GET', 'POST'])]
     public function add(Request $request, string $recipientType, string $id): Response
     {
         $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
@@ -103,8 +102,7 @@ final class RecipientTransportConfigController extends AbstractController
             'recipientType' => $recipientType,
         ]);
     }
-
-    #[Route('/{transportKey}/edit', name: 'web_recipient_management_transport_edit', methods: ['GET', 'POST'])]
+    #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/edit', name: 'web_recipient_management_transport_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, string $recipientType, string $id, string $transportKey): Response
     {
         $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
@@ -168,9 +166,8 @@ final class RecipientTransportConfigController extends AbstractController
             'transportKey' => $transportKey,
         ]);
     }
-
-    #[Route('/{transportKey}/remove', name: 'web_recipient_management_transport_remove', methods: ['POST'])]
-    public function remove(Request $request, string $recipientType, string $id, string $transportKey): Response
+    #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/remove', name: 'web_recipient_management_transport_remove', methods: ['POST'])]
+    public function remove(string $recipientType, string $id, string $transportKey): RedirectResponse
     {
         $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
 
@@ -188,7 +185,6 @@ final class RecipientTransportConfigController extends AbstractController
 
         return $this->redirectToRoute($this->getDetailsRoute($recipientType), ['id' => $id]);
     }
-
     private function getManageRole(string $recipientType): string
     {
         return match ($recipientType) {
@@ -198,7 +194,6 @@ final class RecipientTransportConfigController extends AbstractController
             default => throw new NotFoundHttpException('Invalid recipient type'),
         };
     }
-
     private function getDetailsRoute(string $recipientType): string
     {
         return match ($recipientType) {
@@ -208,7 +203,6 @@ final class RecipientTransportConfigController extends AbstractController
             default => throw new NotFoundHttpException('Invalid recipient type'),
         };
     }
-
     private function isValidRecipientType(string $actualType, string $expectedType): bool
     {
         return match ($expectedType) {

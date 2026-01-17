@@ -18,7 +18,7 @@ final readonly class CountUsers implements Query
 
     public static function withoutFilter(): self
     {
-        return new self(null);
+        return new self();
     }
 
     public static function withTextSearch(string $textFilter): self

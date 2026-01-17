@@ -39,7 +39,7 @@ final class SendMessageServiceTest extends TestCase
         $transmitter->expects(self::once())->method('transmit')->with($message->getCap(), $message->getMessage());
 
         $eventBus = $this->createMock(MessageBusInterface::class);
-        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
+        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn (object $m): Envelope => Envelope::wrap($m));
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 
@@ -70,7 +70,7 @@ final class SendMessageServiceTest extends TestCase
             ->willThrowException(new IntelPageTransmitterNotAvailable('test'));
 
         $eventBus = $this->createMock(MessageBusInterface::class);
-        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn ($m) => Envelope::wrap($m));
+        $eventBus->expects(self::once())->method('dispatch')->with(Assert::isInstanceOf(OutgoingMessageEvent::class))->willReturnCallback(fn (object $m): Envelope => Envelope::wrap($m));
 
         $sut = new SendPagerMessageService($em, $transmitter, $eventBus);
 

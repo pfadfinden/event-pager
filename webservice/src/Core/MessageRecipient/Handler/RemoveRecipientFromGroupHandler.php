@@ -7,6 +7,7 @@ namespace App\Core\MessageRecipient\Handler;
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\MessageRecipient\Command\RemoveRecipientFromGroup;
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use InvalidArgumentException;
@@ -28,7 +29,7 @@ final readonly class RemoveRecipientFromGroupHandler
             throw new InvalidArgumentException("Group with ID {$command->getGroupID()} not found.");
         }
         $recipient = $this->repository->getRecipientFromID($command->getRecipientID());
-        if (null === $recipient) {
+        if (!$recipient instanceof AbstractMessageRecipient) {
             throw new InvalidArgumentException("Recipient with ID {$command->recipientID} not found.");
         }
         $group->removeMember($recipient);

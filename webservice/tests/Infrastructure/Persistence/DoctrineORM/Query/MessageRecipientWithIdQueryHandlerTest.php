@@ -26,7 +26,7 @@ final class MessageRecipientWithIdQueryHandlerTest extends KernelTestCase
         $id = Ulid::generate();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures

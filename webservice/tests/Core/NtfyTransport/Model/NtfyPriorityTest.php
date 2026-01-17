@@ -6,6 +6,7 @@ namespace App\Tests\Core\NtfyTransport\Model;
 
 use App\Core\NtfyTransport\Model\NtfyPriority;
 use App\Core\TransportContract\Model\Priority;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,17 +17,15 @@ use PHPUnit\Framework\TestCase;
 final class NtfyPriorityTest extends TestCase
 {
     /**
-     * @return array<string, array{Priority, NtfyPriority}>
+     * @return Iterator<string, array{Priority, NtfyPriority}>
      */
-    public static function providePriorityMappings(): array
+    public static function providePriorityMappings(): Iterator
     {
-        return [
-            'URGENT maps to MAX' => [Priority::URGENT, NtfyPriority::MAX],
-            'HIGH maps to HIGH' => [Priority::HIGH, NtfyPriority::HIGH],
-            'DEFAULT maps to DEFAULT' => [Priority::DEFAULT, NtfyPriority::DEFAULT],
-            'LOW maps to LOW' => [Priority::LOW, NtfyPriority::LOW],
-            'MIN maps to MIN' => [Priority::MIN, NtfyPriority::MIN],
-        ];
+        yield 'URGENT maps to MAX' => [Priority::URGENT, NtfyPriority::MAX];
+        yield 'HIGH maps to HIGH' => [Priority::HIGH, NtfyPriority::HIGH];
+        yield 'DEFAULT maps to DEFAULT' => [Priority::DEFAULT, NtfyPriority::DEFAULT];
+        yield 'LOW maps to LOW' => [Priority::LOW, NtfyPriority::LOW];
+        yield 'MIN maps to MIN' => [Priority::MIN, NtfyPriority::MIN];
     }
 
     #[DataProvider('providePriorityMappings')]

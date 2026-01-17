@@ -28,7 +28,7 @@ final class RemoveChannelHandlerTest extends TestCase
         $channelRepositoryMock = self::createMock(ChannelRepository::class);
 
         $channelRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn($channel);
         $channelRepositoryMock->expects(self::once())->method('remove')
             ->with($channel);
@@ -52,7 +52,7 @@ final class RemoveChannelHandlerTest extends TestCase
 
         $channelRepositoryMock = self::createMock(ChannelRepository::class);
         $channelRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn(null);
         $channelRepositoryMock->expects(self::never())->method('remove');
 

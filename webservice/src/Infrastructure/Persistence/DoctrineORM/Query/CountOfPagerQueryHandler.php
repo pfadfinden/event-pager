@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\DoctrineORM\Query;
 
+use App\Core\IntelPage\Model\Pager;
 use App\Core\IntelPage\Query\CountOfPager;
 use Doctrine\ORM\EntityManagerInterface;
 use function sprintf;
@@ -18,7 +19,7 @@ final readonly class CountOfPagerQueryHandler
     {
         $dql = sprintf(
             'SELECT COUNT(p.id) FROM %s p',
-            \App\Core\IntelPage\Model\Pager::class
+            Pager::class
         );
         $parameters = [];
 

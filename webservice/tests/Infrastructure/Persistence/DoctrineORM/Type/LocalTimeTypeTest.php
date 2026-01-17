@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -20,16 +21,14 @@ use PHPUnit\Framework\TestCase;
 final class LocalTimeTypeTest extends TestCase
 {
     /**
-     * @return array{0: ?string, 1: ?LocalTime}[]
+     * @return Iterator<(int | string), array{(string | null), (LocalTime | null)}>
      */
-    public static function convertToDatabaseValueProvider(): array
+    public static function convertToDatabaseValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            ['00:00', LocalTime::of(0, 0)],
-            ['12:34:56', LocalTime::of(12, 34, 56)],
-            ['23:59:59.999999999', LocalTime::of(23, 59, 59, 999999999)],
-        ];
+        yield [null, null];
+        yield ['00:00', LocalTime::of(0, 0)];
+        yield ['12:34:56', LocalTime::of(12, 34, 56)];
+        yield ['23:59:59.999999999', LocalTime::of(23, 59, 59, 999999999)];
     }
 
     #[DataProvider('convertToDatabaseValueProvider')]
@@ -44,16 +43,14 @@ final class LocalTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToDatabaseValueExceptionProvider(): array
+    public static function convertToDatabaseValueExceptionProvider(): Iterator
     {
-        return [
-            [true],
-            [47.11],
-            ['abcdef'],
-            [new DateTimeImmutable()],
-        ];
+        yield [true];
+        yield [47.11];
+        yield ['abcdef'];
+        yield [new DateTimeImmutable()];
     }
 
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
@@ -68,19 +65,17 @@ final class LocalTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: ?LocalTime, 1: ?string}[]
+     * @return Iterator<(int | string), array{(LocalTime | null), (string | null)}>
      */
-    public static function convertToPhpValueProvider(): array
+    public static function convertToPhpValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            [LocalTime::of(0, 0), '00:00'],
-            [LocalTime::of(0, 0), '00:00:00'],
-            [LocalTime::of(0, 0), '00:00:00.000'],
-            [LocalTime::of(12, 34, 56), '12:34:56'],
-            [LocalTime::of(12, 34, 56, 123456789), '12:34:56.123456789'],
-            [LocalTime::of(23, 59, 59, 999999999), '23:59:59.999999999'],
-        ];
+        yield [null, null];
+        yield [LocalTime::of(0, 0), '00:00'];
+        yield [LocalTime::of(0, 0), '00:00:00'];
+        yield [LocalTime::of(0, 0), '00:00:00.000'];
+        yield [LocalTime::of(12, 34, 56), '12:34:56'];
+        yield [LocalTime::of(12, 34, 56, 123456789), '12:34:56.123456789'];
+        yield [LocalTime::of(23, 59, 59, 999999999), '23:59:59.999999999'];
     }
 
     #[DataProvider('convertToPhpValueProvider')]
@@ -91,7 +86,7 @@ final class LocalTimeTypeTest extends TestCase
 
         $result = $type->convertToPHPValue($value, $platform);
 
-        if (null === $expected) {
+        if (!$expected instanceof LocalTime) {
             self::assertNull($result);
         } else {
             self::assertNotNull($result);
@@ -100,17 +95,15 @@ final class LocalTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToPhpValueExceptionProvider(): array
+    public static function convertToPhpValueExceptionProvider(): Iterator
     {
-        return [
-            [''],
-            ['0'],
-            ['0:00'],
-            ['24:00'],
-            ['abcdef'],
-        ];
+        yield [''];
+        yield ['0'];
+        yield ['0:00'];
+        yield ['24:00'];
+        yield ['abcdef'];
     }
 
     #[DataProvider('convertToPhpValueExceptionProvider')]
@@ -132,15 +125,13 @@ final class LocalTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: string, 1: array<string, mixed>, 2: AbstractPlatform}[]
+     * @return Iterator<(int | string), array{string, array<string, mixed>, AbstractPlatform}>
      */
-    public static function getSqlDeclarationProvider(): array
+    public static function getSqlDeclarationProvider(): Iterator
     {
         $mysql = new MySQLPlatform();
 
-        return [
-            ['VARCHAR(18)', [], $mysql],
-        ];
+        yield ['VARCHAR(18)', [], $mysql];
     }
 
     /**

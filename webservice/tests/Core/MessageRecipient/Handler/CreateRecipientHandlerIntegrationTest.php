@@ -37,7 +37,7 @@ final class CreateRecipientHandlerIntegrationTest extends KernelTestCase
     public function testCanRetrieveAllTransportsWithoutFilter(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $cmdBus = $container->get(CommandBus::class);
 
         $command = new CreateRecipient(

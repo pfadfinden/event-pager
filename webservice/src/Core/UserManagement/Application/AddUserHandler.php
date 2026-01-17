@@ -23,7 +23,7 @@ final readonly class AddUserHandler
 
     public function __invoke(AddUser $command): void
     {
-        if (null !== $this->userRepository->findOneByUsername($command->getUsername())) {
+        if ($this->userRepository->findOneByUsername($command->getUsername()) instanceof User) {
             throw new InvalidArgumentException('User already exists');
         }
 

@@ -44,7 +44,7 @@ final readonly class GetOutgoingMessagesForIncomingQueryHandler
             ->getResult();
 
         // Get recipient names
-        $recipientIds = array_filter(array_values(array_unique(array_map(fn ($r) => $r['recipientId'], $results))), fn ($v) => null !== $v);
+        $recipientIds = array_filter(array_values(array_unique(array_map(fn (array $r): mixed => $r['recipientId'], $results))), fn ($v): bool => null !== $v);
         $recipientNames = $this->fetchRecipientNames($recipientIds);
 
         foreach ($results as $row) {
@@ -80,7 +80,7 @@ final readonly class GetOutgoingMessagesForIncomingQueryHandler
         $dql = "SELECT r.id, r.name FROM $source r WHERE r.id IN (:ids)";
 
         $results = $this->em->createQuery($dql)
-            ->setParameter('ids', array_map(fn ($i) => $i->toRfc4122(), $recipientIds))
+            ->setParameter('ids', array_map(fn ($i): string => $i->toRfc4122(), $recipientIds))
             ->getResult();
 
         $names = [];

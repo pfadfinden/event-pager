@@ -7,6 +7,8 @@ namespace App\Core\MessageRecipient\Handler;
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\MessageRecipient\Command\UpdateTransportConfiguration;
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
+use App\Core\MessageRecipient\Model\RecipientTransportConfiguration;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -23,12 +25,12 @@ final readonly class UpdateTransportConfigurationHandler
     public function __invoke(UpdateTransportConfiguration $command): void
     {
         $recipient = $this->repository->getRecipientFromID($command->getRecipientId());
-        if (null === $recipient) {
+        if (!$recipient instanceof AbstractMessageRecipient) {
             throw new InvalidArgumentException("Recipient with ID {$command->recipientId} not found.");
         }
 
         $config = $recipient->getTransportConfigurationByKey($command->transportKey);
-        if (null === $config) {
+        if (!$config instanceof RecipientTransportConfiguration) {
             throw new InvalidArgumentException("Transport configuration for key '{$command->transportKey}' not found.");
         }
 

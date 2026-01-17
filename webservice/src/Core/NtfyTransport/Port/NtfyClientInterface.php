@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\NtfyTransport\Port;
 
+use App\Core\NtfyTransport\Exception\NtfySendFailed;
 use App\Core\NtfyTransport\Model\NtfyPriority;
 
 /**
@@ -20,7 +21,7 @@ interface NtfyClientInterface
      * @param NtfyPriority $priority    The message priority
      * @param string|null  $accessToken Optional access token for authenticated servers
      *
-     * @throws \App\Core\NtfyTransport\Exception\NtfySendFailed
+     * @throws NtfySendFailed
      */
     public function send(
         string $serverUrl,

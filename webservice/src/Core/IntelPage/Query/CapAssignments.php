@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Core\IntelPage\Query;
 
 use App\Core\Contracts\Bus\Query;
+use App\Core\IntelPage\ReadModel\CapAssignment;
 
 /**
- * @implements Query<\App\Core\IntelPage\ReadModel\CapAssignment>
+ * @implements Query<CapAssignment>
  */
 final readonly class CapAssignments implements Query
 {

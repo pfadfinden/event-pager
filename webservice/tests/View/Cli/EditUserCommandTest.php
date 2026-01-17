@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use function assert;
 
 #[CoversClass(EditUserCommand::class)]
 #[Group('functional')]
@@ -38,7 +37,7 @@ final class EditUserCommandTest extends KernelTestCase
     {
         $em = $this->getEntityManager();
         $user = $em->getRepository(User::class)->findOneBy(['username' => 'edituser']);
-        assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user, 'User could not be teared down');
         $em->remove($user);
         $em->flush();
         $em->clear();

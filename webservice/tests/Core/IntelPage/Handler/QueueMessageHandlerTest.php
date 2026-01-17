@@ -27,7 +27,7 @@ final class QueueMessageHandlerTest extends TestCase
 
         $pagerMessageRepositoryMock = self::createMock(PagerMessageRepository::class);
         $pagerMessageRepositoryMock->expects(self::once())->method('add')
-            ->with(self::callback(fn (PagerMessage $m) => (
+            ->with(self::callback(fn (PagerMessage $m): bool => (
                 'Hello World' === $m->getMessage()
                 && $m->getId()->equals($id)
                 && 1001 === $m->getCap()->getCode()

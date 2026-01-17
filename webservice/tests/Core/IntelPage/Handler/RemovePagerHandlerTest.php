@@ -27,7 +27,7 @@ final class RemovePagerHandlerTest extends TestCase
         $pagerRepositoryMock = self::createMock(PagerRepository::class);
 
         $pagerRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn($pager);
         $pagerRepositoryMock->expects(self::once())->method('remove')
             ->with($pager);
@@ -51,7 +51,7 @@ final class RemovePagerHandlerTest extends TestCase
 
         $pagerRepositoryMock = self::createMock(PagerRepository::class);
         $pagerRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn(null);
         $pagerRepositoryMock->expects(self::never())->method('remove');
 

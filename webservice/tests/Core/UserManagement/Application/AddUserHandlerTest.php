@@ -24,7 +24,7 @@ final class AddUserHandlerTest extends TestCase
         $repository = self::createMock(UserRepository::class);
 
         $repository->expects(self::once())->method('save')
-            ->with(self::callback(function ($value) {
+            ->with(self::callback(function ($value): bool {
                 return $value instanceof User
                     && 'test-user' === $value->getUsername()
                     && 'Test User' === $value->getDisplayname()

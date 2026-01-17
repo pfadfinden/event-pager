@@ -9,6 +9,7 @@ use App\Core\Contracts\Bus\QueryBus;
 use LogicException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final readonly class SymfonyQueryBus implements QueryBus
 {
@@ -26,7 +27,7 @@ final readonly class SymfonyQueryBus implements QueryBus
     public function get(Query $query): mixed
     {
         $handledStamp = $this->queryBus->dispatch($query)->last(HandledStamp::class);
-        if (null === $handledStamp) {
+        if (!$handledStamp instanceof StampInterface) {
             throw new LogicException('Query was not handled. Ensure all query handles are tagged and loaded.');
         }
 

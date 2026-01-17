@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
@@ -48,7 +49,7 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(fn (string $class) => match ($class) {
+            ->willReturnCallback(fn (string $class): MockObject => match ($class) {
                 Pager::class => $pagerRepositoryMock,
                 Channel::class => $channelRepositoryMock,
                 default => throw new InvalidArgumentException('Unexpected class: '.$class),
@@ -88,7 +89,7 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(fn (string $class) => match ($class) {
+            ->willReturnCallback(fn (string $class): MockObject => match ($class) {
                 Pager::class => $pagerRepositoryMock,
                 Channel::class => $channelRepositoryMock,
                 default => throw new InvalidArgumentException('Unexpected class: '.$class),
@@ -126,7 +127,7 @@ final class AssignChannelHandlerTest extends TestCase
 
         $entityManagerMock = self::createMock(EntityManagerInterface::class);
         $entityManagerMock->expects(self::exactly(2))->method('getRepository')
-            ->willReturnCallback(fn (string $class) => match ($class) {
+            ->willReturnCallback(fn (string $class): MockObject => match ($class) {
                 Pager::class => $pagerRepositoryMock,
                 Channel::class => $channelRepositoryMock,
                 default => throw new InvalidArgumentException('Unexpected class: '.$class),

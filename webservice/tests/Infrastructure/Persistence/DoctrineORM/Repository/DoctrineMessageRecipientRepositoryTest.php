@@ -23,7 +23,7 @@ final class DoctrineMessageRecipientRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrineMessageRecipientRepository($em);
@@ -39,6 +39,6 @@ final class DoctrineMessageRecipientRepositoryTest extends KernelTestCase
         $result = $em->find(AbstractMessageRecipient::class, $recipient->getId());
 
         self::assertInstanceOf(Role::class, $result);
-        self::assertEquals('Role A', $result->getName());
+        self::assertSame('Role A', $result->getName());
     }
 }

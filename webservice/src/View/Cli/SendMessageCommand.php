@@ -43,8 +43,8 @@ final class SendMessageCommand extends Command
                 name: self::OPT_FROM,
                 shortcut: 'f',
                 mode: InputOption::VALUE_REQUIRED,
-                default: self::SEND_BY_CLI_ID,
-                description: 'ULID of sender'
+                description: 'ULID of sender',
+                default: self::SEND_BY_CLI_ID
             )
             ->addOption(
                 name: self::OPT_TO,

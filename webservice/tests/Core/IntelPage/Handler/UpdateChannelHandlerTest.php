@@ -27,10 +27,10 @@ final class UpdateChannelHandlerTest extends TestCase
 
         $channelRepositoryMock = self::createMock(ChannelRepository::class);
         $channelRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn(new Channel($ulid, 'Test', CapCode::fromInt(9999), true, true));
         $channelRepositoryMock->expects(self::once())->method('persist')
-            ->with(self::callback(fn (Channel $channel) => (
+            ->with(self::callback(fn (Channel $channel): bool => (
                 'Updated' === $channel->getName()
                 && $channel->getId()->equals($ulid)
                 && 1001 === $channel->getCapCode()->getCode()
@@ -63,7 +63,7 @@ final class UpdateChannelHandlerTest extends TestCase
 
         $channelRepositoryMock = self::createMock(ChannelRepository::class);
         $channelRepositoryMock->expects(self::once())->method('getById')
-            ->with(self::callback(fn (Ulid $ulidX) => $ulidX->equals($ulid)))
+            ->with(self::callback(fn (Ulid $ulidX): bool => $ulidX->equals($ulid)))
             ->willReturn(null);
 
         $unitOfWorkMock = self::createStub(UnitOfWork::class);

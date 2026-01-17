@@ -70,7 +70,7 @@ final readonly class ExportRecipientsQueryHandler
             $members = $recipient->getMembers();
             if ([] !== $members) {
                 $memberIds = array_map(
-                    fn (AbstractMessageRecipient $m) => $m->getId()->toRfc4122(),
+                    fn (AbstractMessageRecipient $m): string => $m->getId()->toRfc4122(),
                     $members,
                 );
                 $groupMemberIds = implode(',', $memberIds);

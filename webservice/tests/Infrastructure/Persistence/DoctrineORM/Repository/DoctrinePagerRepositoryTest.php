@@ -12,7 +12,6 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\ResetDatabase;
-use function assert;
 
 #[CoversClass(DoctrinePagerRepository::class)]
 #[Group('integration'), Group('integration.database')]
@@ -24,7 +23,7 @@ final class DoctrinePagerRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrinePagerRepository($em);
@@ -52,7 +51,7 @@ final class DoctrinePagerRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $pager = $this->newPager();
 
@@ -68,7 +67,7 @@ final class DoctrinePagerRepositoryTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(Pager::class, $result);
-        self::assertEquals('Sample', $result->getLabel());
+        self::assertSame('Sample', $result->getLabel());
 
         // Cleanup
         $em->remove($result);
@@ -79,7 +78,7 @@ final class DoctrinePagerRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $pager = $this->newPager();
 
@@ -90,7 +89,7 @@ final class DoctrinePagerRepositoryTest extends KernelTestCase
 
         $sut = new DoctrinePagerRepository($em);
         $pager1 = $sut->getById(Ulid::fromString('02JT62N5PE9HBQTEZ1PPE6CJ4C'));
-        assert(null !== $pager1);
+        self::assertInstanceOf(Pager::class, $pager1);
 
         // Act
         $sut->remove($pager1);

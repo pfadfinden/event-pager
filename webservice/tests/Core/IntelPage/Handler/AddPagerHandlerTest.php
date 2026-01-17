@@ -24,7 +24,7 @@ final class AddPagerHandlerTest extends TestCase
 
         $pagerRepositoryMock = self::createMock(PagerRepository::class);
         $pagerRepositoryMock->expects(self::once())->method('persist')
-            ->with(self::callback(fn (Pager $pager) => (
+            ->with(self::callback(fn (Pager $pager): bool => (
                 'default' === $pager->getLabel()
                 && $pager->getId()->equals(Ulid::fromString($id))
                 && 3 === $pager->getNumber()

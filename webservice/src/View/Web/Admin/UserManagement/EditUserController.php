@@ -85,12 +85,12 @@ final class EditUserController extends AbstractController
             $userRequest = $form->getData();
 
             // Calculate role changes
-            $currentRoles = array_filter($user->roles, fn ($r) => 'ROLE_USER' !== $r);
+            $currentRoles = array_filter($user->roles, fn (string $r): bool => 'ROLE_USER' !== $r);
             $newRoles = $userRequest->roles;
 
             // Filter out privileged roles if user doesn't have permission
             if (!$canAssignPrivileged) {
-                $newRoles = array_filter($newRoles, fn ($r) => !isset(self::PRIVILEGED_ROLES[$r]));
+                $newRoles = array_filter($newRoles, fn (string $r): bool => !isset(self::PRIVILEGED_ROLES[$r]));
                 // Preserve existing privileged roles
                 foreach ($currentRoles as $role) {
                     if (isset(self::PRIVILEGED_ROLES[$role])) {

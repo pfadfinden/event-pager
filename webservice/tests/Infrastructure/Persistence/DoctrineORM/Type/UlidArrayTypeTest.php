@@ -7,6 +7,7 @@ namespace App\Tests\Infrastructure\Persistence\DoctrineORM\Type;
 use App\Infrastructure\Persistence\DoctrineORM\Type\UlidArrayType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -19,16 +20,14 @@ use function count;
 final class UlidArrayTypeTest extends TestCase
 {
     /**
-     * @return array{0: ?Ulid[]}[]
+     * @return Iterator<(int | string), array{(array<Ulid> | null)}>
      */
-    public static function convertProvider(): array
+    public static function convertProvider(): Iterator
     {
-        return [
-            [null],
-            [[]],
-            [[Ulid::fromString('01JEG92SG76GEXKAD368GC5YE3')]],
-            [[Ulid::fromString('01JEG92SG76GEXKAD368GC5YE3'), Ulid::fromString('01JEG93Q56DDDFV1EC0KRFYKYP')]],
-        ];
+        yield [null];
+        yield [[]];
+        yield [[Ulid::fromString('01JEG92SG76GEXKAD368GC5YE3')]];
+        yield [[Ulid::fromString('01JEG92SG76GEXKAD368GC5YE3'), Ulid::fromString('01JEG93Q56DDDFV1EC0KRFYKYP')]];
     }
 
     /** @param ?Ulid[] $input */
@@ -61,15 +60,13 @@ final class UlidArrayTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: string, 1: array<string, mixed>, 2: AbstractPlatform}[]
+     * @return Iterator<(int | string), array{string, array<string, mixed>, AbstractPlatform}>
      */
-    public static function getSqlDeclarationProvider(): array
+    public static function getSqlDeclarationProvider(): Iterator
     {
         $mysql = new MySQLPlatform();
 
-        return [
-            ['LONGTEXT', [], $mysql],
-        ];
+        yield ['LONGTEXT', [], $mysql];
     }
 
     /**

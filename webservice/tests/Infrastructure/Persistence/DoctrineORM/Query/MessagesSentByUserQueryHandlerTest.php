@@ -33,7 +33,7 @@ final class MessagesSentByUserQueryHandlerTest extends KernelTestCase
         $message2 = $this->testMessage();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures / can be rewritten to use fixture library once established
@@ -53,8 +53,8 @@ final class MessagesSentByUserQueryHandlerTest extends KernelTestCase
         self::assertCount(1, $result);
         self::assertInstanceOf(IncomingMessageStatus::class, $result[0]);
         self::assertEquals($message1->messageId, $result[0]->messageId);
-        self::assertEquals($message1->content, $result[0]->content);
-        self::assertEquals('Unknown', $result[0]->status);
+        self::assertSame($message1->content, $result[0]->content);
+        self::assertSame('Unknown', $result[0]->status);
 
         // Cleanup
         $em->remove($message1);
@@ -71,7 +71,7 @@ final class MessagesSentByUserQueryHandlerTest extends KernelTestCase
         $message3 = $this->testMessage($sendBy);
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures / can be rewritten to use fixture library once established
@@ -82,7 +82,7 @@ final class MessagesSentByUserQueryHandlerTest extends KernelTestCase
 
         $sut = new MessagesSentByUserQueryHandler($em);
 
-        $query = new MessagesSentByUser($sendBy, new MessageFilter(limit: 1, offset: 1));
+        $query = new MessagesSentByUser($sendBy, new MessageFilter(offset: 1, limit: 1));
 
         // Act
         /** @var IncomingMessageStatus[] $result */
@@ -92,8 +92,8 @@ final class MessagesSentByUserQueryHandlerTest extends KernelTestCase
         self::assertCount(1, $result);
         self::assertInstanceOf(IncomingMessageStatus::class, $result[0]);
         self::assertEquals($message2->messageId, $result[0]->messageId);
-        self::assertEquals($message2->content, $result[0]->content);
-        self::assertEquals('Unknown', $result[0]->status);
+        self::assertSame($message2->content, $result[0]->content);
+        self::assertSame('Unknown', $result[0]->status);
 
         // Cleanup
         $em->remove($message1);

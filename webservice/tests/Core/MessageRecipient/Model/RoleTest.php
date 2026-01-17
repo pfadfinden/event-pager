@@ -6,6 +6,7 @@ namespace App\Tests\Core\MessageRecipient\Model;
 
 use App\Core\MessageRecipient\Model\Person;
 use App\Core\MessageRecipient\Model\Role;
+use Iterator;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,14 +19,12 @@ use Symfony\Component\Uid\Ulid;
 final class RoleTest extends TestCase
 {
     /**
-     * @return array{0: string, 1: ?Person, 2: ?Ulid}[]
+     * @return Iterator<(int | string), array{string, (Person | null), (Ulid | null)}>
      */
-    public static function constructorProvider(): array
+    public static function constructorProvider(): Iterator
     {
-        return [
-            ['Boss', new Person('Alice'), null],
-            ['Responsible', null, new Ulid()],
-        ];
+        yield ['Boss', new Person('Alice'), null];
+        yield ['Responsible', null, new Ulid()];
     }
 
     #[DataProvider('constructorProvider')]
@@ -33,7 +32,7 @@ final class RoleTest extends TestCase
     {
         $role = new Role($name, $person, $id);
 
-        if (null === $id) {
+        if (!$id instanceof Ulid) {
             $role->getId()->toString();
         } else {
             self::assertSame($id, $role->getId());
@@ -43,14 +42,12 @@ final class RoleTest extends TestCase
     }
 
     /**
-     * @return array{0: bool, 1: ?Person}[]
+     * @return Iterator<(int | string), array{bool, (Person | null)}>
      */
-    public static function canResolveProvider(): array
+    public static function canResolveProvider(): Iterator
     {
-        return [
-            [true, new Person('Bob')],
-            [false, null],
-        ];
+        yield [true, new Person('Bob')];
+        yield [false, null];
     }
 
     #[DataProvider('canResolveProvider')]

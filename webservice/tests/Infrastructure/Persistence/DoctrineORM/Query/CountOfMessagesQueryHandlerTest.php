@@ -32,7 +32,7 @@ final class CountOfMessagesQueryHandlerTest extends KernelTestCase
         $message2 = $this->testMessage();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures
@@ -59,7 +59,7 @@ final class CountOfMessagesQueryHandlerTest extends KernelTestCase
         $message3 = $this->testMessage();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures
@@ -86,7 +86,7 @@ final class CountOfMessagesQueryHandlerTest extends KernelTestCase
         $message2 = $this->testMessage();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         // Create fixtures

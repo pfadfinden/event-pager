@@ -8,9 +8,6 @@ use SensitiveParameter;
 
 readonly class AddOrUpdateTransportConfiguration
 {
-    /**
-     * @return AddOrUpdateTransportConfiguration
-     */
     // @phpstan-ignore-next-line missingType.iterableValue (JSON compatible array)
     public static function with(
         string $key,
@@ -19,7 +16,7 @@ readonly class AddOrUpdateTransportConfiguration
         ?bool $enabled = false,
         #[SensitiveParameter]
         ?array $vendorSpecificConfiguration = null,
-    ) {
+    ): self {
         // @phpstan-ignore-next-line class-string
         return new self($key, $transport, $title, $enabled, $vendorSpecificConfiguration);
     }

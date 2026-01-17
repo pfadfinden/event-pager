@@ -9,6 +9,7 @@ use Brick\DateTime\Instant;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -19,18 +20,16 @@ use PHPUnit\Framework\TestCase;
 final class InstantTypeTest extends TestCase
 {
     /**
-     * @return array{0: ?string, 1: ?Instant}[]
+     * @return Iterator<(int | string), array{(string | null), (Instant | null)}>
      */
-    public static function convertToDatabaseValueProvider(): array
+    public static function convertToDatabaseValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            ['0', Instant::epoch()],
-            ['1234567890.123456789', Instant::of(1234567890, 123456789)],
-            ['-123456789.123456789', Instant::of(-123456789, 123456789)],
-            ['9999999999.999999999', Instant::of(9_999_999_999, 999_999_999)],
-            ['-9999999999.999999999', Instant::of(-9_999_999_999, 999_999_999)],
-        ];
+        yield [null, null];
+        yield ['0', Instant::epoch()];
+        yield ['1234567890.123456789', Instant::of(1234567890, 123456789)];
+        yield ['-123456789.123456789', Instant::of(-123456789, 123456789)];
+        yield ['9999999999.999999999', Instant::of(9_999_999_999, 999_999_999)];
+        yield ['-9999999999.999999999', Instant::of(-9_999_999_999, 999_999_999)];
     }
 
     #[DataProvider('convertToDatabaseValueProvider')]
@@ -45,17 +44,15 @@ final class InstantTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToDatabaseValueExceptionProvider(): array
+    public static function convertToDatabaseValueExceptionProvider(): Iterator
     {
-        return [
-            [true],
-            [Instant::min()],
-            [Instant::of(-10_000_000_000, 0)],
-            [Instant::of(10_000_000_000, 0)],
-            [Instant::max()],
-        ];
+        yield [true];
+        yield [Instant::min()];
+        yield [Instant::of(-10_000_000_000, 0)];
+        yield [Instant::of(10_000_000_000, 0)];
+        yield [Instant::max()];
     }
 
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
@@ -70,23 +67,21 @@ final class InstantTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: ?Instant, 1: mixed}[]
+     * @return Iterator<(int | string), array{(Instant | null), mixed}>
      */
-    public static function convertToPhpValueProvider(): array
+    public static function convertToPhpValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            [Instant::epoch(), 0],
-            [Instant::epoch(), 0.0],
-            [Instant::epoch(), '0'],
-            [Instant::epoch(), '0.'],
-            [Instant::epoch(), '0.0'],
-            [Instant::of(42, 125000000), 42.125],
-            [Instant::of(4711, 250000000), 4711.25],
-            [Instant::of(0, 123456789), '0.123456789'],
-            [Instant::of(123456789, 0), '123456789.0'],
-            [Instant::of(123456, 789000000), '123456.789'],
-        ];
+        yield [null, null];
+        yield [Instant::epoch(), 0];
+        yield [Instant::epoch(), 0.0];
+        yield [Instant::epoch(), '0'];
+        yield [Instant::epoch(), '0.'];
+        yield [Instant::epoch(), '0.0'];
+        yield [Instant::of(42, 125000000), 42.125];
+        yield [Instant::of(4711, 250000000), 4711.25];
+        yield [Instant::of(0, 123456789), '0.123456789'];
+        yield [Instant::of(123456789, 0), '123456789.0'];
+        yield [Instant::of(123456, 789000000), '123456.789'];
     }
 
     #[DataProvider('convertToPhpValueProvider')]
@@ -97,7 +92,7 @@ final class InstantTypeTest extends TestCase
 
         $result = $type->convertToPHPValue($value, $platform);
 
-        if (null === $expected) {
+        if (!$expected instanceof Instant) {
             self::assertNull($result);
         } else {
             self::assertNotNull($result);
@@ -106,15 +101,13 @@ final class InstantTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToPhpValueExceptionProvider(): array
+    public static function convertToPhpValueExceptionProvider(): Iterator
     {
-        return [
-            [''],
-            ['.0'],
-            ['abcdef'],
-        ];
+        yield [''];
+        yield ['.0'];
+        yield ['abcdef'];
     }
 
     #[DataProvider('convertToPhpValueExceptionProvider')]
@@ -136,15 +129,13 @@ final class InstantTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: string, 1: array<string, mixed>, 2: AbstractPlatform}[]
+     * @return Iterator<(int | string), array{string, array<string, mixed>, AbstractPlatform}>
      */
-    public static function getSqlDeclarationProvider(): array
+    public static function getSqlDeclarationProvider(): Iterator
     {
         $mysql = new MySQLPlatform();
 
-        return [
-            ['NUMERIC(19, 9)', [], $mysql],
-        ];
+        yield ['NUMERIC(19, 9)', [], $mysql];
     }
 
     /**

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Core\IntelPage\Application {
     /**
      * Override fsockopen() in the App\Tests\Core\IntelPage\Application namespace when testing.
-     *
-     * @return null
      */
-    function fsockopen()
+    function fsockopen(): null
     {
         return null;
     }

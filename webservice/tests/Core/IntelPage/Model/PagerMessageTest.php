@@ -24,8 +24,8 @@ final class PagerMessageTest extends TestCase
         $id = Ulid::fromString(Ulid::generate());
         $message = PagerMessage::new($id, 'default', CapCode::fromInt(1001), 'Hello World', 1);
 
-        self::assertEquals('Hello World', $message->getMessage());
-        self::assertEquals(1001, $message->getCap()->getCode());
+        self::assertSame('Hello World', $message->getMessage());
+        self::assertSame(1001, $message->getCap()->getCode());
         self::assertTrue($id->equals($message->getId()));
 
         return $message;
@@ -57,8 +57,8 @@ final class PagerMessageTest extends TestCase
     #[Depends('testCreate')]
     public function testMarkingAsFailedIncreasesFailureCount(PagerMessage $message): void
     {
-        self::assertEquals(0, $message->getAttemptedToSend());
+        self::assertSame(0, $message->getAttemptedToSend());
         $message->failedToSend();
-        self::assertEquals(1, $message->getAttemptedToSend());
+        self::assertSame(1, $message->getAttemptedToSend());
     }
 }

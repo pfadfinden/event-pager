@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DeleteUser::class)]
 #[CoversClass(DeleteUserHandler::class)]
 #[Group('unit')]
-class DeleteUserHandlerTest extends TestCase
+final class DeleteUserHandlerTest extends TestCase
 {
     public function testDeleteUserCommand(): void
     {

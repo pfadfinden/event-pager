@@ -25,7 +25,7 @@ final class ChannelQueryHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
         $em->persist(new Channel(Ulid::fromString('01JT62N5PE9HBQTEZ1PPE6CJ4F'), 'Test Channel 1', CapCode::fromInt(222)));
         $em->persist(new Channel(Ulid::fromString('01JT62N5PE9HBQTEZ1PPE6CJ4C'), 'Test Channel 2', CapCode::fromInt(222)));
@@ -36,7 +36,7 @@ final class ChannelQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveChannelWithId(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new ChannelQueryHandler($em);
