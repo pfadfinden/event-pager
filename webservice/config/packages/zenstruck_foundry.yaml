@@ -6,12 +6,12 @@ when@dev: &dev
             # Flush only once per call of `PersistentObjectFactory::create()`
             flush_once: true
 
-    # If you use the `make:factory --test` command, you may need to uncomment the following.
+    # Factory services for test data generation
     # See https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#generate
-    #services:
-    #    App\Tests\Factory\:
-    #        resource: '%kernel.project_dir%/tests/Factory/'
-    #        autowire: true
-    #        autoconfigure: true
+    services:
+        App\Tests\Factory\:
+            resource: '%kernel.project_dir%/tests/Factory/'
+            autowire: true
+            autoconfigure: true
 
 when@test: *dev
