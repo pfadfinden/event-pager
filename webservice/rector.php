@@ -32,9 +32,14 @@ return RectorConfig::configure()
         codeQuality: true,
         typeDeclarations: true,
         typeDeclarationDocblocks: true,
+        privatization: true,
+        instanceOf: true,
+        earlyReturn: true,
         rectorPreset: true,
         phpunitCodeQuality: true,
         doctrineCodeQuality: true,
+        symfonyCodeQuality: true,
+        symfonyConfigs: true,
     )
     ->withConfiguredRule(ClassPropertyAssignToConstructorPromotionRector::class, [
         // This decreases readability for entities where not all properties are part of the constructor

@@ -14,6 +14,7 @@ class LoginController extends AbstractController
     public function __construct(private readonly AuthenticationUtils $authenticationUtils)
     {
     }
+
     #[Route('/login/', name: 'app_login')]
     public function __invoke(): Response
     {

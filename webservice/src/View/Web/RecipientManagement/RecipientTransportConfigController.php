@@ -33,6 +33,7 @@ final class RecipientTransportConfigController extends AbstractController
         private readonly QueryBus $queryBus,
     ) {
     }
+
     #[Route('/recipients/{recipientType}/{id}/transport/add', name: 'web_recipient_management_transport_add', methods: ['GET', 'POST'])]
     public function add(Request $request, string $recipientType, string $id): Response
     {
@@ -102,6 +103,7 @@ final class RecipientTransportConfigController extends AbstractController
             'recipientType' => $recipientType,
         ]);
     }
+
     #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/edit', name: 'web_recipient_management_transport_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, string $recipientType, string $id, string $transportKey): Response
     {
@@ -166,6 +168,7 @@ final class RecipientTransportConfigController extends AbstractController
             'transportKey' => $transportKey,
         ]);
     }
+
     #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/remove', name: 'web_recipient_management_transport_remove', methods: ['POST'])]
     public function remove(string $recipientType, string $id, string $transportKey): RedirectResponse
     {
@@ -185,6 +188,7 @@ final class RecipientTransportConfigController extends AbstractController
 
         return $this->redirectToRoute($this->getDetailsRoute($recipientType), ['id' => $id]);
     }
+
     private function getManageRole(string $recipientType): string
     {
         return match ($recipientType) {
@@ -194,6 +198,7 @@ final class RecipientTransportConfigController extends AbstractController
             default => throw new NotFoundHttpException('Invalid recipient type'),
         };
     }
+
     private function getDetailsRoute(string $recipientType): string
     {
         return match ($recipientType) {
@@ -203,6 +208,7 @@ final class RecipientTransportConfigController extends AbstractController
             default => throw new NotFoundHttpException('Invalid recipient type'),
         };
     }
+
     private function isValidRecipientType(string $actualType, string $expectedType): bool
     {
         return match ($expectedType) {
