@@ -7,16 +7,16 @@ namespace App\Tests\View\Cli;
 use App\Core\UserManagement\Model\User;
 use App\View\Cli\AddUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use function assert;
 
 #[CoversClass(AddUserCommand::class)]
 #[Group('functional')]
-class AddUserCommandTest extends KernelTestCase
+final class AddUserCommandTest extends KernelTestCase
 {
     public function getEntityManager(): EntityManagerInterface
     {
@@ -28,11 +28,12 @@ class AddUserCommandTest extends KernelTestCase
         self::bootKernel();
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         $em = $this->getEntityManager();
         $user = $em->getRepository(User::class)->findOneBy(['username' => 'newuser']);
-        assert($user instanceof User);
+        self::assertInstanceOf(User::class, $user, 'User could not be teared down');
         $em->remove($user);
         $em->flush();
         $em->clear();

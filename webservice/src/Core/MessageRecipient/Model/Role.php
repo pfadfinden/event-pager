@@ -11,7 +11,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 class Role extends AbstractMessageRecipient implements Delegated
 {
-    final public const DISCRIMINATOR = 'role';
+    final public const string DISCRIMINATOR = 'role';
 
     public function __construct(
         string $name,
@@ -24,12 +24,15 @@ class Role extends AbstractMessageRecipient implements Delegated
 
     public function canResolve(): bool
     {
-        return null !== $this->person;
+        return $this->person instanceof Person;
     }
 
+    /**
+     * @return list<Person>
+     */
     public function resolve(): array
     {
-        if (null === $this->person) {
+        if (!$this->person instanceof Person) {
             throw new LogicException();
         }
 

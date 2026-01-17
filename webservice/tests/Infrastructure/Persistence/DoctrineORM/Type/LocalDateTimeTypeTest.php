@@ -9,6 +9,7 @@ use Brick\DateTime\LocalDateTime;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -19,18 +20,16 @@ use PHPUnit\Framework\TestCase;
 final class LocalDateTimeTypeTest extends TestCase
 {
     /**
-     * @return array{0: ?string, 1: ?LocalDateTime}[]
+     * @return Iterator<(int | string), array{(string | null), (LocalDateTime | null)}>
      */
-    public static function convertToDatabaseValueProvider(): array
+    public static function convertToDatabaseValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            ['2024-11-30T00:00', LocalDateTime::of(2024, 11, 30)],
-            ['2024-11-30T12:34:56.123456789', LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789)],
-            ['-123456-11-30T12:34:56.123456789', LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789)],
-            ['-999999-01-01T00:00', LocalDateTime::min()],
-            ['999999-12-31T23:59:59.999999999', LocalDateTime::max()],
-        ];
+        yield [null, null];
+        yield ['2024-11-30T00:00', LocalDateTime::of(2024, 11, 30)];
+        yield ['2024-11-30T12:34:56.123456789', LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789)];
+        yield ['-123456-11-30T12:34:56.123456789', LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789)];
+        yield ['-999999-01-01T00:00', LocalDateTime::min()];
+        yield ['999999-12-31T23:59:59.999999999', LocalDateTime::max()];
     }
 
     #[DataProvider('convertToDatabaseValueProvider')]
@@ -45,14 +44,12 @@ final class LocalDateTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToDatabaseValueExceptionProvider(): array
+    public static function convertToDatabaseValueExceptionProvider(): Iterator
     {
-        return [
-            [true],
-            ['abcdef'],
-        ];
+        yield [true];
+        yield ['abcdef'];
     }
 
     #[DataProvider('convertToDatabaseValueExceptionProvider')]
@@ -67,16 +64,14 @@ final class LocalDateTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: ?LocalDateTime, 1: ?string}[]
+     * @return Iterator<(int | string), array{(LocalDateTime | null), (string | null)}>
      */
-    public static function convertToPhpValueProvider(): array
+    public static function convertToPhpValueProvider(): Iterator
     {
-        return [
-            [null, null],
-            [LocalDateTime::of(2024, 11, 30), '2024-11-30T00:00'],
-            [LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789), '2024-11-30T12:34:56.123456789'],
-            [LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789), '-123456-11-30T12:34:56.123456789'],
-        ];
+        yield [null, null];
+        yield [LocalDateTime::of(2024, 11, 30), '2024-11-30T00:00'];
+        yield [LocalDateTime::of(2024, 11, 30, 12, 34, 56, 123456789), '2024-11-30T12:34:56.123456789'];
+        yield [LocalDateTime::of(-123456, 11, 30, 12, 34, 56, 123456789), '-123456-11-30T12:34:56.123456789'];
     }
 
     #[DataProvider('convertToPhpValueProvider')]
@@ -87,7 +82,7 @@ final class LocalDateTimeTypeTest extends TestCase
 
         $result = $type->convertToPHPValue($value, $platform);
 
-        if (null === $expected) {
+        if (!$expected instanceof LocalDateTime) {
             self::assertNull($result);
         } else {
             self::assertNotNull($result);
@@ -96,15 +91,13 @@ final class LocalDateTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: mixed}[]
+     * @return Iterator<(int | string), array{mixed}>
      */
-    public static function convertToPhpValueExceptionProvider(): array
+    public static function convertToPhpValueExceptionProvider(): Iterator
     {
-        return [
-            [''],
-            ['.0'],
-            ['abcdef'],
-        ];
+        yield [''];
+        yield ['.0'];
+        yield ['abcdef'];
     }
 
     #[DataProvider('convertToPhpValueExceptionProvider')]
@@ -126,15 +119,13 @@ final class LocalDateTimeTypeTest extends TestCase
     }
 
     /**
-     * @return array{0: string, 1: array<string, mixed>, 2: AbstractPlatform}[]
+     * @return Iterator<(int | string), array{string, array<string, mixed>, AbstractPlatform}>
      */
-    public static function getSqlDeclarationProvider(): array
+    public static function getSqlDeclarationProvider(): Iterator
     {
         $mysql = new MySQLPlatform();
 
-        return [
-            ['VARCHAR(32)', [], $mysql],
-        ];
+        yield ['VARCHAR(32)', [], $mysql];
     }
 
     /**

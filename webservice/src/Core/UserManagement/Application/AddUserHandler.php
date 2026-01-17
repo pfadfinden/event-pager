@@ -15,20 +15,15 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[AsMessageHandler(bus: Bus::COMMAND)]
 final readonly class AddUserHandler
 {
-    private UserPasswordHasherInterface $passwordHasher;
-    private UserRepository $userRepository;
-
     public function __construct(
-        UserRepository $userRepository,
-        UserPasswordHasherInterface $passwordHasher,
+        private UserRepository $userRepository,
+        private UserPasswordHasherInterface $passwordHasher,
     ) {
-        $this->userRepository = $userRepository;
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function __invoke(AddUser $command): void
     {
-        if (null !== $this->userRepository->findOneByUsername($command->getUsername())) {
+        if ($this->userRepository->findOneByUsername($command->getUsername()) instanceof User) {
             throw new InvalidArgumentException('User already exists');
         }
 

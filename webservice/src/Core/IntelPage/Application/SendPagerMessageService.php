@@ -52,7 +52,7 @@ final readonly class SendPagerMessageService implements SendPagerMessageServiceI
         try {
             $this->transmitter->transmit($message->getCap(), $message->getMessage());
         } catch (Exception $e) {
-            $this->handleTransmissionFailure($message, $e);
+            $this->handleTransmissionFailure($message);
 
             throw $e; // rethrow to allow caller to abort
         }
@@ -76,7 +76,7 @@ final readonly class SendPagerMessageService implements SendPagerMessageServiceI
         $this->em->flush();
     }
 
-    private function handleTransmissionFailure(PagerMessage $message, Exception $e): void
+    private function handleTransmissionFailure(PagerMessage $message): void
     {
         $this->markMessageFailed($message);
 

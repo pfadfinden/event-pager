@@ -30,9 +30,7 @@ final class RecipientWithIdComponentTest extends TestCase
         $this->queryBus
             ->expects(self::once())
             ->method('get')
-            ->with(self::callback(function (MessageRecipientWithId $query): bool {
-                return 'test-ulid-123' === $query->id;
-            }))
+            ->with(self::callback(fn (MessageRecipientWithId $query): bool => 'test-ulid-123' === $query->id))
             ->willReturn($expectedRecipient);
 
         $component = new RecipientWithIdComponent($this->queryBus);

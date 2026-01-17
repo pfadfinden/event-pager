@@ -7,6 +7,7 @@ namespace App\Tests\View\Cli;
 use App\Core\UserManagement\Model\User;
 use App\View\Cli\DeleteUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -31,6 +32,7 @@ final class DeleteUserCommandTest extends KernelTestCase
         $em->clear();
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         $em = $this->getEntityManager();

@@ -24,7 +24,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
         $em->persist($this->sampleConfiguration('test-disabled', false));
         $em->persist($this->sampleConfiguration('test-enabled', true));
@@ -35,7 +35,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveAllTransportsWithoutFilter(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new AllTransportsQueryHandler($em);
@@ -53,7 +53,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveAllEnabledTransports(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new AllTransportsQueryHandler($em);
@@ -72,7 +72,7 @@ final class AllTransportsQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveAllDisabledTransports(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new AllTransportsQueryHandler($em);

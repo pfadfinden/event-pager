@@ -25,14 +25,12 @@ final class AddOrUpdateTransportConfigurationHandlerTest extends TestCase
 
         $repository = self::createMock(TransportConfigurationRepository::class);
         $repository->expects(self::once())->method('persist')
-            ->with(self::callback(function ($value) use ($vendorSpecificConfiguration) {
-                return $value instanceof TransportConfiguration
-                    && 'test-dummy' === $value->getKey()
-                    && DummyTransport::class === $value->getTransport()
-                    && 'Hello World' === $value->getTitle()
-                    && true === $value->isEnabled()
-                    && $vendorSpecificConfiguration === $value->getVendorSpecificConfig();
-            }));
+            ->with(self::callback(fn ($value): bool => $value instanceof TransportConfiguration
+                && 'test-dummy' === $value->getKey()
+                && DummyTransport::class === $value->getTransport()
+                && 'Hello World' === $value->getTitle()
+                && $value->isEnabled()
+                && $vendorSpecificConfiguration === $value->getVendorSpecificConfig()));
 
         $uow = self::createMock(UnitOfWork::class);
         $uow->expects(self::once())->method('commit');
@@ -60,12 +58,10 @@ final class AddOrUpdateTransportConfigurationHandlerTest extends TestCase
             ->with('test-dummy')
             ->willReturn($transportConfiguration);
         $repository->expects(self::once())->method('persist')
-            ->with(self::callback(function ($value) use ($transportConfiguration) {
-                return $value === $transportConfiguration
-                    && 'test-dummy' === $value->getKey()
-                    && DummyTransport::class === $value->getTransport()
-                    && 'Hello World' === $value->getTitle();
-            }));
+            ->with(self::callback(fn ($value): bool => $value === $transportConfiguration
+                && 'test-dummy' === $value->getKey()
+                && DummyTransport::class === $value->getTransport()
+                && 'Hello World' === $value->getTitle()));
         $uow = self::createMock(UnitOfWork::class);
         $uow->expects(self::once())->method('commit');
 

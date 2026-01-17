@@ -18,7 +18,7 @@ readonly class CountMessageHistory implements Query
 
     public static function all(?string $searchText = null): self
     {
-        return new self(new MessageHistoryFilter($searchText, null));
+        return new self(new MessageHistoryFilter(searchText: $searchText));
     }
 
     private function __construct(

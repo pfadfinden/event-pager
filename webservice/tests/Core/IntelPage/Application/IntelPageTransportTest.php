@@ -83,7 +83,7 @@ final class IntelPageTransportTest extends TestCase
     {
         // Arrange
         $queryBus = self::createStub(QueryBus::class);
-        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
+        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value): bool => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
 
         $transport = self::initTransport($queryBus);
 
@@ -113,7 +113,7 @@ final class IntelPageTransportTest extends TestCase
         $pagerMock->method('individualNonAlertCap')->willReturn(CapCode::fromInt(111));
 
         $queryBus = self::createStub(QueryBus::class);
-        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
+        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value): bool => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
 
         $transport = self::initTransport($queryBus);
 
@@ -165,7 +165,7 @@ final class IntelPageTransportTest extends TestCase
         $pagerMock->method('individualNonAlertCap')->willReturn(CapCode::fromInt(111));
 
         $queryBus = self::createStub(QueryBus::class);
-        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
+        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(PagerByRecipient::class), self::callback(fn (PagerByRecipient $value): bool => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->recipientId)))->willReturn($pagerMock);
 
         $commandBus = self::createMock(CommandBus::class);
         $commandBus->expects(self::once())->method('do')->with(self::isInstanceOf(QueueMessage::class));
@@ -197,7 +197,7 @@ final class IntelPageTransportTest extends TestCase
     {
         // Expect
         $queryBus = self::createStub(QueryBus::class);
-        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value) => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
+        $queryBus->method('get')->with(self::logicalAnd(self::isInstanceOf(ChannelCapCodeById::class), self::callback(fn (ChannelCapCodeById $value): bool => '01JT62N5PE9HBQTEZ1PPE6CJ4F' === $value->channelId)))->willReturn(CapCode::fromInt(222));
 
         $commandBus = self::createMock(CommandBus::class);
         $commandBus->expects(self::once())->method('do')->with(self::isInstanceOf(QueueMessage::class));
@@ -229,7 +229,7 @@ final class IntelPageTransportTest extends TestCase
         $eventBus = self::createMock(EventBus::class);
         $eventBus->expects(self::once())->method('publish')->with(self::logicalAnd(
             self::isInstanceOf(OutgoingMessageEvent::class),
-            self::callback(fn (OutgoingMessageEvent $value) => OutgoingMessageStatus::ERROR === $value->status)
+            self::callback(fn (OutgoingMessageEvent $value): bool => OutgoingMessageStatus::ERROR === $value->status)
         ));
 
         // Arrange

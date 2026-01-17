@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\Test\ResetDatabase;
-use function assert;
 
 #[CoversClass(DoctrineChannelRepository::class)]
 #[Group('integration'), Group('integration.database')]
@@ -25,7 +24,7 @@ final class DoctrineChannelRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrineChannelRepository($em);
@@ -53,7 +52,7 @@ final class DoctrineChannelRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $channel = $this->newChannel();
 
@@ -69,7 +68,7 @@ final class DoctrineChannelRepositoryTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(Channel::class, $result);
-        self::assertEquals('All', $result->getName());
+        self::assertSame('All', $result->getName());
 
         // Cleanup
         $em->remove($result);
@@ -80,7 +79,7 @@ final class DoctrineChannelRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $channel = $this->newChannel();
 
@@ -92,7 +91,7 @@ final class DoctrineChannelRepositoryTest extends KernelTestCase
         $sut = new DoctrineChannelRepository($em);
 
         $channel1 = $sut->getById(Ulid::fromString('02JT62N5PE9HBQTEZ1PPE6CJ4C'));
-        assert(null !== $channel1);
+        self::assertInstanceOf(Channel::class, $channel1);
 
         // Act
         $sut->remove($channel1);

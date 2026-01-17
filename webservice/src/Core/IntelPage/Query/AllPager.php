@@ -12,7 +12,7 @@ use App\Core\IntelPage\ReadModel\Pager;
  */
 final readonly class AllPager implements Query
 {
-    public const DEFAULT_PAGE_LENGTH = 25;
+    public const int DEFAULT_PAGE_LENGTH = 25;
 
     public static function withoutFilter(?int $page = null, ?int $perPage = null): self
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\MessageRecipient\Model;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -35,8 +36,8 @@ class RecipientTransportConfiguration
     /**
      * What ever data needs to be available to the transport centrally (e.g. API Keys).
      */
-    #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $vendorSpecificConfig; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $vendorSpecificConfig = null; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
 
     public function __construct(AbstractMessageRecipient $recipient, string $key)
     {

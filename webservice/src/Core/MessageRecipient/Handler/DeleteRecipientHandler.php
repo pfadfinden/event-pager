@@ -7,6 +7,7 @@ namespace App\Core\MessageRecipient\Handler;
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Persistence\UnitOfWork;
 use App\Core\MessageRecipient\Command\DeleteRecipient;
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Person;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use InvalidArgumentException;
@@ -29,7 +30,7 @@ final readonly class DeleteRecipientHandler
     public function __invoke(DeleteRecipient $recipientToDelete): void
     {
         $recipient = $this->repository->getRecipientFromID($recipientToDelete->getRecipientID());
-        if (null === $recipient) {
+        if (!$recipient instanceof AbstractMessageRecipient) {
             throw new InvalidArgumentException("Recipient with ID {$recipientToDelete->recipientID} not found.");
         }
         if ($recipient instanceof Person) {

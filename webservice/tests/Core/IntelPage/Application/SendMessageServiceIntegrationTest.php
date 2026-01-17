@@ -12,7 +12,6 @@ use Brick\DateTime\Clock\FixedClock;
 use Brick\DateTime\DefaultClock;
 use Brick\DateTime\Instant;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -37,7 +36,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $em->persist($messageTooOld);
@@ -77,7 +76,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $em->persist($messageA);
@@ -99,7 +98,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(PagerMessage::class, $res);
-        self::assertEquals('Perfect', $res->getMessage());
+        self::assertSame('Perfect', $res->getMessage());
     }
 
     public function testLimitsRetries(): void
@@ -127,7 +126,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $em->persist($messageA);
@@ -149,7 +148,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(PagerMessage::class, $res);
-        self::assertEquals('Perfect', $res->getMessage());
+        self::assertSame('Perfect', $res->getMessage());
     }
 
     public function testDoesNotResend(): void
@@ -164,7 +163,7 @@ final class SendMessageServiceIntegrationTest extends KernelTestCase
 
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $em->persist($messageC);

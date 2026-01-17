@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Stringable;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Uid\Ulid;
     Person::DISCRIMINATOR => Person::class,
     Role::DISCRIMINATOR => Role::class,
 ])]
-abstract class AbstractMessageRecipient implements MessageRecipient
+abstract class AbstractMessageRecipient implements MessageRecipient, Stringable
 {
     #[ORM\Column(type: UlidType::NAME)]
     #[ORM\Id]

@@ -7,6 +7,7 @@ namespace App\Core\SendMessage\Model;
 use App\Core\TransportContract\Model\OutgoingMessageStatus;
 use App\Infrastructure\Persistence\DoctrineORM\Type\InstantType;
 use Brick\DateTime\Instant;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -65,13 +66,13 @@ readonly class OutgoingMessageEventRecord
 
     public function __construct(
         #[ORM\Id]
-        #[ORM\Column(type: 'string', length: 28)]
+        #[ORM\Column(type: Types::STRING, length: 28)]
         public string $id,
         #[ORM\Column(type: UlidType::NAME)]
         public Ulid $outgoingMessageId,
         #[ORM\Column(type: InstantType::NAME)]
         public Instant $recordedAt,
-        #[ORM\Column(type: 'integer', enumType: OutgoingMessageStatus::class)]
+        #[ORM\Column(type: Types::INTEGER, enumType: OutgoingMessageStatus::class)]
         public OutgoingMessageStatus $status,
         #[ORM\Column(type: UlidType::NAME, nullable: true)]
         public ?Ulid $incomingMessageId = null,

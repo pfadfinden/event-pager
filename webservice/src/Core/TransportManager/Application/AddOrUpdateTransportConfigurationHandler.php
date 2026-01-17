@@ -24,7 +24,7 @@ final readonly class AddOrUpdateTransportConfigurationHandler
     {
         $configuration = $this->repository->getByKey($command->key);
 
-        if (null === $configuration) {
+        if (!$configuration instanceof TransportConfiguration) {
             $configuration = new TransportConfiguration(
                 $command->key,
                 $command->transport,

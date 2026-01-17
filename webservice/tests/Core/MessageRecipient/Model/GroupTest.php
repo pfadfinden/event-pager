@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\MessageRecipient\Model;
 
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
 use App\Core\MessageRecipient\Model\Person;
 use InvalidArgumentException;
+use Iterator;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,14 +21,12 @@ use Symfony\Component\Uid\Ulid;
 final class GroupTest extends TestCase
 {
     /**
-     * @return array{0: string, 1: ?Ulid}[]
+     * @return Iterator<(int | string), array{string, (Ulid | null)}>
      */
-    public static function constructorProvider(): array
+    public static function constructorProvider(): Iterator
     {
-        return [
-            ['Simple Group', null],
-            ['Another Group', new Ulid()],
-        ];
+        yield ['Simple Group', null];
+        yield ['Another Group', new Ulid()];
     }
 
     #[DataProvider('constructorProvider')]
@@ -34,7 +34,7 @@ final class GroupTest extends TestCase
     {
         $group = new Group($name, $id);
 
-        if (null === $id) {
+        if (!$id instanceof Ulid) {
             $group->getId()->toString();
         } else {
             self::assertSame($id, $group->getId());
@@ -44,14 +44,12 @@ final class GroupTest extends TestCase
     }
 
     /**
-     * @return array{0: bool, 1: ?Person}[]
+     * @return Iterator<(int | string), array{bool, (Person | null)}>
      */
-    public static function canResolveProvider(): array
+    public static function canResolveProvider(): Iterator
     {
-        return [
-            [true, new Person('Bob')],
-            [false, null],
-        ];
+        yield [true, new Person('Bob')];
+        yield [false, null];
     }
 
     #[DataProvider('canResolveProvider')]
@@ -59,7 +57,7 @@ final class GroupTest extends TestCase
     {
         $group = new Group('Important', Ulid::fromString(Ulid::generate()));
 
-        if (null !== $person) {
+        if ($person instanceof Person) {
             $group->addMember($person);
         }
         self::assertSame($expected, $group->canResolve());
@@ -126,7 +124,7 @@ final class GroupTest extends TestCase
         $group2->addMember($maria);
         $group2->addMember($pete);
 
-        $members = array_map(fn ($r) => $r->getName(), iterator_to_array($group1->getMembersRecursively(), false));
+        $members = array_map(fn (AbstractMessageRecipient $r): string => $r->getName(), iterator_to_array($group1->getMembersRecursively(), false));
 
         self::assertSame(['Eve', 'Maria', 'Peter', 'Adam', 'Clair'], $members);
     }

@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 class Person extends AbstractMessageRecipient
 {
-    final public const DISCRIMINATOR = 'person';
+    final public const string DISCRIMINATOR = 'person';
 
     /**
      * @var Collection<int, Role>

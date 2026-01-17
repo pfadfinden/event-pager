@@ -21,7 +21,7 @@ abstract readonly class AbstractCapAssignment
 {
     #[ORM\Id]
     #[ORM\Column(type: 'ulid')]
-    protected readonly Ulid $id;
+    protected Ulid $id;
 
     #[ORM\Embedded]
     protected Slot $slot;

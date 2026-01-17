@@ -6,6 +6,7 @@ namespace App\Tests\Core\IntelPage\Model;
 
 use App\Core\IntelPage\Model\RecipientConfiguration;
 use App\Core\TransportContract\Model\Priority;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -34,7 +35,7 @@ final class RecipientConfigurationTest extends TestCase
         ]);
 
         self::assertTrue($recipientConfiguration->hasChannelConfiguration());
-        self::assertEquals($id, $recipientConfiguration->channelId());
+        self::assertSame($id, $recipientConfiguration->channelId());
     }
 
     /**
@@ -49,14 +50,12 @@ final class RecipientConfigurationTest extends TestCase
     }
 
     /**
-     * @return array<string, array<array<string, int>|Priority>>
+     * @return Iterator<string, array<(Priority | array<string, int>)>>
      */
-    public static function priorityConfigsProvider(): array
+    public static function priorityConfigsProvider(): Iterator
     {
-        return [
-            'default' => [[], Priority::HIGH],
-            'lower' => [['alert_from_priority' => 30], Priority::DEFAULT],
-            'unknown' => [['alert_from_priority' => 35], Priority::HIGH],
-        ];
+        yield 'default' => [[], Priority::HIGH];
+        yield 'lower' => [['alert_from_priority' => 30], Priority::DEFAULT];
+        yield 'unknown' => [['alert_from_priority' => 35], Priority::HIGH];
     }
 }

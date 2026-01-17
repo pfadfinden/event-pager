@@ -18,6 +18,8 @@ use App\Core\TransportContract\Model\OutgoingMessageEvent;
 use App\Core\TransportContract\Model\OutgoingMessageStatus;
 use App\Core\TransportContract\Model\Priority;
 use App\Core\TransportContract\Model\SystemTransportConfig;
+use App\Core\TransportContract\Port\Transport;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -88,7 +90,7 @@ final class NtfyTransportIntegrationTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::TRANSMITTED === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::TRANSMITTED === $event->status
             ));
 
         // Act
@@ -118,7 +120,7 @@ final class NtfyTransportIntegrationTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::ERROR === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::ERROR === $event->status
             ));
 
         // Act
@@ -127,17 +129,15 @@ final class NtfyTransportIntegrationTest extends TestCase
     }
 
     /**
-     * @return array<string, array{Priority, NtfyPriority}>
+     * @return Iterator<string, array{Priority, NtfyPriority}>
      */
-    public static function providePriorityMappings(): array
+    public static function providePriorityMappings(): Iterator
     {
-        return [
-            'URGENT maps to MAX' => [Priority::URGENT, NtfyPriority::MAX],
-            'HIGH maps to HIGH' => [Priority::HIGH, NtfyPriority::HIGH],
-            'DEFAULT maps to DEFAULT' => [Priority::DEFAULT, NtfyPriority::DEFAULT],
-            'LOW maps to LOW' => [Priority::LOW, NtfyPriority::LOW],
-            'MIN maps to MIN' => [Priority::MIN, NtfyPriority::MIN],
-        ];
+        yield 'URGENT maps to MAX' => [Priority::URGENT, NtfyPriority::MAX];
+        yield 'HIGH maps to HIGH' => [Priority::HIGH, NtfyPriority::HIGH];
+        yield 'DEFAULT maps to DEFAULT' => [Priority::DEFAULT, NtfyPriority::DEFAULT];
+        yield 'LOW maps to LOW' => [Priority::LOW, NtfyPriority::LOW];
+        yield 'MIN maps to MIN' => [Priority::MIN, NtfyPriority::MIN];
     }
 
     #[DataProvider('providePriorityMappings')]
@@ -221,11 +221,11 @@ final class NtfyTransportIntegrationTest extends TestCase
      */
     private function createSystemConfig(array $vendorConfig): SystemTransportConfig
     {
-        return new class($vendorConfig) implements SystemTransportConfig {
+        return new readonly class($vendorConfig) implements SystemTransportConfig {
             /**
              * @param array<string, string> $vendorConfig
              */
-            public function __construct(private readonly array $vendorConfig)
+            public function __construct(private array $vendorConfig)
             {
             }
 
@@ -247,13 +247,13 @@ final class NtfyTransportIntegrationTest extends TestCase
      */
     private function createRecipient(NtfyTransport $transport, array $transportConfig): MessageRecipient
     {
-        return new class($transport, $transportConfig) implements MessageRecipient {
+        return new readonly class($transport, $transportConfig) implements MessageRecipient {
             /**
              * @param array<string, string> $transportConfig
              */
             public function __construct(
-                private readonly NtfyTransport $transport,
-                private readonly array $transportConfig,
+                private NtfyTransport $transport,
+                private array $transportConfig,
             ) {
             }
 
@@ -263,7 +263,7 @@ final class NtfyTransportIntegrationTest extends TestCase
             }
 
             // @phpstan-ignore-next-line missingType.iterableValue (JSON compatible array)
-            public function getTransportConfigurationFor(\App\Core\TransportContract\Port\Transport $transport): ?array
+            public function getTransportConfigurationFor(Transport $transport): ?array
             {
                 if ($transport === $this->transport) {
                     return $this->transportConfig;

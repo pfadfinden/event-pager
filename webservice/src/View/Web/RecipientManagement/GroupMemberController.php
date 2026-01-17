@@ -10,8 +10,7 @@ use App\Core\MessageRecipient\Command\RemoveRecipientFromGroup;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -27,7 +26,7 @@ final class GroupMemberController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $id, string $memberId): Response
+    public function __invoke(string $id, string $memberId): RedirectResponse
     {
         $recipient = $this->queryBus->get(MessageRecipientById::withId($id));
         if (null === $recipient || !$recipient->isGroup()) {

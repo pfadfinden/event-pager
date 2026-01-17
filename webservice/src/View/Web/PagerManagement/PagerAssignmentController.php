@@ -58,8 +58,8 @@ final class PagerAssignmentController extends AbstractController
            ->add('assign', ChoiceType::class, [
                'choices' => $assignableToRecipients,
                'required' => false,
-               'choice_label' => fn (?RecipientListEntry $recipient) => $recipient?->name,
-               'choice_value' => fn (?RecipientListEntry $recipient) => $recipient?->id,
+               'choice_label' => fn (?RecipientListEntry $recipient): ?string => $recipient?->name,
+               'choice_value' => fn (?RecipientListEntry $recipient): ?string => $recipient?->id,
                'data' => $currentRecipient,
            ])
             ->add('changeOnly', SubmitType::class)

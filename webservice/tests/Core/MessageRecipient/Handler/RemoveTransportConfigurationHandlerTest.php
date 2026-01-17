@@ -38,7 +38,7 @@ final class RemoveTransportConfigurationHandlerTest extends TestCase
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())
             ->method('getRecipientFromID')
-            ->with(self::callback(fn (Ulid $id) => $id->equals(Ulid::fromString($recipientId))))
+            ->with(self::callback(fn (Ulid $id): bool => $id->equals(Ulid::fromString($recipientId))))
             ->willReturn($recipient);
 
         $uow = $this->createMock(UnitOfWork::class);

@@ -23,7 +23,7 @@ final readonly class DoctrineTransportConfigurationRepository implements Transpo
     public function removeByKey(string $key): void
     {
         $transportConfiguration = $this->getByKey($key);
-        if (null === $transportConfiguration) {
+        if (!$transportConfiguration instanceof TransportConfiguration) {
             return;
         }
         $this->entityManager->remove($transportConfiguration);

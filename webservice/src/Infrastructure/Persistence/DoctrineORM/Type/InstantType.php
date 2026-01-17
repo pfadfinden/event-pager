@@ -9,12 +9,13 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Exception\InvalidFormat;
 use Doctrine\DBAL\Types\Exception\InvalidType;
 use Doctrine\DBAL\Types\Type;
+use Override;
 use function preg_match;
 use function str_pad;
 
 final class InstantType extends Type
 {
-    public const NAME = 'instant';
+    public const string NAME = 'instant';
 
     /**
      * @template T
@@ -23,6 +24,7 @@ final class InstantType extends Type
      *
      * @return (T is null ? null : string)
      */
+    #[Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
@@ -45,6 +47,7 @@ final class InstantType extends Type
      *
      * @param T $value
      */
+    #[Override]
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Instant
     {
         if (null === $value) {

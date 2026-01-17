@@ -22,7 +22,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrineTransportConfigurationRepository($em);
@@ -50,7 +50,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $configuration = $this->newMinimalTransportConfiguration();
 
@@ -66,7 +66,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(TransportConfiguration::class, $result);
-        self::assertEquals('Hello World', $result->getTitle());
+        self::assertSame('Hello World', $result->getTitle());
 
         // Cleanup
         $em->remove($result);
@@ -77,7 +77,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
 
         $configuration = $this->newMinimalTransportConfiguration();
 
@@ -100,7 +100,7 @@ final class DoctrineTransportConfigurationRepositoryTest extends KernelTestCase
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrineTransportConfigurationRepository($em);

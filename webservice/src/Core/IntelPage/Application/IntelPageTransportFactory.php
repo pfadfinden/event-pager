@@ -8,11 +8,12 @@ use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\EventBus;
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\TransportContract\Model\SystemTransportConfig;
+use App\Core\TransportContract\Port\TransportFactory;
 
 /**
  * The factory combines services from dependency injection with the individual configuration.
  */
-final readonly class IntelPageTransportFactory implements \App\Core\TransportContract\Port\TransportFactory
+final readonly class IntelPageTransportFactory implements TransportFactory
 {
     public function __construct(
         private QueryBus $queryBus,

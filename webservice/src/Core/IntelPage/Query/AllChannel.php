@@ -12,7 +12,7 @@ use App\Core\IntelPage\ReadModel\Channel;
  */
 final readonly class AllChannel implements Query
 {
-    public const DEFAULT_PAGE_LENGTH = 25;
+    public const int DEFAULT_PAGE_LENGTH = 25;
 
     public static function withoutFilter(?int $page = null, ?int $perPage = null): self
     {

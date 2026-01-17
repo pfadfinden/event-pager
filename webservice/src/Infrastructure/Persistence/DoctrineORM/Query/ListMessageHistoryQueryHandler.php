@@ -38,7 +38,7 @@ final readonly class ListMessageHistoryQueryHandler
                 $message->priority,
                 $statusCounts,
                 $totalOutgoing,
-                array_map(fn (Ulid $ulid) => $ulid->toString(), $message->to),
+                array_map(fn (Ulid $ulid): string => $ulid->toString(), $message->to),
             );
         }
     }

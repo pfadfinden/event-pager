@@ -33,7 +33,7 @@ final readonly class BindPersonToRoleHandler
             throw new InvalidArgumentException("Role with ID {$bindPersonToRole->getRoleID()} not found.");
         }
 
-        $person = null === $bindPersonToRole->getPersonID() ? null : $this->getPerson($bindPersonToRole->getPersonID());
+        $person = $bindPersonToRole->getPersonID() instanceof Ulid ? $this->getPerson($bindPersonToRole->getPersonID()) : null;
 
         $role->bindPerson($person);
         $this->uow->commit();

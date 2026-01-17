@@ -6,6 +6,7 @@ namespace App\Tests\Core\IntelPage\Model;
 
 use App\Core\IntelPage\Model\CapCode;
 use InvalidArgumentException;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,33 +17,29 @@ use PHPUnit\Framework\TestCase;
 final class CapCodeTest extends TestCase
 {
     /**
-     * @return array<string, list<int>>
+     * @return Iterator<string, list<int>>
      */
-    public static function validIntProvider(): array
+    public static function validIntProvider(): Iterator
     {
-        return [
-            'lower bound' => [1],
-            'upper bound' => [9999],
-        ];
+        yield 'lower bound' => [1];
+        yield 'upper bound' => [9999];
     }
 
     /**
-     * @return array<string, list<int>>
+     * @return Iterator<string, list<int>>
      */
-    public static function invalidIntProvider(): array
+    public static function invalidIntProvider(): Iterator
     {
-        return [
-            'negatives' => [-1],
-            'lower bound' => [0],
-            'upper bound' => [10000],
-        ];
+        yield 'negatives' => [-1];
+        yield 'lower bound' => [0];
+        yield 'upper bound' => [10000];
     }
 
     #[DataProvider('validIntProvider')]
     public function testCanBeCreatedByInt(int $testValue): void
     {
         $cc = CapCode::fromInt($testValue);
-        self::assertTrue($testValue === $cc->getCode());
+        self::assertSame($cc->getCode(), $testValue);
     }
 
     #[DataProvider('invalidIntProvider')]
@@ -56,7 +53,7 @@ final class CapCodeTest extends TestCase
     public function testCanBeCreatedFromString(int $testValue): void
     {
         $cc = CapCode::fromString((string) $testValue);
-        self::assertTrue($testValue === $cc->getCode());
+        self::assertSame($cc->getCode(), $testValue);
     }
 
     #[DataProvider('invalidIntProvider')]

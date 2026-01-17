@@ -8,6 +8,7 @@ use App\Core\IntelPage\Model\CapCode;
 use App\Core\IntelPage\Model\Pager;
 use App\Core\IntelPage\Model\Slot;
 use App\Core\IntelPage\Query\CapAssignments;
+use App\Core\IntelPage\ReadModel\CapAssignment;
 use App\Infrastructure\Persistence\DoctrineORM\Query\CapAssignmentsQueryHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -27,7 +28,7 @@ final class CapAssignmentsQueryHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
         $pager1 = new Pager(Ulid::fromString('02JT62N5PE9HBQTEZ1PPE6CJ4F'), 'Test Pager 1', 1);
         $pager1->assignIndividualCap(Slot::fromInt(0), CapCode::fromInt(2223), false, false);
@@ -48,7 +49,7 @@ final class CapAssignmentsQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveAllCapAssignmentsByPager(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new CapAssignmentsQueryHandler($em);
@@ -60,6 +61,6 @@ final class CapAssignmentsQueryHandlerTest extends KernelTestCase
 
         // Assert
         self::assertCount(4, $result);
-        self::assertContainsOnlyInstancesOf(\App\Core\IntelPage\ReadModel\CapAssignment::class, $result);
+        self::assertContainsOnlyInstancesOf(CapAssignment::class, $result);
     }
 }

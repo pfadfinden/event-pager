@@ -156,7 +156,7 @@ final class TelegramTransportTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::TRANSMITTED === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::TRANSMITTED === $event->status
             ));
 
         $transport = $this->createTransport();
@@ -185,7 +185,7 @@ final class TelegramTransportTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::ERROR === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::ERROR === $event->status
             ));
 
         $transport = $this->createTransport();
@@ -206,7 +206,7 @@ final class TelegramTransportTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::ERROR === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::ERROR === $event->status
             ));
 
         $transport = $this->createTransport();
@@ -229,7 +229,7 @@ final class TelegramTransportTest extends TestCase
         $this->eventBusMock->expects(self::once())
             ->method('publish')
             ->with(self::callback(
-                fn (OutgoingMessageEvent $event) => OutgoingMessageStatus::ERROR === $event->status
+                fn (OutgoingMessageEvent $event): bool => OutgoingMessageStatus::ERROR === $event->status
             ));
 
         $transport = $this->createTransport();

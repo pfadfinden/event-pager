@@ -13,10 +13,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_VIEW_PAGER')]
 final class ChannelOverviewController extends AbstractController
 {
-    public function __construct()
-    {
-    }
-
     public function __invoke(): Response
     {
         return $this->render('pager-management/channel-overview.html.twig');

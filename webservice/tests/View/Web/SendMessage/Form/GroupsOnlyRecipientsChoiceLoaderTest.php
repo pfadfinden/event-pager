@@ -34,18 +34,14 @@ final class GroupsOnlyRecipientsChoiceLoaderTest extends TestCase
         $this->queryBus
             ->expects(self::once())
             ->method('get')
-            ->with(self::callback(function (ListOfMessageRecipients $query): bool {
-                return Group::class === $query->filterType
-                    && null === $query->textFilter
-                    && null === $query->page
-                    && null === $query->perPage;
-            }))
+            ->with(self::callback(fn (ListOfMessageRecipients $query): bool => Group::class === $query->filterType
+                && null === $query->textFilter
+                && null === $query->page
+                && null === $query->perPage))
             ->willReturn($expectedRecipients);
 
         $loader = new GroupsOnlyRecipientsChoiceLoader($this->queryBus);
-        $choices = $loader->loadChoiceList(function (RecipientListEntry $recipient): string {
-            return $recipient->id;
-        })->getChoices();
+        $choices = $loader->loadChoiceList(fn (RecipientListEntry $recipient): string => $recipient->id)->getChoices();
 
         self::assertCount(2, $choices);
         self::assertSame($expectedRecipients[0], $choices['id-1']);
@@ -60,9 +56,7 @@ final class GroupsOnlyRecipientsChoiceLoaderTest extends TestCase
             ->willReturn([]);
 
         $loader = new GroupsOnlyRecipientsChoiceLoader($this->queryBus);
-        $choices = $loader->loadChoiceList(function (RecipientListEntry $recipient): string {
-            return $recipient->id;
-        })->getChoices();
+        $choices = $loader->loadChoiceList(fn (RecipientListEntry $recipient): string => $recipient->id)->getChoices();
 
         self::assertEmpty($choices);
     }
@@ -80,9 +74,7 @@ final class GroupsOnlyRecipientsChoiceLoaderTest extends TestCase
             ->willReturn($recipients);
 
         $loader = new GroupsOnlyRecipientsChoiceLoader($this->queryBus);
-        $values = $loader->loadValuesForChoices($recipients, function (RecipientListEntry $recipient): string {
-            return $recipient->id;
-        });
+        $values = $loader->loadValuesForChoices($recipients, fn (RecipientListEntry $recipient): string => $recipient->id);
 
         self::assertSame(['ulid-abc-123', 'ulid-def-456'], $values);
     }
@@ -101,9 +93,7 @@ final class GroupsOnlyRecipientsChoiceLoaderTest extends TestCase
             ->willReturn($recipients);
 
         $loader = new GroupsOnlyRecipientsChoiceLoader($this->queryBus);
-        $choices = $loader->loadChoicesForValues(['ulid-abc-123', 'ulid-ghi-789'], function (RecipientListEntry $recipient): string {
-            return $recipient->id;
-        });
+        $choices = $loader->loadChoicesForValues(['ulid-abc-123', 'ulid-ghi-789'], fn (RecipientListEntry $recipient): string => $recipient->id);
 
         self::assertCount(2, $choices);
         self::assertSame($recipients[0], $choices[0]);

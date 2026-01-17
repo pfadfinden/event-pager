@@ -24,7 +24,7 @@ final class SendMessageRequestTest extends TypeTestCase
         $sut = new SendMessageRequest();
         $sut->message = 'hello world';
         $sut->priority = 1;
-        $sut->to = array_map(function ($r) {
+        $sut->to = array_map(function (array $r): SendMessageRecipientRequest {
             $recipientA = new SendMessageRecipientRequest();
             $recipientA->id = $r['id'];
             $recipientA->label = $r['label'];

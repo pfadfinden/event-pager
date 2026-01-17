@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\DoctrineORM\Query;
 
+use App\Core\IntelPage\Model\AbstractCapAssignment;
 use App\Core\IntelPage\Model\ChannelCapAssignment;
 use App\Core\IntelPage\Model\IndividualCapAssignment;
 use App\Core\IntelPage\Model\NoCapAssignment;
 use App\Core\IntelPage\Query\CapAssignments;
+use App\Core\IntelPage\ReadModel\CapAssignment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Ulid;
 use function sprintf;
@@ -19,7 +21,7 @@ final readonly class CapAssignmentsQueryHandler
     }
 
     /**
-     * @return iterable<\App\Core\IntelPage\ReadModel\CapAssignment>
+     * @return iterable<CapAssignment>
      */
     public function __invoke(CapAssignments $query): iterable
     {
@@ -37,11 +39,11 @@ final readonly class CapAssignmentsQueryHandler
                 LEFT JOIN %3\$s pi WITH a.id = pi.id
                 LEFT JOIN pc.channel c
                 WHERE a.pager = :pagerId AND NOT a INSTANCE OF %4\$s",
-            \App\Core\IntelPage\ReadModel\CapAssignment::class,
+            CapAssignment::class,
             ChannelCapAssignment::class,
             IndividualCapAssignment::class,
             NoCapAssignment::class,
-            \App\Core\IntelPage\Model\AbstractCapAssignment::class
+            AbstractCapAssignment::class
         );
 
         $doctrineQuery = $this->em->createQuery($dql);

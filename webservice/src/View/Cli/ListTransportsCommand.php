@@ -55,7 +55,7 @@ final class ListTransportsCommand extends Command
 
         $io->table(
             ['Key', 'Enabled', 'Title', 'Transport'],
-            array_map(fn ($c) => [$c->getKey(), $c->isEnabled() ? 'Yes' : 'No', $c->getTitle(), $c->getTransport()], $configs)
+            array_map(fn ($c): array => [$c->getKey(), $c->isEnabled() ? 'Yes' : 'No', $c->getTitle(), $c->getTransport()], $configs)
         );
 
         return Command::SUCCESS;

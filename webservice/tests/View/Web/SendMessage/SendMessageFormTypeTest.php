@@ -28,12 +28,12 @@ final class SendMessageFormTypeTest extends TypeTestCase
     public function testSubmitValidData(array $formData): void
     {
         /** @var Form $form */
-        list($form, $model) = $this->init();
+        [$form, $model] = $this->init();
 
         $expected = new SendMessageRequest();
         $expected->message = $formData['message'];
         $expected->priority = $formData['priority'];
-        $expected->to = array_map(function ($r) {
+        $expected->to = array_map(function (array $r): SendMessageRecipientRequest {
             $recipientA = new SendMessageRecipientRequest();
             $recipientA->id = $r['id'];
             $recipientA->label = $r['label'];
@@ -85,7 +85,7 @@ final class SendMessageFormTypeTest extends TypeTestCase
     #[DataProvider('provideInvalidData')]
     public function testSubmitInvalidData(array $formData): void
     {
-        list($form) = $this->init();
+        [$form] = $this->init();
         $form->submit($formData);
         self::assertTrue($form->isSynchronized());
         self::assertFalse($form->isValid(), 'Form validation should fail');
@@ -143,6 +143,9 @@ final class SendMessageFormTypeTest extends TypeTestCase
         // $model will retrieve data from the form submission; pass it as the second argument
         $form = $this->factory->create(SendMessageFormType::class, $model, ['choice_loader' => $mockChoiceLoader]);
 
-        return [$form, $model];
+        return [
+            $form,
+            $model,
+        ];
     }
 }

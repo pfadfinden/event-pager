@@ -27,14 +27,14 @@ use function Symfony\Component\Translation\t;
 #[IsGranted('ROLE_USERMANAGEMENT_EDITUSER')]
 final class EditUserController extends AbstractController
 {
-    private const ASSIGNABLE_ROLES = [
+    private const array ASSIGNABLE_ROLES = [
         'ROLE_USER' => 'User (View only)',
         'ROLE_ACTIVE_USER' => 'Active User (Send messages)',
         'ROLE_SUPPORT' => 'Support (Manage recipients)',
         'ROLE_MANAGER' => 'Manager (Full recipient management)',
     ];
 
-    private const PRIVILEGED_ROLES = [
+    private const array PRIVILEGED_ROLES = [
         'ROLE_ADMIN' => 'Administrator (Full access)',
     ];
 
@@ -85,12 +85,12 @@ final class EditUserController extends AbstractController
             $userRequest = $form->getData();
 
             // Calculate role changes
-            $currentRoles = array_filter($user->roles, fn ($r) => 'ROLE_USER' !== $r);
+            $currentRoles = array_filter($user->roles, fn (string $r): bool => 'ROLE_USER' !== $r);
             $newRoles = $userRequest->roles;
 
             // Filter out privileged roles if user doesn't have permission
             if (!$canAssignPrivileged) {
-                $newRoles = array_filter($newRoles, fn ($r) => !isset(self::PRIVILEGED_ROLES[$r]));
+                $newRoles = array_filter($newRoles, fn (string $r): bool => !isset(self::PRIVILEGED_ROLES[$r]));
                 // Preserve existing privileged roles
                 foreach ($currentRoles as $role) {
                     if (isset(self::PRIVILEGED_ROLES[$role])) {

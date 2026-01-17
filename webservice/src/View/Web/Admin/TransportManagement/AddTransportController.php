@@ -30,7 +30,7 @@ use const JSON_THROW_ON_ERROR;
 #[IsGranted('ROLE_TRANSPORT_ADMINISTRATOR')]
 final class AddTransportController extends AbstractController
 {
-    private const TRANSPORT_CHOICES = [
+    private const array TRANSPORT_CHOICES = [
         'IntelPageTransport' => IntelPageTransport::class,
         'TelegramTransport' => TelegramTransport::class,
         'NtfyTransport' => NtfyTransport::class,
@@ -74,7 +74,7 @@ final class AddTransportController extends AbstractController
             try {
                 $vendorConfig = null;
                 if (null !== $transportRequest->vendorSpecificConfig && '' !== $transportRequest->vendorSpecificConfig) {
-                    $decoded = json_decode($transportRequest->vendorSpecificConfig, true, 512, JSON_THROW_ON_ERROR);
+                    $decoded = json_decode((string) $transportRequest->vendorSpecificConfig, true, 512, JSON_THROW_ON_ERROR);
                     if (is_array($decoded)) {
                         $vendorConfig = $decoded;
                     }
@@ -91,7 +91,7 @@ final class AddTransportController extends AbstractController
                 $this->addFlash('success', t('Transport created successfully'));
 
                 return $this->redirectToRoute('web_admin_transport_details', ['key' => $transportRequest->key]);
-            } catch (JsonException $e) {
+            } catch (JsonException) {
                 $this->addFlash('error', t('Invalid JSON in vendor configuration'));
             } catch (InvalidArgumentException $e) {
                 $this->addFlash('error', t('Failed to create transport: {message}', ['message' => $e->getMessage()]));

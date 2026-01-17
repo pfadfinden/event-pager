@@ -8,6 +8,7 @@ use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\MessageRecipient;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Uid\Ulid;
@@ -38,8 +39,8 @@ class Pager
     /**
      * @var string human identifier describing pager use
      */
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $comment;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
     /**
      * @var bool shows whether the pager is activated or not

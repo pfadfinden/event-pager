@@ -19,20 +19,20 @@ final class OutgoingMessageEventTest extends TestCase
     {
         $sut = OutgoingMessageEvent::failedToQueue(Ulid::fromString(Ulid::generate()));
 
-        self::assertEquals(OutgoingMessageStatus::ERROR, $sut->status);
+        self::assertSame(OutgoingMessageStatus::ERROR, $sut->status);
     }
 
     public function testQueued(): void
     {
         $sut = OutgoingMessageEvent::queued(Ulid::fromString(Ulid::generate()));
 
-        self::assertEquals(OutgoingMessageStatus::QUEUED, $sut->status);
+        self::assertSame(OutgoingMessageStatus::QUEUED, $sut->status);
     }
 
     public function testTransmitted(): void
     {
         $sut = OutgoingMessageEvent::transmitted(Ulid::fromString(Ulid::generate()));
 
-        self::assertEquals(OutgoingMessageStatus::TRANSMITTED, $sut->status);
+        self::assertSame(OutgoingMessageStatus::TRANSMITTED, $sut->status);
     }
 }

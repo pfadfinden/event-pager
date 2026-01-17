@@ -6,6 +6,7 @@ namespace App\Core\SendMessage\Handler;
 
 use App\Core\Contracts\Bus\Bus;
 use App\Core\Contracts\Bus\EventBus;
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Port\MessageRecipientRepository;
 use App\Core\SendMessage\Command\ProcessIncomingMessage;
 use App\Core\SendMessage\Model\IncomingMessage;
@@ -40,7 +41,7 @@ final readonly class ProcessIncomingMessageHandler
     {
         $incomingMessage = $this->incomingMessageRepository->getWithId(Ulid::fromString($cmd->id));
 
-        if (null === $incomingMessage) {
+        if (!$incomingMessage instanceof IncomingMessage) {
             throw new RuntimeException('Incoming message not found');
         }
 
@@ -49,7 +50,7 @@ final readonly class ProcessIncomingMessageHandler
 
         foreach ($incomingMessage->to as $to) {
             $messageRecipient = $this->messageRecipientRepository->getRecipientFromID($to);
-            if (null === $messageRecipient) {
+            if (!$messageRecipient instanceof AbstractMessageRecipient) {
                 continue; // recipient deactivated since sending or wrong api call
             }
             foreach ($this->transportManager->activeTransports() as $transport) {

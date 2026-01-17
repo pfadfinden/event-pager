@@ -38,6 +38,6 @@ final class SendMessageRequest
      */
     public function toIds(): array
     {
-        return array_values(array_map(fn (SendMessageRecipientRequest $to) => $to->id, $this->to));
+        return array_values(array_map(fn (SendMessageRecipientRequest $to): string => $to->id, $this->to));
     }
 }

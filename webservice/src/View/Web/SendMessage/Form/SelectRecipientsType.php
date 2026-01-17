@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Web\SendMessage\Form;
 
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,9 +32,7 @@ final class SelectRecipientsType extends AbstractType
 
                 return [];
             }),
-            'choice_value' => ChoiceList::value($this, function (RecipientListEntry $recipient): string {
-                return $recipient->id;
-            }),
+            'choice_value' => ChoiceList::value($this, fn (RecipientListEntry $recipient): string => $recipient->id),
             'choice_label' => ChoiceList::label($this, function (RecipientListEntry $recipient): string {
                 $prefix = match ($recipient->type) {
                     'GROUP' => '👥', 'ROLE' => '💼', default => '👤',
@@ -41,14 +40,13 @@ final class SelectRecipientsType extends AbstractType
 
                 return $prefix.' '.$recipient->name;
             }),
-            'group_by' => ChoiceList::groupBy($this, function (RecipientListEntry $recipient): string {
-                return match ($recipient->type) {
-                    'GROUP' => '👥', 'ROLE' => '💼', default => '👤',
-                };
+            'group_by' => ChoiceList::groupBy($this, fn (RecipientListEntry $recipient): string => match ($recipient->type) {
+                'GROUP' => '👥', 'ROLE' => '💼', default => '👤',
             }),
         ]);
     }
 
+    #[Override]
     public function getParent(): string
     {
         return ChoiceType::class;

@@ -36,7 +36,7 @@ final readonly class CountOfMessageRecipients implements Query
 
     public static function withoutFilter(): self
     {
-        return new self(null, null);
+        return new self();
     }
 
     public static function withTextSearch(string $textFilter): self

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\TransportManager\Model;
 
 use App\Core\TransportContract\Model\SystemTransportConfig;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
 use function assert;
@@ -47,7 +48,7 @@ class TransportConfiguration implements SystemTransportConfig
     /**
      * What ever data needs to be available to the transport centrally (e.g. API Keys).
      */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $vendorSpecificConfig = null; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
 
     /**

@@ -28,7 +28,7 @@ final class DoctrineIncomingMessageRepositoryTest extends KernelTestCase
         $message = $this->testMessage();
 
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
         $em->persist($message);
         $em->flush();
@@ -41,14 +41,14 @@ final class DoctrineIncomingMessageRepositoryTest extends KernelTestCase
 
         // Assert
         self::assertInstanceOf(IncomingMessage::class, $result);
-        self::assertEquals('Hello World', $result->content);
+        self::assertSame('Hello World', $result->content);
     }
 
     public function testAddNewIncomingMessage(): void
     {
         // Arrange
         self::bootKernel();
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new DoctrineIncomingMessageRepository($em);
@@ -65,7 +65,7 @@ final class DoctrineIncomingMessageRepositoryTest extends KernelTestCase
         $result = $em->find(IncomingMessage::class, $message->messageId);
 
         self::assertInstanceOf(IncomingMessage::class, $result);
-        self::assertEquals('Hello World', $result->content);
+        self::assertSame('Hello World', $result->content);
     }
 
     private function testMessage(): IncomingMessage

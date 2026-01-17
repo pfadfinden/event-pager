@@ -33,7 +33,7 @@ final class CreateRecipientHandlerTest extends TestCase
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('add')->with(self::logicalAnd(
             self::isInstanceOf(Role::class),
-            self::callback(fn (Role $role) => 'Role A' === $role->getName())
+            self::callback(fn (Role $role): bool => 'Role A' === $role->getName())
         ));
 
         $uow = $this->createMock(UnitOfWork::class);
@@ -59,7 +59,7 @@ final class CreateRecipientHandlerTest extends TestCase
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('add')->with(self::logicalAnd(
             self::isInstanceOf(Person::class),
-            self::callback(fn (Person $person) => 'Peter' === $person->getName())
+            self::callback(fn (Person $person): bool => 'Peter' === $person->getName())
         ));
 
         $uow = $this->createMock(UnitOfWork::class);
@@ -85,7 +85,7 @@ final class CreateRecipientHandlerTest extends TestCase
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())->method('add')->with(self::logicalAnd(
             self::isInstanceOf(Group::class),
-            self::callback(fn (Group $group) => 'Group 1' === $group->getName())
+            self::callback(fn (Group $group): bool => 'Group 1' === $group->getName())
         ));
 
         $uow = $this->createMock(UnitOfWork::class);

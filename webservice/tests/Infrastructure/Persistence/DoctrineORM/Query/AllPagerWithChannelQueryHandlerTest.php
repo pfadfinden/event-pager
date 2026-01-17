@@ -9,6 +9,7 @@ use App\Core\IntelPage\Model\Channel;
 use App\Core\IntelPage\Model\Pager;
 use App\Core\IntelPage\Model\Slot;
 use App\Core\IntelPage\Query\AllPagerWithChannel;
+use App\Core\IntelPage\ReadModel\PagerInChannel;
 use App\Infrastructure\Persistence\DoctrineORM\Query\AllPagerWithChannelQueryHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -28,7 +29,7 @@ final class AllPagerWithChannelQueryHandlerTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $ch1 = new Channel(Ulid::fromString('02JT62N5PE9HBQTEZ1PPE6CJ4D'), 'Test Channel 1', CapCode::fromInt(222));
@@ -57,7 +58,7 @@ final class AllPagerWithChannelQueryHandlerTest extends KernelTestCase
     public function testCanRetrieveAllCapAssignmentsByPager(): void
     {
         // Arrange
-        $container = static::getContainer();
+        $container = self::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
         $sut = new AllPagerWithChannelQueryHandler($em);
@@ -69,6 +70,6 @@ final class AllPagerWithChannelQueryHandlerTest extends KernelTestCase
 
         // Assert
         self::assertCount(1, $result);
-        self::assertContainsOnlyInstancesOf(\App\Core\IntelPage\ReadModel\PagerInChannel::class, $result);
+        self::assertContainsOnlyInstancesOf(PagerInChannel::class, $result);
     }
 }

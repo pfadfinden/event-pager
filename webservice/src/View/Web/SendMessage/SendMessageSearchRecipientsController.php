@@ -21,11 +21,11 @@ final class SendMessageSearchRecipientsController extends AbstractController
     ) {
     }
 
-    public function __invoke(#[MapQueryParameter] string $search): Response
+    public function __invoke(#[MapQueryParameter] string $search): JsonResponse
     {
         $data = $this->queryBus->get(ListOfMessageRecipients::all($search));
 
-        $result = array_map(function (RecipientListEntry $r) {
+        $result = array_map(function (RecipientListEntry $r): RecipientListEntry {
             $prefix = match ($r->type) {
                 'GROUP' => '👥 ', 'ROLE' => '💼 ', default => '👤 ',
             };

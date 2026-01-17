@@ -30,7 +30,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         ];
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => $recipients),
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => $recipients),
         ]);
 
         self::assertTrue($form->getConfig()->getOption('multiple'));
@@ -43,7 +43,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         $personRecipient = new RecipientListEntry('id-3', 'PERSON', 'John Doe');
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => [
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => [
                 $groupRecipient,
                 $roleRecipient,
                 $personRecipient,
@@ -62,7 +62,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         $personRecipient = new RecipientListEntry('id-2', 'PERSON', 'John Doe');
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => [
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => [
                 $groupRecipient,
                 $personRecipient,
             ]),
@@ -82,7 +82,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         ];
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => $recipients),
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => $recipients),
         ]);
 
         $form->submit(['id-1', 'id-2']);
@@ -99,7 +99,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         ];
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => $recipients),
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => $recipients),
         ]);
 
         $form->submit(['id-1']);
@@ -116,7 +116,7 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         ];
 
         $form = $this->factory->create(SelectRecipientsType::class, null, [
-            'choice_loader' => new CallbackChoiceLoader(fn () => $recipients),
+            'choice_loader' => new CallbackChoiceLoader(fn (): array => $recipients),
         ]);
 
         $form->submit([]);

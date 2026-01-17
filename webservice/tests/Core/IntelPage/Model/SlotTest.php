@@ -6,6 +6,7 @@ namespace App\Tests\Core\IntelPage\Model;
 
 use App\Core\IntelPage\Model\Slot;
 use InvalidArgumentException;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -16,32 +17,28 @@ use PHPUnit\Framework\TestCase;
 final class SlotTest extends TestCase
 {
     /**
-     * @return array<string, list<int>>
+     * @return Iterator<string, list<int>>
      */
-    public static function validIntProvider(): array
+    public static function validIntProvider(): Iterator
     {
-        return [
-            'lower bound' => [0],
-            'upper bound' => [7],
-        ];
+        yield 'lower bound' => [0];
+        yield 'upper bound' => [7];
     }
 
     /**
-     * @return array<string, list<int>>
+     * @return Iterator<string, list<int>>
      */
-    public static function invalidIntProvider(): array
+    public static function invalidIntProvider(): Iterator
     {
-        return [
-            'lower bound' => [-1],
-            'upper bound' => [8],
-        ];
+        yield 'lower bound' => [-1];
+        yield 'upper bound' => [8];
     }
 
     #[DataProvider('validIntProvider')]
     public function testCanBeCreatedByInt(int $testValue): void
     {
         $cc = Slot::fromInt($testValue);
-        self::assertTrue($testValue === $cc->getSlot());
+        self::assertSame($cc->getSlot(), $testValue);
     }
 
     #[DataProvider('invalidIntProvider')]
@@ -55,7 +52,7 @@ final class SlotTest extends TestCase
     public function testCanBeCreatedFromString(int $testValue): void
     {
         $cc = Slot::fromString((string) $testValue);
-        self::assertTrue($testValue === $cc->getSlot());
+        self::assertSame($cc->getSlot(), $testValue);
     }
 
     #[DataProvider('invalidIntProvider')]

@@ -37,8 +37,8 @@ final class SlotAssignmentFormType extends AbstractType
             ->add('channel_id', ChoiceType::class, [
                 'choices' => $channels,
                 'required' => false,
-                'choice_label' => fn (?Channel $channel) => $channel?->name,
-                'choice_value' => fn (?Channel $channel) => $channel?->id,
+                'choice_label' => fn (?Channel $channel): ?string => $channel?->name,
+                'choice_value' => fn (?Channel $channel): ?string => $channel?->id,
             ])
             ->add('cap_code', NumberType::class, [
                 'required' => false,

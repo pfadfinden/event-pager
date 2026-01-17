@@ -24,11 +24,11 @@ final class AddChannelHandlerTest extends TestCase
 
         $channelRepositoryMock = self::createMock(ChannelRepository::class);
         $channelRepositoryMock->expects(self::once())->method('persist')
-            ->with(self::callback(fn (Channel $channel) => (
+            ->with(self::callback(fn (Channel $channel): bool => (
                 'default' === $channel->getName()
                 && $channel->getId()->equals(Ulid::fromString($id))
                 && 1001 === $channel->getCapCode()->getCode()
-                && true === $channel->isAudible()
+                && $channel->isAudible()
                 && false === $channel->isVibration()
             )));
         // Pot. Improvement: Assert all properties of channel are correct

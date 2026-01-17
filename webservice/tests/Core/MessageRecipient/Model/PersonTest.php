@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Core\MessageRecipient\Model;
 
 use App\Core\MessageRecipient\Model\Person;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -16,14 +17,12 @@ use Symfony\Component\Uid\Ulid;
 final class PersonTest extends TestCase
 {
     /**
-     * @return array{0: string, 1: ?Ulid}[]
+     * @return Iterator<(int | string), array{string, (Ulid | null)}>
      */
-    public static function constructorProvider(): array
+    public static function constructorProvider(): Iterator
     {
-        return [
-            ['Dustin', null],
-            ['Nilpferd', new Ulid()],
-        ];
+        yield ['Dustin', null];
+        yield ['Nilpferd', new Ulid()];
     }
 
     #[DataProvider('constructorProvider')]
@@ -31,7 +30,7 @@ final class PersonTest extends TestCase
     {
         $person = new Person($name, $id);
 
-        if (null === $id) {
+        if (!$id instanceof Ulid) {
             $person->getId()->toString();
         } else {
             self::assertSame($id, $person->getId());

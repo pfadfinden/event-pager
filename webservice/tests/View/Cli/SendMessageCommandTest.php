@@ -7,6 +7,7 @@ namespace App\Tests\View\Cli;
 use App\Core\SendMessage\Model\IncomingMessage;
 use App\View\Cli\SendMessageCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -20,48 +21,45 @@ use Symfony\Component\Uid\Ulid;
 final class SendMessageCommandTest extends KernelTestCase
 {
     /**
-     * @return array<string, array{0: string, 1: int, 2: string[], 3: string, 4: array<string, string|int|string[]>}>
+     * @return Iterator<string, array{string, int, array<string>, string, array<string, (array<string> | int | string)>}>
      */
-    public static function commandArgsProvider(): array
+    public static function commandArgsProvider(): Iterator
     {
         $alternateFrom = Ulid::generate();
         $to = Ulid::generate();
         $to2 = Ulid::generate();
-
-        return [
-            'minimal' => [
-                'Hello World Minimal',
-                1,
-                [$to],
-                SendMessageCommand::SEND_BY_CLI_ID,
-                [
-                    'message' => 'Hello World Minimal',
-                    '--to' => [$to],
-                ],
+        yield 'minimal' => [
+            'Hello World Minimal',
+            1,
+            [$to],
+            SendMessageCommand::SEND_BY_CLI_ID,
+            [
+                'message' => 'Hello World Minimal',
+                '--to' => [$to],
             ],
-            'full' => [
-                'Hello World Full',
-                3,
-                [$to, $to2],
-                $alternateFrom,
-                [
-                    'message' => 'Hello World Full',
-                    '--to' => [$to, $to2],
-                    '--priority' => 3,
-                    '--from' => $alternateFrom,
-                ],
+        ];
+        yield 'full' => [
+            'Hello World Full',
+            3,
+            [$to, $to2],
+            $alternateFrom,
+            [
+                'message' => 'Hello World Full',
+                '--to' => [$to, $to2],
+                '--priority' => 3,
+                '--from' => $alternateFrom,
             ],
-            'short' => [
-                'Hello World Short',
-                3,
-                [$to],
-                $alternateFrom,
-                [
-                    'message' => 'Hello World Short',
-                    '-t' => [$to],
-                    '-p' => 3,
-                    '-f' => $alternateFrom,
-                ],
+        ];
+        yield 'short' => [
+            'Hello World Short',
+            3,
+            [$to],
+            $alternateFrom,
+            [
+                'message' => 'Hello World Short',
+                '-t' => [$to],
+                '-p' => 3,
+                '-f' => $alternateFrom,
             ],
         ];
     }
@@ -93,7 +91,7 @@ final class SendMessageCommandTest extends KernelTestCase
         self::assertInstanceOf(IncomingMessage::class, $msg);
         self::assertSame($content, $msg->content);
         self::assertSame($prio, $msg->priority);
-        self::assertSame($to, array_map(fn (Ulid $ulid) => $ulid->toString(), $msg->to));
+        self::assertSame($to, array_map(fn (Ulid $ulid): string => $ulid->toString(), $msg->to));
 
         // Clean
         $em->remove($msg);

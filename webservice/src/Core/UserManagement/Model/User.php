@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Core\UserManagement\Model;
 
 use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,30 +17,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type : 'integer')]
-    private ?int $id;
+    #[ORM\Column(type : Types::INTEGER)]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $username;
 
-    #[ORM\Column(type: 'string', length: 180, unique: false, nullable: true)]
-    private ?string $displayname;
+    #[ORM\Column(type: Types::STRING, length: 180, unique: false, nullable: true)]
+    private ?string $displayname = null;
 
     /**
      * @var string[]
      */
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
-    #[ORM\Column(type: 'string')]
-    private string $password;
+    /**
+     * Password should not be null, but passwords can't be hashed unless the user is created.
+     */
+    #[ORM\Column(type: Types::STRING)]
+    private string $password = '';
 
     public function __construct(string $username)
     {
         assert('' !== $username);
 
         $this->username = $username;
-        $this->password = ''; // Password should not be null, but passwords cant be hashed unless the user is created
     }
 
     public function getId(): ?int

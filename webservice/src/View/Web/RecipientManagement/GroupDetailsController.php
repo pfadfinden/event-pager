@@ -10,6 +10,7 @@ use App\Core\MessageRecipient\Command\BindRecipientToGroup;
 use App\Core\MessageRecipient\Command\DeleteRecipient;
 use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
+use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
 use App\View\Web\RecipientManagement\Request\GroupMemberRequest;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,7 +62,7 @@ final class GroupDetailsController extends AbstractController
         if ($this->isGranted('ROLE_MANAGE_RECIPIENT_GROUPS')) {
             $allRecipients = $this->queryBus->get(ListOfMessageRecipients::all());
             $choices = [];
-            $existingMemberIds = array_map(fn ($m) => $m->id, $recipient->members);
+            $existingMemberIds = array_map(fn (RecipientListEntry $m): string => $m->id, $recipient->members);
 
             foreach ($allRecipients as $r) {
                 // Don't show self or existing members

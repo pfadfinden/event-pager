@@ -41,7 +41,7 @@ final class ConfigureTransportCommand extends Command
         $io->title('Add or Update Transport');
 
         /** @var array|null $vendorSpecificConfiguration @phpstan-ignore-next-line missingType.iterableValue (JSON compatible array) */
-        $vendorSpecificConfiguration = null !== $input->getArgument('vendorSpecificJson') ? json_decode($input->getArgument('vendorSpecificJson'), true) : null;
+        $vendorSpecificConfiguration = null !== $input->getArgument('vendorSpecificJson') ? json_decode((string) $input->getArgument('vendorSpecificJson'), true) : null;
         $this->commandBus->do(AddOrUpdateTransportConfiguration::with(
             $input->getArgument('key'),
             $input->getArgument('transport'),
