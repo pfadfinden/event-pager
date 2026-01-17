@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Transports{% endtrans %} - {{ transport.title }}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_home') }}">{% trans %}Administration{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_home') }}#transports">{% trans %}Transports{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_transport_details', {key: transport.key}) }}">{{ transport.title }}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{% trans %}Edit{% endtrans %}</li>
+			</ol>
+		</nav>
+
+		<h1>{% trans %}Edit Transport{% endtrans %}</h1>
+
+		<div class="d-flex gap-3 mt-4">
+			{{ form(form) }}
+		</div>
+	</main>
+{% endblock %}

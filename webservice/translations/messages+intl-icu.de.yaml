@@ -213,3 +213,19 @@ READ: Gelesen
 ACK: Bestätigt
 ERROR: Fehler
 TIMEOUT: 'Zeitüberschreitung'
+
+# Transport Management
+Transports: Transporte
+'Add Transport': 'Transport hinzufügen'
+'Edit Transport': 'Transport bearbeiten'
+'Transport created successfully': 'Transport erfolgreich erstellt'
+'Transport updated successfully': 'Transport erfolgreich aktualisiert'
+'Transport deleted successfully': 'Transport erfolgreich gelöscht'
+'Failed to create transport: {message}': 'Fehler beim Erstellen des Transports: {message}'
+'Failed to update transport: {message}': 'Fehler beim Aktualisieren des Transports: {message}'
+'Failed to delete transport: {message}': 'Fehler beim Löschen des Transports: {message}'
+Key: Schlüssel
+Title: Titel
+'Vendor Configuration': Anbieterkonfiguration
+'Vendor Configuration (JSON)': 'Anbieterkonfiguration (JSON)'
+'Invalid JSON in vendor configuration': 'Ungültiges JSON in der Anbieterkonfiguration'
