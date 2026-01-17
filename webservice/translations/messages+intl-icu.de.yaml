@@ -165,6 +165,34 @@ Cancel: Abbrechen
 'Failed to remove transport configuration: {message}': 'Fehler beim Entfernen der Transportkonfiguration: {message}'
 'Are you sure you want to remove this transport configuration?': 'Möchten Sie diese Transportkonfiguration wirklich entfernen?'
 
+# Data Exchange
+'Data Exchange': Datenaustausch
+Import: Import
+Export: Export
+'Import Data': 'Daten importieren'
+'Open Import': 'Import öffnen'
+'Import data from CSV files into the system.': 'Daten aus CSV-Dateien in das System importieren.'
+'Export data from the system as CSV files.': 'Daten aus dem System als CSV-Dateien exportieren.'
+'Entity Type': Datentyp
+'Conflict Strategy': Konfliktstrategie
+'Skip existing': 'Existierende überspringen'
+'Update existing': 'Existierende aktualisieren'
+'Error on conflict': 'Fehler bei Konflikten'
+'CSV File': CSV-Datei
+'Please upload a valid CSV file': 'Bitte laden Sie eine gültige CSV-Datei hoch'
+'{count} records imported successfully': '{count, plural, one {# Datensatz erfolgreich importiert} other {# Datensätze erfolgreich importiert}}'
+'{count} records updated': '{count, plural, one {# Datensatz aktualisiert} other {# Datensätze aktualisiert}}'
+'{count} records skipped (already exist)': '{count, plural, one {# Datensatz übersprungen (existiert bereits)} other {# Datensätze übersprungen (existieren bereits)}}'
+'Import failed: {message}': 'Import fehlgeschlagen: {message}'
+'Select the type of data you want to import.': 'Wählen Sie den Datentyp, den Sie importieren möchten.'
+'Choose how to handle records that already exist in the system.': 'Wählen Sie, wie mit bereits existierenden Datensätzen umgegangen werden soll.'
+'Upload a CSV file with semicolon (;) as delimiter.': 'Laden Sie eine CSV-Datei mit Semikolon (;) als Trennzeichen hoch.'
+'CSV Format Information': 'CSV-Format Informationen'
+'The CSV file must use semicolon (;) as the column delimiter and UTF-8 encoding.': 'Die CSV-Datei muss Semikolon (;) als Spaltentrennzeichen und UTF-8-Kodierung verwenden.'
+'Tip:': 'Tipp:'
+'Export existing data first to see the exact format expected.': 'Exportieren Sie zuerst existierende Daten, um das erwartete Format zu sehen.'
+Pagers: Pager
+
 # User Management
 'User Management': Benutzerverwaltung
 Users: Benutzer

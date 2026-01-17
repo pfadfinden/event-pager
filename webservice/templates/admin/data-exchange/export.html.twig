@@ -1,0 +1,84 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Export Data{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_home') }}">Admin</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{% trans %}Export{% endtrans %}</li>
+			</ol>
+		</nav>
+
+		<h1>{% trans %}Export Data{% endtrans %}</h1>
+
+		<div class="row mt-4">
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-body">
+						<form method="get" action="{{ path('web_admin_export') }}">
+							<div class="mb-3">
+								<label for="entity_type" class="form-label">{% trans %}Entity to Export{% endtrans %}</label>
+								<select name="entity_type" id="entity_type" class="form-select" required>
+									<option value="">{% trans %}Select an entity type...{% endtrans %}</option>
+									{% for entityType in entityTypes %}
+										<option value="{{ entityType }}">
+											{% if entityType == 'recipients' %}
+												{% trans %}Recipients{% endtrans %}
+											{% elseif entityType == 'pagers' %}
+												{% trans %}Pagers{% endtrans %}
+											{% elseif entityType == 'channels' %}
+												{% trans %}Channels{% endtrans %}
+											{% elseif entityType == 'transports' %}
+												{% trans %}Transport Configurations{% endtrans %}
+											{% elseif entityType == 'message_history' %}
+												{% trans %}Message History{% endtrans %}
+											{% endif %}
+										</option>
+									{% endfor %}
+								</select>
+								<div class="form-text">{% trans %}Select the type of data you want to export.{% endtrans %}</div>
+							</div>
+
+							<div class="d-flex gap-2">
+								<button type="submit" class="btn btn-primary">
+									<twig:ux:icon name="bi:download" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+									{% trans %}Export{% endtrans %}
+								</button>
+								<a href="{{ path('web_admin_home') }}" class="btn btn-outline-secondary">{% trans %}Cancel{% endtrans %}</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<twig:ux:icon name="bi:info-circle" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}CSV Export Information{% endtrans %}
+					</div>
+					<div class="card-body">
+						<p class="small">{% trans %}The exported CSV file uses comma (,) as the column delimiter and UTF-8 encoding.{% endtrans %}</p>
+
+						<h6>{% trans %}Recipients{% endtrans %}</h6>
+						<p class="small text-muted mb-2">{% trans %}Export all recipients including persons and groups with their transport configurations.{% endtrans %}</p>
+
+						<h6>{% trans %}IntelPage Pagers{% endtrans %}</h6>
+						<p class="small text-muted mb-2">{% trans %}Export all pagers with their channel slot assignments.{% endtrans %}</p>
+
+						<h6>{% trans %}IntelPage Channels{% endtrans %}</h6>
+						<p class="small text-muted mb-2">{% trans %}Export all channel configurations.{% endtrans %}</p>
+
+						<h6>{% trans %}Transport Configurations{% endtrans %}</h6>
+						<p class="small text-muted mb-2">{% trans %}Export all transport configurations.{% endtrans %}</p>
+
+						<h6>{% trans %}Message History{% endtrans %}</h6>
+						<p class="small text-muted mb-2">{% trans %}Export the complete message history with delivery status.{% endtrans %}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+{% endblock %}

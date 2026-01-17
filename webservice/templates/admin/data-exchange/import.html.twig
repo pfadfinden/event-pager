@@ -1,0 +1,83 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Import Data{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="{{ path('web_admin_home') }}">Admin</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{% trans %}Import{% endtrans %}</li>
+			</ol>
+		</nav>
+
+		<h1>{% trans %}Import Data{% endtrans %}</h1>
+
+		<div class="row mt-4">
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-body">
+						{{ form_start(form) }}
+							<div class="mb-3">
+								{{ form_label(form.entityType) }}
+								{{ form_widget(form.entityType, {'attr': {'class': 'form-select'}}) }}
+								{{ form_errors(form.entityType) }}
+								<div class="form-text">{% trans %}Select the type of data you want to import.{% endtrans %}</div>
+							</div>
+
+							<div class="mb-3">
+								{{ form_label(form.conflictStrategy) }}
+								{{ form_widget(form.conflictStrategy, {'attr': {'class': 'form-select'}}) }}
+								{{ form_errors(form.conflictStrategy) }}
+								<div class="form-text">{% trans %}Choose how to handle records that already exist in the system.{% endtrans %}</div>
+							</div>
+
+							<div class="mb-3">
+								{{ form_label(form.file) }}
+								{{ form_widget(form.file, {'attr': {'class': 'form-control', 'accept': '.csv,text/csv'}}) }}
+								{{ form_errors(form.file) }}
+								<div class="form-text">{% trans %}Upload a CSV file with comma (,) as delimiter.{% endtrans %}</div>
+							</div>
+
+							<div class="d-flex gap-2">
+								{{ form_widget(form.import, {'attr': {'class': 'btn btn-primary'}}) }}
+								<a href="{{ path('web_admin_home') }}" class="btn btn-outline-secondary">{% trans %}Cancel{% endtrans %}</a>
+							</div>
+						{{ form_end(form) }}
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-header">
+						<twig:ux:icon name="bi:info-circle" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}CSV Format Information{% endtrans %}
+					</div>
+					<div class="card-body">
+						<p class="small">{% trans %}The CSV file must use comma (,) as the column delimiter and UTF-8 encoding.{% endtrans %}</p>
+
+						<h6>{% trans %}Recipients{% endtrans %}</h6>
+						<code class="small d-block mb-2">id,type,name,assigned_person_id,group_member_ids,transport_configs</code>
+
+						<h6>{% trans %}IntelPage Pagers{% endtrans %}</h6>
+                        <p class="small d-block mb-0">Import after importing recipients.</p>
+						<code class="small d-block mb-2">id,label,number,comment,activated,carried_by_id,slot_assignments</code>
+
+						<h6>{% trans %}IntelPage Channels{% endtrans %}</h6>
+                        <p class="small d-block mb-0">Import before importing pager.</p>
+						<code class="small d-block mb-2">id,name,cap_code,audible,vibration</code>
+
+						<h6>{% trans %}Transport Configurations{% endtrans %}</h6>
+						<code class="small d-block mb-2">key,transport,title,enabled,vendor_specific_config</code>
+
+						<p class="small mt-3 mb-0">
+							<strong>{% trans %}Tip:{% endtrans %}</strong>
+							{% trans %}Export existing data first to see the exact format expected.{% endtrans %}
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+{% endblock %}
