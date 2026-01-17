@@ -164,6 +164,35 @@ Cancel: Abbrechen
 'Failed to update transport configuration: {message}': 'Fehler beim Aktualisieren der Transportkonfiguration: {message}'
 'Failed to remove transport configuration: {message}': 'Fehler beim Entfernen der Transportkonfiguration: {message}'
 'Are you sure you want to remove this transport configuration?': 'Möchten Sie diese Transportkonfiguration wirklich entfernen?'
+
+# User Management
+'User Management': Benutzerverwaltung
+Users: Benutzer
+User: Benutzer
+'Add User': 'Benutzer hinzufügen'
+'Edit User': 'Benutzer bearbeiten'
+'Display Name': Anzeigename
+'New Password': 'Neues Passwort'
+'Repeat Password': 'Passwort wiederholen'
+'Repeat New Password': 'Neues Passwort wiederholen'
+'Passwords must match': 'Passwörter müssen übereinstimmen'
+'No users found': 'Keine Benutzer gefunden'
+'No roles assigned': 'Keine Rollen zugewiesen'
+'User created successfully': 'Benutzer erfolgreich erstellt'
+'User updated successfully': 'Benutzer erfolgreich aktualisiert'
+'User deleted successfully': 'Benutzer erfolgreich gelöscht'
+'Failed to create user: {message}': 'Fehler beim Erstellen des Benutzers: {message}'
+'Failed to update user: {message}': 'Fehler beim Aktualisieren des Benutzers: {message}'
+'Failed to delete user: {message}': 'Fehler beim Löschen des Benutzers: {message}'
+'You cannot delete your own account.': 'Sie können Ihr eigenes Benutzerkonto nicht löschen.'
+'Manage Users': 'Benutzer verwalten'
+'Manage Recipients': 'Empfänger verwalten'
+Organisation: Organisation
+'User (View only)': 'Benutzer (nur Ansicht)'
+'Active User (Send messages)': 'Aktiver Benutzer (Nachrichten senden)'
+'Support (Manage recipients)': 'Support (Empfänger verwalten)'
+'Manager (Full recipient management)': 'Manager (Volle Empfängerverwaltung)'
+'Administrator (Full access)': 'Administrator (Voller Zugriff)'
 'Message History': Nachrichtenverlauf
 'My messages': 'Meine Nachrichten'
 'All messages': 'Alle Nachrichten'

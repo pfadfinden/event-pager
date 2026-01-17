@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}User Management{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Users{% endtrans %}</h1>
+
+		{{ component('UserList') }}
+
+	</main>
+{% endblock %}

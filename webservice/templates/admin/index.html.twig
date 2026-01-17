@@ -25,8 +25,21 @@
 		{% endif %}
 
 		{% if is_granted('ROLE_USERMANAGEMENT_VIEW') %}
-			<h2 class="mt-5">Benutzer</h2>
-			ToDo: link to manage
+			<h2 class="mt-5 mb-4">{% trans %}Users{% endtrans %}</h2>
+			{{ component('UserStats') }}
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <a href="{{ path('web_admin_user_overview') }}" class="btn btn-outline-primary">
+                    <twig:ux:icon name="bi:people" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+                    {% trans %}Manage Users{% endtrans %}
+                </a>
+                {% if is_granted('ROLE_USERMANAGEMENT_ADDUSER') %}
+                    <a href="{{ path('web_admin_user_add') }}" class="btn btn-outline-secondary">
+                        <twig:ux:icon name="bi:person-plus" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+                        {% trans %}Add User{% endtrans %}
+                    </a>
+                {% endif %}
+            </div>
 		{% endif %}
 
 		{% if is_granted('ROLE_VIEW_SYSTEM_INFO') %}
