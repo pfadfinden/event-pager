@@ -24,7 +24,37 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
 
-###> doctrine/doctrine-bundle ###
+  worker:
+    image: ${IMAGES_PREFIX:-}worker-php
+    build:
+      context: ./webservice
+      dockerfile: ./build/worker/Dockerfile
+      target: worker_prod
+    restart: always
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run:exec
+      - /var/run:exec
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-16}&charset=${POSTGRES_CHARSET:-utf8}
+
+  worker-intelpage:
+    image: ${IMAGES_PREFIX:-}worker-intelpage
+    build:
+      context: ./webservice
+      dockerfile: ./build/worker/Dockerfile
+      target: worker_intelpage_prod
+    restart: always
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run:exec
+      - /var/run:exec
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-16}&charset=${POSTGRES_CHARSET:-utf8}
+
+  ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
@@ -43,25 +73,6 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
-# More information about the keycloak service is located unter /keycloak/README.md
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.5
-    environment:
-      KC_HOSTNAME: localhost
-      KC_HTTP_PORT: 7080
-      KC_HTTPS_PORT: 7443
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HEALTH_ENABLED: "true"
-      KC_LOG_LEVEL: info
-    command: ["start-dev", "--import-realm", "--file", "DEV_BuLa_SanSi-realm.json"]
-    volumes: 
-      - ./keycloak/config:/opt/keycloak/data/import:rw
-      - keycloak_data:/opt/keycloak/data:rw
-    ports:
-      - "7080:7080"
-      - "7443:7443"
-
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
@@ -75,7 +86,40 @@ services:
     ports:
       - "8090:80"
 
+  redis:
+    image: redis:8.4-alpine
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - redis-data:/data:rw
+      - ./webservice/build/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    restart: always
+
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: "256M"
+        reservations:
+          cpus: "0.10"
+          memory: "128M"
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "PING"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+    # read_only: true
+    #tmpfs:
+    #  - /tmp
+    #cap_drop:
+    #  - ALL
+    #security_opt:
+    #  - no-new-privileges:true
+
 volumes:
+  redis-data:
   caddy_data:
   caddy_config:
 ###> doctrine/doctrine-bundle ###

@@ -1,0 +1,2 @@
+#!/command/with-contenv sh
+php /app/bin/console messenger:consume async-event --time-limit=3600 --memory-limit=256M
