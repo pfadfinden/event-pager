@@ -1,0 +1,35 @@
+<aside{{ attributes }}  class="bg-body-tertiary p-3 w-100 h-100">
+    <h3 class="mb-3 h3-productive">{% trans %}Predefined Messages{% endtrans %}</h3>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
+        </span>
+        <input name="q" data-model="q" type="search" class="form-control form-control-sm" placeholder="{{ 'Search...'|trans }}" aria-label="{{ 'Search'|trans }}">
+    </div>
+
+    <nav role="menubar">
+        {% for message in computed.messages %}
+            <a role="menuitem" href="{{ path('App\\View\\Web\\SendMessage\\SendMessageController', {predefined: message.id}) }}"
+               class="border rounded fw-bold mb-2 d-flex align-items-center text-decoration-none text-body"
+               data-predefined-shortcut="{{ loop.index }}">
+                <span class="p-2 px-3 bg-body rounded-start">
+                    {{ loop.index < 10 ? loop.index : ''}}
+                </span>
+                <span class="p-2 px-3">{{ message.title }}</span>
+            </a>
+        {% else %}
+            <p class="text-muted small">
+                {% if computed.hasSearchQuery %}
+                    {% trans %}No messages found{% endtrans %}
+                 {% else %}
+                     {% trans %}No favorite messages configured{% endtrans %}
+                {% endif %}
+            </p>
+        {% endfor %}
+        <p class="text-muted small mb-2">
+            <twig:ux:icon name="bi:keyboard" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+            {% trans %}Press number to select{% endtrans %}
+        </p>
+    </nav>
+</aside>

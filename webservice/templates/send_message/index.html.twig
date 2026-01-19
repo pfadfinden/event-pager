@@ -102,18 +102,9 @@
             {{ form_end(form) }}
         </main>
 
-        <aside class="bg-body-tertiary p-3 d-none d-xl-block">
-            <h3 class="mb-3 h3-productive">Predefined Messages</h3>
-            <div class="border p-2 px-4 fw-bold mb-2">
-                Fire
-            </div>
-            <div class="border p-2 px-4 fw-bold mb-2">
-                Weather Report
-            </div>
-            <div class="border p-2 px-4 fw-bold mb-2">
-                Team Meeting
-            </div>
-        </aside>
+        <div class="d-none d-xl-block" {{ stimulus_controller('predefined_message_shortcuts') }}>
+            {{ component('PredefinedMessagesSidebar') }}
+        </div>
     </div>
 
     <div class="mx-4 mb-5">

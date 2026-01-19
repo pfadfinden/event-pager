@@ -45,6 +45,22 @@
 			{{ component('TransportList') }}
 		{% endif %}
 
+		{% if is_granted('ROLE_PREDEFINEDMESSAGES_VIEW_ADMIN') %}
+			<h2 class="mt-5 mb-4">{% trans %}Predefined Messages{% endtrans %}</h2>
+			<div class="d-flex flex-wrap gap-2 mt-3">
+				<a href="{{ path('web_admin_predefined_messages_overview') }}" class="btn btn-outline-primary">
+					<twig:ux:icon name="bi:chat-text" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+					{% trans %}Manage Predefined Messages{% endtrans %}
+				</a>
+				{% if is_granted('ROLE_PREDEFINEDMESSAGES_ADD') %}
+					<a href="{{ path('web_admin_predefined_messages_add') }}" class="btn btn-outline-secondary">
+						<twig:ux:icon name="bi:plus-lg" height="16" width="16" aria-hidden="true" class="bi me-1"/>
+						{% trans %}Add Predefined Message{% endtrans %}
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
 		{% if is_granted('ROLE_USERMANAGEMENT_VIEW') %}
 			<h2 class="mt-5 mb-4">{% trans %}Users{% endtrans %}</h2>
 			{{ component('UserStats') }}

@@ -6,6 +6,7 @@ namespace App\View\Web\SendMessage;
 
 use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
+use App\Core\PredefinedMessages\Query\PredefinedMessageById;
 use App\Core\SendMessage\Command\SendMessage;
 use App\Core\SendMessage\Query\MessageFilter;
 use App\Core\SendMessage\Query\MessagesSentByUser;
@@ -28,9 +29,22 @@ final class SendMessageController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        // TODO check for predefined message query param
-
         $message = new SendMessageRequest();
+
+        // Handle predefined message parameter
+        $predefinedId = $request->query->getString('predefined');
+        if ('' !== $predefinedId) {
+            $predefined = $this->queryBus->get(PredefinedMessageById::withId($predefinedId));
+            if (null !== $predefined) {
+                $message->message = $predefined->messageContent;
+                $message->priority = $predefined->priority;
+                foreach ($predefined->recipientIds as $recipientId) {
+                    $recipient = new SendMessageRecipientRequest();
+                    $recipient->id = $recipientId;
+                    $message->to[] = $recipient;
+                }
+            }
+        }
         $form = $this->createForm(SendMessageFormType::class, $message, ['choice_loader' => $this->recipientsChoiceLoader]);
 
         $form->handleRequest($request);

@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}Predefined Messages{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1>{% trans %}Predefined Messages{% endtrans %}</h1>
+
+		{{ component('PredefinedMessageList') }}
+
+	</main>
+{% endblock %}

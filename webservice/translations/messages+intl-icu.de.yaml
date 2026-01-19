@@ -257,3 +257,33 @@ Title: Titel
 'Vendor Configuration': Anbieterkonfiguration
 'Vendor Configuration (JSON)': 'Anbieterkonfiguration (JSON)'
 'Invalid JSON in vendor configuration': 'Ungültiges JSON in der Anbieterkonfiguration'
+
+# Predefined Messages
+'Predefined Messages': 'Vordefinierte Nachrichten'
+'Predefined Message': 'Vordefinierte Nachricht'
+'Add Predefined Message': 'Vordefinierte Nachricht hinzufügen'
+'Edit Predefined Message': 'Vordefinierte Nachricht bearbeiten'
+'Manage Predefined Messages': 'Vordefinierte Nachrichten verwalten'
+'Message Content': Nachrichteninhalt
+'Recipient IDs': Empfänger-IDs
+'Comma-separated list of recipient ULIDs': 'Kommagetrennte Liste von Empfänger-ULIDs'
+'Show in Favorites': 'In Favoriten anzeigen'
+'Sort Order': Sortierreihenfolge
+'Lower numbers appear first': 'Niedrigere Zahlen erscheinen zuerst'
+Favorite: Favorit
+'No predefined messages found': 'Keine vordefinierten Nachrichten gefunden'
+'No recipients configured': 'Keine Empfänger konfiguriert'
+'No favorite messages configured': 'Keine Favoriten-Nachrichten konfiguriert'
+'Predefined message created successfully': 'Vordefinierte Nachricht erfolgreich erstellt'
+'Predefined message updated successfully': 'Vordefinierte Nachricht erfolgreich aktualisiert'
+'Predefined message deleted successfully': 'Vordefinierte Nachricht erfolgreich gelöscht'
+'Failed to create predefined message: {message}': 'Fehler beim Erstellen der vordefinierten Nachricht: {message}'
+'Failed to update predefined message: {message}': 'Fehler beim Aktualisieren der vordefinierten Nachricht: {message}'
+'Failed to delete predefined message: {message}': 'Fehler beim Löschen der vordefinierten Nachricht: {message}'
+'Search...': 'Suchen...'
+Yes: Ja
+No: Nein
+'Search recipients...': 'Empfänger suchen...'
+'No recipients selected. Use the search above to add recipients.': 'Keine Empfänger ausgewählt. Verwenden Sie die Suche oben, um Empfänger hinzuzufügen.'
+'Search and select recipients for this predefined message.': 'Suchen und wählen Sie Empfänger für diese vordefinierte Nachricht aus.'
+'Press Alt+Number to select': 'Alt+Zahl drücken zum Auswählen'
