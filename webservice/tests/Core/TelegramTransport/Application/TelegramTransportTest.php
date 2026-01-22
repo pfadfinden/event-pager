@@ -100,43 +100,30 @@ final class TelegramTransportTest extends TestCase
     public function testCanSendToReturnsTrueWhenRecipientHasChatId(): void
     {
         $transport = $this->createTransport();
-
         $recipientMock = self::createStub(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(['chatId' => '123456789']);
-
         $messageMock = $this->createMessageMock();
+        $config = ['chatId' => '123456789'];
 
-        self::assertTrue($transport->canSendTo($recipientMock, $messageMock));
+        self::assertTrue($transport->canSendTo($recipientMock, $messageMock, $config));
     }
 
     public function testCanSendToReturnsFalseWhenRecipientHasNoConfig(): void
     {
         $transport = $this->createTransport();
-
         $recipientMock = self::createStub(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(null);
-
         $messageMock = $this->createMessageMock();
 
-        self::assertFalse($transport->canSendTo($recipientMock, $messageMock));
+        self::assertFalse($transport->canSendTo($recipientMock, $messageMock, null));
     }
 
     public function testCanSendToReturnsFalseWhenRecipientHasEmptyChatId(): void
     {
         $transport = $this->createTransport();
-
         $recipientMock = self::createStub(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(['chatId' => '']);
-
         $messageMock = $this->createMessageMock();
+        $config = ['chatId' => ''];
 
-        self::assertFalse($transport->canSendTo($recipientMock, $messageMock));
+        self::assertFalse($transport->canSendTo($recipientMock, $messageMock, $config));
     }
 
     public function testSendPublishesTransmittedEventOnSuccess(): void
@@ -167,7 +154,7 @@ final class TelegramTransportTest extends TestCase
             ->willReturn(['chatId' => '123456789']);
 
         $messageMock = $this->createMessageMock('Test message');
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -196,7 +183,7 @@ final class TelegramTransportTest extends TestCase
             ->willReturn(['chatId' => '123456789']);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -217,7 +204,7 @@ final class TelegramTransportTest extends TestCase
             ->willReturn(null);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -240,7 +227,7 @@ final class TelegramTransportTest extends TestCase
             ->willReturn(['chatId' => '123456789']);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }

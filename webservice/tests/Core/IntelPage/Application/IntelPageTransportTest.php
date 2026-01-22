@@ -76,7 +76,7 @@ final class IntelPageTransportTest extends TestCase
             public Priority $priority = Priority::DEFAULT;
         };
 
-        self::assertFalse($transport->canSendTo($messageRecipientMock, $messageMock));
+        self::assertFalse($transport->canSendTo($messageRecipientMock, $messageMock, null));
     }
 
     public function testCanSendToWorksForChannels(): void
@@ -101,7 +101,7 @@ final class IntelPageTransportTest extends TestCase
         };
 
         // Assert & Act
-        self::assertTrue($transport->canSendTo($messageRecipientMock, $messageMock));
+        self::assertTrue($transport->canSendTo($messageRecipientMock, $messageMock, ['channel' => '01JT62N5PE9HBQTEZ1PPE6CJ4F']));
     }
 
     public function testCanSendToWorksForIndividuals(): void
@@ -132,7 +132,7 @@ final class IntelPageTransportTest extends TestCase
         };
 
         // Assert & Act
-        self::assertTrue($transport->canSendTo($messageRecipientMock, $messageMock));
+        self::assertTrue($transport->canSendTo($messageRecipientMock, $messageMock, []));
     }
 
     public function testCanSendToFailsWhenMessageIsTooLong(): void
@@ -153,7 +153,7 @@ final class IntelPageTransportTest extends TestCase
         };
 
         $transport = self::initTransport();
-        $transport->canSendTo($messageRecipientMock, $messageMock);
+        $transport->canSendTo($messageRecipientMock, $messageMock, []);
     }
 
     public function testCanSendToPager(): void
@@ -187,7 +187,7 @@ final class IntelPageTransportTest extends TestCase
             public Priority $priority = Priority::DEFAULT;
         };
 
-        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock, $transport);
 
         // Act
         $transport->send($outgoingMessage);
@@ -218,7 +218,7 @@ final class IntelPageTransportTest extends TestCase
             public Priority $priority = Priority::DEFAULT;
         };
 
-        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock, $transport);
 
         // Act
         $transport->send($outgoingMessage);
@@ -248,7 +248,7 @@ final class IntelPageTransportTest extends TestCase
             public Priority $priority = Priority::DEFAULT;
         };
 
-        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($messageRecipientMock, $messageMock, $transport);
 
         // Act
         $transport->send($outgoingMessage);

@@ -6,6 +6,7 @@ namespace App\Infrastructure\Persistence\DoctrineORM\Query;
 
 use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
+use App\Core\MessageRecipient\Model\MessageRecipient;
 use App\Core\MessageRecipient\Model\Person;
 use App\Core\MessageRecipient\Model\Role;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
@@ -78,14 +79,18 @@ final readonly class MessageRecipientByIdQueryHandler
             }
         }
 
-        // Get transport configurations
+        // Get transport configurations (already sorted by rank descending in model)
         $transportConfigurations = [];
-        foreach ($recipient->getTransportConfiguration() as $key => $config) {
-            $transportConfigurations[$key] = new TransportConfigurationEntry(
+        foreach ($recipient->getTransportConfiguration() as $config) {
+            $transportConfigurations[$config->getId()->toString()] = new TransportConfigurationEntry(
                 $config->getId()->toString(),
                 $config->getKey(),
                 $config->isEnabled,
                 $config->getVendorSpecificConfig(),
+                $config->getRank(),
+                $config->getSelectionExpression(),
+                $config->getContinueInHierarchy(),
+                $config->shouldEvaluateOtherTransportConfigurations(),
             );
         }
 
@@ -104,7 +109,7 @@ final readonly class MessageRecipientByIdQueryHandler
     /**
      * @return "GROUP"|"ROLE"|"PERSON"
      */
-    private function getType(AbstractMessageRecipient $recipient): string
+    private function getType(MessageRecipient $recipient): string
     {
         return match (true) {
             $recipient instanceof Group => 'GROUP',

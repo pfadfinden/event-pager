@@ -29,13 +29,20 @@ final readonly class UpdateTransportConfigurationHandler
             throw new InvalidArgumentException("Recipient with ID {$command->recipientId} not found.");
         }
 
-        $config = $recipient->getTransportConfigurationByKey($command->transportKey);
+        $config = $recipient->getTransportConfigurationById($command->getConfigId());
         if (!$config instanceof RecipientTransportConfiguration) {
-            throw new InvalidArgumentException("Transport configuration for key '{$command->transportKey}' not found.");
+            throw new InvalidArgumentException("Transport configuration with ID '{$command->configId}' not found.");
         }
 
         $config->isEnabled = $command->isEnabled;
         $config->setVendorSpecificConfig($command->vendorSpecificConfig);
+        $config->setSelectionExpression($command->selectionExpression);
+        $config->setContinueInHierarchy($command->continueInHierarchy);
+        $config->setEvaluateOtherTransportConfigurations($command->evaluateOtherTransportConfigurations);
+
+        if (null !== $command->rank) {
+            $config->setRank($command->rank);
+        }
 
         $this->uow->commit();
     }

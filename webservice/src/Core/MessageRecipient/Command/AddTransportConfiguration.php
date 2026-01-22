@@ -17,6 +17,10 @@ final readonly class AddTransportConfiguration
         public string $transportKey,
         public ?array $vendorSpecificConfig = null,
         public bool $isEnabled = true,
+        public ?int $rank = null,
+        public string $selectionExpression = 'true',
+        public ?bool $continueInHierarchy = null,
+        public bool $evaluateOtherTransportConfigurations = true,
     ) {
     }
 

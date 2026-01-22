@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <th scope="col">{% trans %}Recipient{% endtrans %}</th>
+            <th scope="col">{% trans %}Transport{% endtrans %}</th>
             <th scope="col">{% trans %}Status{% endtrans %}</th>
             <th scope="col">{% trans %}Last Update{% endtrans %}</th>
         </tr>
@@ -13,8 +14,9 @@
         {% for outgoing in computed.outgoingMessages %}
             <tr>
                 <td>{{ outgoing.recipientName }}</td>
+                <td>{{ outgoing.transportKey }}</td>
                 <td>
-                    <span class="badge {% if outgoing.latestStatus == 'TRANSMITTED' or outgoing.latestStatus == 'DELIVERED' or outgoing.latestStatus == 'READ' or outgoing.latestStatus == 'ACK' %}bg-success{% elseif outgoing.latestStatus == 'ERROR' or outgoing.latestStatus == 'TIMEOUT' %}bg-danger{% elseif outgoing.latestStatus == 'QUEUED' or outgoing.latestStatus == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
+                    <span class="badge {% if outgoing.latestStatus == 'TRANSMITTED' or outgoing.latestStatus == 'DELIVERED' or outgoing.latestStatus == 'READ' or outgoing.latestStatus == 'ACK' %}bg-success{% elseif outgoing.latestStatus == 'ERROR' or outgoing.latestStatus == 'TIMEOUT' or outgoing.latestStatus == 'NOT_INITIATED' %}bg-danger{% elseif outgoing.latestStatus == 'QUEUED' or outgoing.latestStatus == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
                         {{ outgoing.latestStatus|trans }}
                     </span>
                 </td>
@@ -22,7 +24,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3" class="text-center text-muted">{% trans %}No outgoing messages{% endtrans %}</td>
+                <td colspan="4" class="text-center text-muted">{% trans %}No outgoing messages{% endtrans %}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -56,19 +56,18 @@ final readonly class IntelPageTransport implements Transport
         return true;
     }
 
-    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage): bool
+    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage, ?array $recipientConfiguration): bool
     {
         $this->validateMessageLength($incomingMessage->body);
 
-        $config = $recipient->getTransportConfigurationFor($this);
-        if (null === $config) {
+        if (null === $recipientConfiguration) {
             return false;
         }
-        $recipientConfiguration = new RecipientConfiguration($config);
+        $config = new RecipientConfiguration($recipientConfiguration);
 
-        if ($recipientConfiguration->hasChannelConfiguration()) {
+        if ($config->hasChannelConfiguration()) {
             // -- should send to channel, can do so only if channel cap code was found in database:
-            return $this->channelCapCode($recipientConfiguration) instanceof CapCode;
+            return $this->channelCapCode($config) instanceof CapCode;
         }
 
         // -- should send to individual pager
@@ -77,7 +76,7 @@ final readonly class IntelPageTransport implements Transport
         return $pager instanceof Pager // can send only if pager was found
             && $pager->isActivated()  //  and pager is active
             && $this->selectPagerCapBasedOnPriority(
-                $incomingMessage->priority, $recipientConfiguration, $pager
+                $incomingMessage->priority, $config, $pager
             ) instanceof CapCode; // and cap code was assigned to pager
     }
 

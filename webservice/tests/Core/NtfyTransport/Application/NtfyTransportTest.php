@@ -98,43 +98,30 @@ final class NtfyTransportTest extends TestCase
     public function testCanSendToReturnsTrueWhenRecipientHasTopic(): void
     {
         $transport = $this->createTransport();
-
-        $recipientMock = self::createMock(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(['topic' => 'my-alerts']);
-
+        $recipientMock = self::createStub(MessageRecipient::class);
         $messageMock = $this->createMessageMock();
+        $config = ['topic' => 'my-alerts'];
 
-        self::assertTrue($transport->canSendTo($recipientMock, $messageMock));
+        self::assertTrue($transport->canSendTo($recipientMock, $messageMock, $config));
     }
 
     public function testCanSendToReturnsFalseWhenRecipientHasNoConfig(): void
     {
         $transport = $this->createTransport();
-
-        $recipientMock = self::createMock(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(null);
-
+        $recipientMock = self::createStub(MessageRecipient::class);
         $messageMock = $this->createMessageMock();
 
-        self::assertFalse($transport->canSendTo($recipientMock, $messageMock));
+        self::assertFalse($transport->canSendTo($recipientMock, $messageMock, null));
     }
 
     public function testCanSendToReturnsFalseWhenRecipientHasEmptyTopic(): void
     {
         $transport = $this->createTransport();
-
-        $recipientMock = self::createMock(MessageRecipient::class);
-        $recipientMock->method('getTransportConfigurationFor')
-            ->with($transport)
-            ->willReturn(['topic' => '']);
-
+        $recipientMock = self::createStub(MessageRecipient::class);
         $messageMock = $this->createMessageMock();
+        $config = ['topic' => ''];
 
-        self::assertFalse($transport->canSendTo($recipientMock, $messageMock));
+        self::assertFalse($transport->canSendTo($recipientMock, $messageMock, $config));
     }
 
     public function testSendPublishesTransmittedEventOnSuccess(): void
@@ -168,7 +155,7 @@ final class NtfyTransportTest extends TestCase
             ->willReturn(['topic' => 'my-alerts']);
 
         $messageMock = $this->createMessageMock('Test message');
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -197,7 +184,7 @@ final class NtfyTransportTest extends TestCase
             ->willReturn(['topic' => 'my-alerts']);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -218,7 +205,7 @@ final class NtfyTransportTest extends TestCase
             ->willReturn(null);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -241,7 +228,7 @@ final class NtfyTransportTest extends TestCase
             ->willReturn(['topic' => 'my-alerts']);
 
         $messageMock = $this->createMessageMock();
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }
@@ -273,7 +260,7 @@ final class NtfyTransportTest extends TestCase
             ->willReturn(['topic' => 'my-alerts']);
 
         $messageMock = $this->createMessageMock('Test message');
-        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock);
+        $outgoingMessage = OutgoingMessage::for($recipientMock, $messageMock, $transport);
 
         $transport->send($outgoingMessage);
     }

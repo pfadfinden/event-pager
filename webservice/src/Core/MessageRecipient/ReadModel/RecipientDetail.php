@@ -15,7 +15,7 @@ final class RecipientDetail
      * @param array<RecipientListEntry>                  $groups                  Groups this recipient belongs to
      * @param RecipientListEntry|null                    $assignedPerson          For roles: the person assigned to this role
      * @param array<RecipientListEntry>                  $assignedRoles           For persons: roles assigned to this person
-     * @param array<string, TransportConfigurationEntry> $transportConfigurations Transport configurations keyed by transport key
+     * @param array<string, TransportConfigurationEntry> $transportConfigurations Transport configurations keyed by config ID, sorted by rank descending
      */
     public function __construct(
         public string $id,

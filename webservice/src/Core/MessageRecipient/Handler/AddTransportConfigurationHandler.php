@@ -31,6 +31,14 @@ final readonly class AddTransportConfigurationHandler
         $config = $recipient->addTransportConfiguration($command->transportKey);
         $config->isEnabled = $command->isEnabled;
         $config->setVendorSpecificConfig($command->vendorSpecificConfig);
+        $config->setSelectionExpression($command->selectionExpression);
+        $config->setContinueInHierarchy($command->continueInHierarchy);
+        $config->setEvaluateOtherTransportConfigurations($command->evaluateOtherTransportConfigurations);
+
+        // Override auto-assigned rank if explicitly provided
+        if (null !== $command->rank) {
+            $config->setRank($command->rank);
+        }
 
         $this->uow->commit();
     }

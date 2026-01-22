@@ -21,7 +21,8 @@ final class SymfonyEventBusTest extends TestCase
         $event = new stdClass();
 
         $mockMessageBus = self::createMock(MessageBusInterface::class);
-        $mockMessageBus->expects(self::once())->method('dispatch')->with($event)
+        $mockMessageBus->expects(self::once())->method('dispatch')
+            ->with(self::isInstanceOf(Envelope::class))
             ->willReturn(new Envelope($event));
 
         $sut = new SymfonyEventBus($mockMessageBus);

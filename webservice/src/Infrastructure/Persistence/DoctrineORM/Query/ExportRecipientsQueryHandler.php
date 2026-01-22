@@ -8,6 +8,7 @@ use App\Core\DataExchange\Query\ExportRecipients;
 use App\Core\DataExchange\ReadModel\RecipientExportRow;
 use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
+use App\Core\MessageRecipient\Model\MessageRecipient;
 use App\Core\MessageRecipient\Model\Person;
 use App\Core\MessageRecipient\Model\RecipientTransportConfiguration;
 use App\Core\MessageRecipient\Model\Role;
@@ -50,7 +51,7 @@ final readonly class ExportRecipientsQueryHandler
         }
     }
 
-    private function mapToExportRow(AbstractMessageRecipient $recipient): RecipientExportRow
+    private function mapToExportRow(MessageRecipient $recipient): RecipientExportRow
     {
         $type = match (true) {
             $recipient instanceof Person => 'PERSON',
@@ -70,7 +71,7 @@ final readonly class ExportRecipientsQueryHandler
             $members = $recipient->getMembers();
             if ([] !== $members) {
                 $memberIds = array_map(
-                    fn (AbstractMessageRecipient $m): string => $m->getId()->toRfc4122(),
+                    fn (MessageRecipient $m): string => $m->getId()->toRfc4122(),
                     $members,
                 );
                 $groupMemberIds = implode(',', $memberIds);
@@ -90,7 +91,7 @@ final readonly class ExportRecipientsQueryHandler
     }
 
     /**
-     * @param array<string, RecipientTransportConfiguration> $configs
+     * @param list<RecipientTransportConfiguration> $configs
      */
     private function encodeTransportConfigs(array $configs): ?string
     {
@@ -99,8 +100,9 @@ final readonly class ExportRecipientsQueryHandler
         }
 
         $data = [];
-        foreach ($configs as $key => $config) {
-            $data[$key] = [
+        foreach ($configs as $config) {
+            $data[$config->getId()->toString()] = [
+                'key' => $config->getKey(),
                 'enabled' => $config->isEnabled,
                 'config' => $config->getVendorSpecificConfig(),
             ];

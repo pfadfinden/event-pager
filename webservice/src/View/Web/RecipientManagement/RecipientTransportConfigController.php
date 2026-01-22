@@ -8,6 +8,7 @@ use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\MessageRecipient\Command\AddTransportConfiguration;
 use App\Core\MessageRecipient\Command\RemoveTransportConfiguration;
+use App\Core\MessageRecipient\Command\SwapTransportConfigurationRank;
 use App\Core\MessageRecipient\Command\UpdateTransportConfiguration;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
 use App\Core\TransportManager\Query\AllTransports;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,14 +49,12 @@ final class RecipientTransportConfigController extends AbstractController
         $transports = $this->queryBus->get(AllTransports::withoutFilter());
         $transportChoices = [];
         foreach ($transports as $transport) {
-            // Skip transports that already have a configuration
-            if (!isset($recipient->transportConfigurations[$transport->getKey()])) {
-                $transportChoices[$transport->getTitle()] = $transport->getKey();
-            }
+            // Allow multiple configurations per transport type
+            $transportChoices[$transport->getTitle()] = $transport->getKey();
         }
 
         $configRequest = new TransportConfigurationRequest();
-        $form = $this->createFormBuilder($configRequest)
+        $formBuilder = $this->createFormBuilder($configRequest)
             ->add('transportKey', ChoiceType::class, [
                 'choices' => $transportChoices,
                 'label' => 'Transport',
@@ -69,6 +69,25 @@ final class RecipientTransportConfigController extends AbstractController
                 'label' => 'Configuration (JSON)',
                 'attr' => ['rows' => 6, 'class' => 'font-monospace'],
             ])
+            ->add('selectionExpression', TextType::class, [
+                'label' => 'Selection Expression',
+                'required' => true,
+                'attr' => ['class' => 'font-monospace'],
+            ])
+            ->add('evaluateOtherTransportConfigurations', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Evaluate Other Configurations',
+            ]);
+
+        // Add continueInHierarchy only for groups
+        if ($recipient->isGroup()) {
+            $formBuilder->add('continueInHierarchy', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Continue in Hierarchy',
+            ]);
+        }
+
+        $form = $formBuilder
             ->add('save', SubmitType::class, ['label' => 'Add Configuration'])
             ->getForm();
 
@@ -87,6 +106,10 @@ final class RecipientTransportConfigController extends AbstractController
                     $configRequest->transportKey,
                     $configRequest->getVendorSpecificConfigArray(),
                     $configRequest->isEnabled,
+                    $configRequest->rank,
+                    $configRequest->selectionExpression,
+                    $recipient->isGroup() ? $configRequest->continueInHierarchy : null,
+                    $configRequest->evaluateOtherTransportConfigurations,
                 ));
 
                 $this->addFlash('success', t('Transport configuration added successfully'));
@@ -104,8 +127,8 @@ final class RecipientTransportConfigController extends AbstractController
         ]);
     }
 
-    #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/edit', name: 'web_recipient_management_transport_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, string $recipientType, string $id, string $transportKey): Response
+    #[Route('/recipients/{recipientType}/{id}/transport/{configId}/edit', name: 'web_recipient_management_transport_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, string $recipientType, string $id, string $configId): Response
     {
         $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
 
@@ -114,20 +137,24 @@ final class RecipientTransportConfigController extends AbstractController
             throw new NotFoundHttpException('Recipient not found');
         }
 
-        $config = $recipient->transportConfigurations[$transportKey] ?? null;
+        $config = $recipient->transportConfigurations[$configId] ?? null;
         if (null === $config) {
             throw new NotFoundHttpException('Transport configuration not found');
         }
 
         $configRequest = new TransportConfigurationRequest();
-        $configRequest->transportKey = $transportKey;
+        $configRequest->transportKey = $config->key;
         $configRequest->isEnabled = $config->isEnabled;
         $jsonEncoded = null !== $config->vendorSpecificConfig
             ? json_encode($config->vendorSpecificConfig, JSON_PRETTY_PRINT)
             : false;
         $configRequest->vendorSpecificConfig = false !== $jsonEncoded ? $jsonEncoded : '';
+        $configRequest->rank = $config->rank;
+        $configRequest->selectionExpression = $config->selectionExpression;
+        $configRequest->continueInHierarchy = $config->continueInHierarchy;
+        $configRequest->evaluateOtherTransportConfigurations = $config->evaluateOtherTransportConfigurations;
 
-        $form = $this->createFormBuilder($configRequest)
+        $formBuilder = $this->createFormBuilder($configRequest)
             ->add('isEnabled', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Enabled',
@@ -137,6 +164,25 @@ final class RecipientTransportConfigController extends AbstractController
                 'label' => 'Configuration (JSON)',
                 'attr' => ['rows' => 6, 'class' => 'font-monospace'],
             ])
+            ->add('selectionExpression', TextType::class, [
+                'label' => 'Selection Expression',
+                'required' => true,
+                'attr' => ['class' => 'font-monospace'],
+            ])
+            ->add('evaluateOtherTransportConfigurations', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Evaluate Other Configurations',
+            ]);
+
+        // Add continueInHierarchy only for groups
+        if ($recipient->isGroup()) {
+            $formBuilder->add('continueInHierarchy', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Continue in Hierarchy',
+            ]);
+        }
+
+        $form = $formBuilder
             ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
 
@@ -148,9 +194,13 @@ final class RecipientTransportConfigController extends AbstractController
             try {
                 $this->commandBus->do(new UpdateTransportConfiguration(
                     $id,
-                    $transportKey,
+                    $configId,
                     $configRequest->getVendorSpecificConfigArray(),
                     $configRequest->isEnabled,
+                    $configRequest->rank,
+                    $configRequest->selectionExpression,
+                    $recipient->isGroup() ? $configRequest->continueInHierarchy : null,
+                    $configRequest->evaluateOtherTransportConfigurations,
                 ));
 
                 $this->addFlash('success', t('Transport configuration updated successfully'));
@@ -165,12 +215,13 @@ final class RecipientTransportConfigController extends AbstractController
             'form' => $form,
             'recipient' => $recipient,
             'recipientType' => $recipientType,
-            'transportKey' => $transportKey,
+            'configId' => $configId,
+            'transportKey' => $config->key,
         ]);
     }
 
-    #[Route('/recipients/{recipientType}/{id}/transport/{transportKey}/remove', name: 'web_recipient_management_transport_remove', methods: ['POST'])]
-    public function remove(string $recipientType, string $id, string $transportKey): RedirectResponse
+    #[Route('/recipients/{recipientType}/{id}/transport/{configId}/remove', name: 'web_recipient_management_transport_remove', methods: ['POST'])]
+    public function remove(string $recipientType, string $id, string $configId): RedirectResponse
     {
         $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
 
@@ -180,10 +231,38 @@ final class RecipientTransportConfigController extends AbstractController
         }
 
         try {
-            $this->commandBus->do(new RemoveTransportConfiguration($id, $transportKey));
+            $this->commandBus->do(new RemoveTransportConfiguration($id, $configId));
             $this->addFlash('success', t('Transport configuration removed successfully'));
         } catch (RuntimeException $e) {
             $this->addFlash('error', t('Failed to remove transport configuration: {message}', ['message' => $e->getMessage()]));
+        }
+
+        return $this->redirectToRoute($this->getDetailsRoute($recipientType), ['id' => $id]);
+    }
+
+    #[Route('/recipients/{recipientType}/{id}/transport/{configId}/move-up', name: 'web_recipient_management_transport_move_up', methods: ['POST'])]
+    public function moveUp(string $recipientType, string $id, string $configId): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
+
+        try {
+            $this->commandBus->do(new SwapTransportConfigurationRank($id, $configId, true));
+        } catch (RuntimeException $e) {
+            $this->addFlash('error', t('Failed to move transport configuration: {message}', ['message' => $e->getMessage()]));
+        }
+
+        return $this->redirectToRoute($this->getDetailsRoute($recipientType), ['id' => $id]);
+    }
+
+    #[Route('/recipients/{recipientType}/{id}/transport/{configId}/move-down', name: 'web_recipient_management_transport_move_down', methods: ['POST'])]
+    public function moveDown(string $recipientType, string $id, string $configId): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted($this->getManageRole($recipientType));
+
+        try {
+            $this->commandBus->do(new SwapTransportConfigurationRank($id, $configId, false));
+        } catch (RuntimeException $e) {
+            $this->addFlash('error', t('Failed to move transport configuration: {message}', ['message' => $e->getMessage()]));
         }
 
         return $this->redirectToRoute($this->getDetailsRoute($recipientType), ['id' => $id]);

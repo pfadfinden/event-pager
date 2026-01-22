@@ -9,17 +9,25 @@
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
+                        <th scope="col" class="text-center" style="width: 50px;">#</th>
                         <th scope="col">{% trans %}Transport{% endtrans %}</th>
                         <th scope="col">{% trans %}Status{% endtrans %}</th>
+                        <th scope="col">{% trans %}Expression{% endtrans %}</th>
+                        {% if recipient.isGroup %}
+                            <th scope="col" class="text-center">{% trans %}Continue{% endtrans %}</th>
+                        {% endif %}
+                        <th scope="col" class="text-center">{% trans %}Eval Others{% endtrans %}</th>
+
                         <th scope="col">{% trans %}Actions{% endtrans %}</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                    {% for key, config in recipient.transportConfigurations %}
+                    {% for configId, config in recipient.transportConfigurations %}
                         <tr>
+                            <td class="text-center text-muted">{{ config.rank }}</td>
                             <td>
                                 <twig:ux:icon name="bi:send" height="16" width="16" aria-hidden="true" class="bi me-2"/>
-                                {{ key }}
+                                {{ config.key }}
                             </td>
                             <td>
                                 {% if config.isEnabled %}
@@ -29,13 +37,54 @@
                                 {% endif %}
                             </td>
                             <td>
+                                {% if config.selectionExpression != 'true' %}
+                                    <code class="small">{{ config.selectionExpression }}</code>
+                                {% else %}
+                                    <span class="text-muted small">{% trans %}always{% endtrans %}</span>
+                                {% endif %}
+                            </td>
+                            {% if recipient.isGroup %}
+                                <td class="text-center">
+                                    {% if config.continueInHierarchy is same as(true) %}
+                                        <span class="badge text-bg-info" title="{{ 'Continue expanding group members'|trans }}">{% trans %}Yes{% endtrans %}</span>
+                                    {% else %}
+                                        <span class="badge text-bg-warning" title="{{ 'Do not proceed down the hierarchy'|trans }}">{% trans %}No{% endtrans %}</span>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                            <td class="text-center">
+                                {% if config.evaluateOtherTransportConfigurations %}
+                                    <span class="badge text-bg-secondary" title="{{ 'Continue checking other transport configurations'|trans }}">{% trans %}Yes{% endtrans %}</span>
+                                {% else %}
+                                    <span class="badge text-bg-dark" title="{{ 'Stop after this configuration'|trans }}">{% trans %}No{% endtrans %}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-nowrap">
                                 {% if is_granted(manageRole) %}
-                                    <a href="{{ path('web_recipient_management_transport_edit', {recipientType: recipientType, id: recipient.id, transportKey: key}) }}"
+                                    <form action="{{ path('web_recipient_management_transport_move_up', {recipientType: recipientType, id: recipient.id, configId: configId}) }}"
+                                          method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                title="{{ 'Move Up'|trans }}">
+                                            <twig:ux:icon name="bi:arrow-up" height="14" width="14" aria-hidden="true" class="bi"/>
+                                        </button>
+                                    </form>
+                                    <form action="{{ path('web_recipient_management_transport_move_down', {recipientType: recipientType, id: recipient.id, configId: configId}) }}"
+                                          method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                title="{{ 'Move Down'|trans }}">
+                                            <twig:ux:icon name="bi:arrow-down" height="14" width="14" aria-hidden="true" class="bi"/>
+                                        </button>
+                                    </form>
+                                    <a href="{{ path('web_recipient_management_transport_edit', {recipientType: recipientType, id: recipient.id, configId: configId}) }}"
                                        class="btn btn-outline-primary btn-sm"
                                        title="{{ 'Edit'|trans }}">
                                         <twig:ux:icon name="bi:pencil" height="14" width="14" aria-hidden="true" class="bi"/>
                                     </a>
-                                    <form action="{{ path('web_recipient_management_transport_remove', {recipientType: recipientType, id: recipient.id, transportKey: key}) }}"
+                                    <form action="{{ path('web_recipient_management_transport_remove', {recipientType: recipientType, id: recipient.id, configId: configId}) }}"
                                           method="post"
                                           class="d-inline">
                                         <button type="submit"

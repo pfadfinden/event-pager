@@ -16,6 +16,10 @@ enum OutgoingMessageStatus: int
     /**
      * The outgoing message has been created and is ready to be sent to transports.
      */
+    case NOT_INITIATED = -2;
+    /**
+     * The outgoing message has been created and is ready to be sent to transports.
+     */
     case INITIATED = -1;
     /**
      * The transport has accepted the message and queued it for async processing.

@@ -526,10 +526,11 @@ final class ImportRecipientsHandlerTest extends TestCase
         self::assertInstanceOf(Role::class, $addedRecipients[2]);
     }
 
-    public function testImportWithTransportConfigs(): void
+    public function testImportWithTransportConfigsNewIdBasedFormat(): void
     {
         $id = Ulid::generate();
-        $transportConfig = '{"ntfy":{"enabled":true,"config":{"topic":"test-topic"}}}';
+        $configId = Ulid::generate();
+        $transportConfig = '{"'.$configId.'":{"key":"ntfy","enabled":true,"config":{"topic":"test-topic"}}}';
 
         $rows = [
             [
@@ -563,6 +564,152 @@ final class ImportRecipientsHandlerTest extends TestCase
 
         self::assertSame(1, $result->imported);
         self::assertInstanceOf(Person::class, $addedRecipient);
-        self::assertTrue($addedRecipient->hasTransportConfiguration('ntfy'));
+
+        $transportConfiguration = $addedRecipient->getFirstTransportConfigurationByKey('ntfy');
+        self::assertNotNull($transportConfiguration);
+        self::assertSame($configId, $transportConfiguration->getId()->toString());
+        self::assertTrue($transportConfiguration->isEnabled);
+        self::assertSame(['topic' => 'test-topic'], $transportConfiguration->getVendorSpecificConfig());
+    }
+
+    public function testImportWithMultipleTransportConfigsSameKey(): void
+    {
+        $id = Ulid::generate();
+        $configId1 = Ulid::generate();
+        $configId2 = Ulid::generate();
+        $transportConfig = '{"'.$configId1.'":{"key":"ntfy","enabled":true,"config":{"topic":"primary"}},"'.$configId2.'":{"key":"ntfy","enabled":false,"config":{"topic":"backup"}}}';
+
+        $rows = [
+            [
+                'id' => $id,
+                'type' => 'PERSON',
+                'name' => 'Person With Multiple Configs',
+                'assigned_person_id' => '',
+                'group_member_ids' => '',
+                'transport_configs' => $transportConfig,
+            ],
+        ];
+
+        $this->parser
+            ->method('parse')
+            ->willReturn(new ArrayIterator($rows));
+
+        $this->recipientRepository
+            ->method('getRecipientFromID')
+            ->willReturn(null);
+
+        $addedRecipient = null;
+        $this->recipientRepository
+            ->method('add')
+            ->willReturnCallback(function (AbstractMessageRecipient $recipient) use (&$addedRecipient): void {
+                $addedRecipient = $recipient;
+            });
+
+        $command = ImportRecipients::fromContent('', ExportFormat::CSV, ImportConflictStrategy::SKIP);
+
+        $result = ($this->handler)($command);
+
+        self::assertSame(1, $result->imported);
+        self::assertInstanceOf(Person::class, $addedRecipient);
+
+        $configs = $addedRecipient->getTransportConfiguration();
+        self::assertCount(2, $configs);
+
+        $configIds = array_map(fn ($c) => $c->getId()->toString(), $configs);
+        self::assertContains($configId1, $configIds);
+        self::assertContains($configId2, $configIds);
+    }
+
+    public function testImportUpdateExistingTransportConfigById(): void
+    {
+        $id = Ulid::generate();
+        $configId = Ulid::generate();
+
+        $existingPerson = new Person('Existing Person', Ulid::fromString($id));
+        $existingConfig = $existingPerson->addTransportConfigurationWithId('ntfy', Ulid::fromString($configId));
+        $existingConfig->isEnabled = false;
+        $existingConfig->setVendorSpecificConfig(['topic' => 'old-topic']);
+
+        $transportConfig = '{"'.$configId.'":{"key":"ntfy","enabled":true,"config":{"topic":"new-topic"}}}';
+
+        $rows = [
+            [
+                'id' => $id,
+                'type' => 'PERSON',
+                'name' => 'Updated Person',
+                'assigned_person_id' => '',
+                'group_member_ids' => '',
+                'transport_configs' => $transportConfig,
+            ],
+        ];
+
+        $this->parser
+            ->method('parse')
+            ->willReturn(new ArrayIterator($rows));
+
+        $this->recipientRepository
+            ->method('getRecipientFromID')
+            ->willReturn($existingPerson);
+
+        $command = ImportRecipients::fromContent('', ExportFormat::CSV, ImportConflictStrategy::UPDATE);
+
+        $result = ($this->handler)($command);
+
+        self::assertSame(0, $result->imported);
+        self::assertSame(1, $result->updated);
+
+        $configs = $existingPerson->getTransportConfiguration();
+        self::assertCount(1, $configs);
+        self::assertSame($configId, $configs[0]->getId()->toString());
+        self::assertTrue($configs[0]->isEnabled);
+        self::assertSame(['topic' => 'new-topic'], $configs[0]->getVendorSpecificConfig());
+    }
+
+    public function testImportCreatesNewTransportConfigWhenIdNotFound(): void
+    {
+        $id = Ulid::generate();
+        $existingConfigId = Ulid::generate();
+        $newConfigId = Ulid::generate();
+
+        $existingPerson = new Person('Existing Person', Ulid::fromString($id));
+        $existingConfig = $existingPerson->addTransportConfigurationWithId('ntfy', Ulid::fromString($existingConfigId));
+        $existingConfig->isEnabled = true;
+
+        // Import with a different config ID - should create new config
+        $transportConfig = '{"'.$newConfigId.'":{"key":"telegram","enabled":true,"config":{"chat_id":"123"}}}';
+
+        $rows = [
+            [
+                'id' => $id,
+                'type' => 'PERSON',
+                'name' => 'Updated Person',
+                'assigned_person_id' => '',
+                'group_member_ids' => '',
+                'transport_configs' => $transportConfig,
+            ],
+        ];
+
+        $this->parser
+            ->method('parse')
+            ->willReturn(new ArrayIterator($rows));
+
+        $this->recipientRepository
+            ->method('getRecipientFromID')
+            ->willReturn($existingPerson);
+
+        $command = ImportRecipients::fromContent('', ExportFormat::CSV, ImportConflictStrategy::UPDATE);
+
+        $result = ($this->handler)($command);
+
+        self::assertSame(0, $result->imported);
+        self::assertSame(1, $result->updated);
+
+        $configs = $existingPerson->getTransportConfiguration();
+        self::assertCount(2, $configs);
+
+        $newConfig = $existingPerson->getTransportConfigurationById(Ulid::fromString($newConfigId));
+        self::assertNotNull($newConfig);
+        self::assertSame('telegram', $newConfig->getKey());
+        self::assertSame(['chat_id' => '123'], $newConfig->getVendorSpecificConfig());
     }
 }

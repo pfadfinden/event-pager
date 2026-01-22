@@ -44,7 +44,7 @@ class Group extends AbstractMessageRecipient implements Delegated
     }
 
     /**
-     * @return list<AbstractMessageRecipient>
+     * @return list<MessageRecipient>
      */
     public function getMembers(): array
     {

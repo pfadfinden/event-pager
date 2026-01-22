@@ -23,12 +23,13 @@ final readonly class PersistNewOutgoingMessageHandler
 
     public function __invoke(NewOutgoingMessageInitiated $event): void
     {
-        $record = OutgoingMessageEventRecord::create(
+        $record = OutgoingMessageEventRecord::newMessage(
             $event->outgoingMessageId,
             $event->at,
-            OutgoingMessageStatus::INITIATED,
+            $event->failed ? OutgoingMessageStatus::NOT_INITIATED : OutgoingMessageStatus::INITIATED,
             $event->incomingMessageId,
             $event->recipientId,
+            $event->transportKey
         );
 
         $this->repository->add($record);

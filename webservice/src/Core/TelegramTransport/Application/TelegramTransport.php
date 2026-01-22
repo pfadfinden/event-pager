@@ -47,16 +47,15 @@ final readonly class TelegramTransport implements Transport
             && '' !== $vendorConfig[self::CONFIG_BOT_TOKEN];
     }
 
-    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage): bool
+    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage, ?array $recipientConfiguration): bool
     {
-        $config = $recipient->getTransportConfigurationFor($this);
-        if (null === $config) {
+        if (null === $recipientConfiguration) {
             return false;
         }
 
-        $recipientConfiguration = new RecipientConfiguration($config);
+        $config = new RecipientConfiguration($recipientConfiguration);
 
-        return $recipientConfiguration->hasChatId();
+        return $config->hasChatId();
     }
 
     public function send(OutgoingMessage $message): void

@@ -84,7 +84,7 @@ final class NtfyTransportIntegrationTest extends TestCase
         $message = $this->createMessage($expectedBody, Priority::HIGH);
 
         // Verify we can send to this recipient
-        self::assertTrue($transport->canSendTo($recipient, $message));
+        self::assertTrue($transport->canSendTo($recipient, $message, ['topic' => $expectedTopic]));
 
         // Expect transmitted event
         $this->eventBusMock->expects(self::once())
@@ -94,7 +94,7 @@ final class NtfyTransportIntegrationTest extends TestCase
             ));
 
         // Act
-        $outgoingMessage = OutgoingMessage::for($recipient, $message);
+        $outgoingMessage = OutgoingMessage::for($recipient, $message, $transport);
         $transport->send($outgoingMessage);
     }
 
@@ -124,7 +124,7 @@ final class NtfyTransportIntegrationTest extends TestCase
             ));
 
         // Act
-        $outgoingMessage = OutgoingMessage::for($recipient, $message);
+        $outgoingMessage = OutgoingMessage::for($recipient, $message, $transport);
         $transport->send($outgoingMessage);
     }
 
@@ -161,7 +161,7 @@ final class NtfyTransportIntegrationTest extends TestCase
         $recipient = $this->createRecipient($transport, ['topic' => 'test']);
         $message = $this->createMessage('Test', $appPriority);
 
-        $transport->send(OutgoingMessage::for($recipient, $message));
+        $transport->send(OutgoingMessage::for($recipient, $message, $transport));
     }
 
     public function testTransportWithoutAccessToken(): void
@@ -190,7 +190,7 @@ final class NtfyTransportIntegrationTest extends TestCase
 
         $this->eventBusMock->expects(self::once())->method('publish');
 
-        $transport->send(OutgoingMessage::for($recipient, $message));
+        $transport->send(OutgoingMessage::for($recipient, $message, $transport));
     }
 
     public function testTransportRejectsMessagesWhenServerUrlMissing(): void
@@ -213,7 +213,7 @@ final class NtfyTransportIntegrationTest extends TestCase
         $recipient = $this->createRecipient($transport, []); // No topic
         $message = $this->createMessage('Test');
 
-        self::assertFalse($transport->canSendTo($recipient, $message));
+        self::assertFalse($transport->canSendTo($recipient, $message, []));
     }
 
     /**

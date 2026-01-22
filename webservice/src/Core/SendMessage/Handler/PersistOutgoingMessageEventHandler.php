@@ -22,7 +22,7 @@ final readonly class PersistOutgoingMessageEventHandler
 
     public function __invoke(OutgoingMessageEvent $event): void
     {
-        $record = OutgoingMessageEventRecord::create(
+        $record = OutgoingMessageEventRecord::followUp(
             $event->outgoingMessageId,
             $event->at,
             $event->status
