@@ -1,12 +1,19 @@
 {
+	skip_install_trust
+
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
 		{$FRANKENPHP_CONFIG}
+
+		worker {
+			file ./public/index.php
+			{$FRANKENPHP_WORKER_CONFIG}
+		}
 	}
 }
 
-{$CADDY_EXTRA_CONFIG} 
+{$CADDY_EXTRA_CONFIG}
 
 {$SERVER_NAME:localhost} {
 	log {
@@ -23,8 +30,6 @@
 	encode zstd br gzip
 
 	mercure {
-		# Transport to use (default to Bolt)
-		transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
 		# Publisher JWT key
 		publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
 		# Subscriber JWT key
@@ -37,7 +42,7 @@
 		{$MERCURE_EXTRA_DIRECTIVES}
 	}
 
-	vulcain 
+	vulcain
 
 	{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
@@ -53,5 +58,7 @@
 	@frontController path index.php
 	php @frontController
 
-	file_server
+	file_server {
+		hide *.php
+	}
 }
