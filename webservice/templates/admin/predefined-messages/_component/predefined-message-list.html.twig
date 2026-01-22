@@ -1,0 +1,104 @@
+<div{{ attributes }} data-poll="delay(180000)|$render">
+    <div class="d-flex flex-wrap gap-2 gap-md-3 mt-3 mb-3 align-items-center">
+        {# Left group: Add button #}
+        {% if is_granted('ROLE_PREDEFINEDMESSAGES_ADD') %}
+            <div class="btn-group">
+                <a href="{{ path('web_admin_predefined_messages_add') }}" class="btn btn-secondary" title="{{ 'Add Predefined Message'|trans }}">
+                    <twig:ux:icon name="bi:plus-lg" height="16" width="16" aria-hidden="true" class="bi"/>
+                    {% trans %}Add{% endtrans %}
+                </a>
+            </div>
+        {% endif %}
+
+        {# Center: Search bar - grows to fill available space #}
+        <div class="input-group flex-grow-1" style="flex-basis: 8rem">
+            <span class="input-group-text">
+                <twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
+            </span>
+            <input name="q" data-model="q" type="search" class="form-control" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}">
+        </div>
+
+        {# Right group: Pagination & Per-page selector - stay together #}
+            <nav aria-label="{{ 'List Pagination'|trans }}">
+                <ul class="pagination mb-0">
+                    <li class="page-item">
+                        <button class="page-link {% if page <= 1 %} disabled{% endif %}"
+                           data-model="page"
+                           data-value="{{ page - 1 }}"
+                           data-action="live#update" aria-label="{{ 'Previous'|trans }}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item active">
+                        <button class="page-link"
+                           data-model="page"
+                           data-value="{{ page }}"
+                           data-action="live#update">{{ page }}</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link {% if page >= computed.maxPages %} disabled{% endif %}" data-model="page"
+                           data-value="{{ page + 1 }}"
+                           data-action="live#update" aria-label="{{ 'Next'|trans }}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <select data-model="perPage" class="form-select" style="width: auto;" aria-label="{{ 'Number of items per page' | trans }}">
+                <option value="10" {% if perPage == 10 %}selected{% endif %}>10</option>
+                <option value="25" {% if perPage == 25 %}selected{% endif %}>25</option>
+                <option value="50" {% if perPage == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if perPage == 100 %}selected{% endif %}>100</option>
+            </select>
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %}Title{% endtrans %}</th>
+                <th scope="col">{% trans %}Message{% endtrans %}</th>
+                <th scope="col">{% trans %}Priority{% endtrans %}</th>
+                <th scope="col">{% trans %}Favorite{% endtrans %}</th>
+                <th scope="col">{% trans %}Status{% endtrans %}</th>
+                <th scope="col">{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+
+            {% for m in computed.messages %}
+                <tr>
+                    <td>{{ m.title }}</td>
+                    <td>{{ m.messageContent|length > 50 ? m.messageContent|slice(0, 50) ~ '...' : m.messageContent }}</td>
+                    <td>{{ m.priority }}</td>
+                    <td>
+                        {% if m.isFavorite %}
+                            <twig:ux:icon name="bi:star-fill" height="16" width="16" aria-hidden="true" class="bi text-warning"/>
+                        {% else %}
+                            <twig:ux:icon name="bi:star" height="16" width="16" aria-hidden="true" class="bi text-muted"/>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.isEnabled %}
+                            <span class="badge bg-success">{% trans %}Enabled{% endtrans %}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{% trans %}Disabled{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('web_admin_predefined_messages_details', {id: m.id}) }}" class="btn btn-outline-primary btn-sm" title="{{ 'View'|trans }}">
+                            <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">{% trans %}No predefined messages found{% endtrans %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
