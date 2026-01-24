@@ -33,12 +33,13 @@ final class SendMessageFormType extends AbstractType
             ->add('priority', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
-                    '🚨 Very High' => 5,
-                    '‼️ High' => 4,
-                    '🔷 Medium' => 3,
-                    '🔻 Low' => 2,
-                    '⏬ Very Low' => 1,
+                    'priority.urgent' => 5,
+                    'priority.high' => 4,
+                    'priority.normal' => 3,
+                    'priority.low' => 2,
+                    'priority.minimal' => 1,
                 ],
+                'choice_translation_domain' => 'messages',
             ])
             // to contains the actually selected list of recipients
             ->add('to', CollectionType::class, [

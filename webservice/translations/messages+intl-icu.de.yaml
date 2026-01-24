@@ -294,3 +294,10 @@ Theme: Design
 History: Verlauf
 'Main navigation': Hauptnavigation
 'Mobile navigation': 'Mobile Navigation'
+
+# Priority levels
+'priority.urgent': Dringend
+'priority.high': Hoch
+'priority.normal': Normal
+'priority.low': Niedrig
+'priority.minimal': Minimal

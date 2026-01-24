@@ -8,8 +8,6 @@ use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
 use App\Core\PredefinedMessages\Query\PredefinedMessageById;
 use App\Core\SendMessage\Command\SendMessage;
-use App\Core\SendMessage\Query\MessageFilter;
-use App\Core\SendMessage\Query\MessagesSentByUser;
 use App\View\Web\SendMessage\Form\GroupsOnlyRecipientsChoiceLoader;
 use App\View\Web\SendMessage\Form\SendMessageFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,11 +62,8 @@ final class SendMessageController extends AbstractController
             return $this->redirectToRoute(self::class);
         }
 
-        $messageLog = $this->queryBus->get(new MessagesSentByUser('01JNAY9HWQTEX1T45VBM2HG1XJ', new MessageFilter(limit: 10)));
-
         return $this->render('send_message/index.html.twig', [
             'form' => $form,
-            'messageLog' => $messageLog,
         ]);
     }
 }
