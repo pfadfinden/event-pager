@@ -296,8 +296,13 @@ History: Verlauf
 'Mobile navigation': 'Mobile Navigation'
 
 # Priority levels
-'priority.urgent': Dringend
-'priority.high': Hoch
-'priority.normal': Normal
-'priority.low': Niedrig
-'priority.minimal': Minimal
+Urgent: Dringend
+High: Hoch
+Normal: Normal
+Low: Niedrig
+Minimal: Minimal
+
+# Message length hints
+'Recommended message length is max 80 characters.': 'Empfohlene Textlänge ist maximal 80 Zeichen.'
+'Message will not fit entirely on pager display.': 'Nachricht wird nicht als Ganzes im Pager Display erscheinen.'
+'Message is too long for most pagers!': 'Nachricht ist zu lang für die meisten Pager!'

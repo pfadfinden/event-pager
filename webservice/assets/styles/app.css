@@ -25,6 +25,11 @@
    PRIORITY SELECTOR
    ======================================== */
 
+legend:has(+.priority-selector) {
+    padding-block: 0;
+    margin-block-end: 0.5rem;
+}
+
 .priority-selector {
     display: flex;
     gap: 2px;

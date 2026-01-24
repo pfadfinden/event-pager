@@ -10,11 +10,17 @@
                 <h1 class="h2-productive">{% trans %}Send Message{% endtrans %}</h1>
             </header>
 
-            <div class="row g-3 mb-3">
-                <div class="col-12 col-lg-6">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6" {{ stimulus_controller('character_counter', {
+                    thresholds: [
+                        { min: 0, message: 'Recommended message length is max 80 characters.'|trans, class: 'text-muted' },
+                        { min: 40, message: 'Message will not fit entirely on pager display.'|trans, class: 'text-warning' },
+                        { min: 80, message: 'Message is too long for most pagers!'|trans, class: 'text-warning' }
+                    ]
+                }) }}>
                     {{ form_label(form.message) }}
-                    {{ form_widget(form.message, { 'attr': {'class': 'form-control', 'rows': '4' } })}}
-                    <div class="form-text text-muted">{% trans %}TODO Help text on length of message{% endtrans %}</div>
+                    {{ form_widget(form.message, { 'attr': {'class': 'form-control', 'rows': '4' }|merge(stimulus_target('character_counter', 'input').toArray())|merge(stimulus_action('character_counter', 'update', 'input').toArray()) })}}
+                    <div {{ stimulus_target('character_counter', 'help') }} class="form-text text-muted">{% trans %}Recommended message length is max 80 characters.{% endtrans %}</div>
                 </div>
                 <div class="col-12 col-lg-6 col-xxl-5">
                     {{ form_label(form.priority) }}
