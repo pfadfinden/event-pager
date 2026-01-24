@@ -91,7 +91,6 @@ export default class extends Controller {
      * @param target HTMLSelectElement
      */
     optionsListTargetConnected(target) {
-        console.log(this.preselectedValue);
         JSON.parse(this.preselectedValue).forEach(recipientId => {
             target.querySelectorAll('option[value=\'' +recipientId + '\']')
                     .forEach(o => this._markSelected(o));

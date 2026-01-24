@@ -8,12 +8,22 @@ use App\Core\Contracts\Bus\QueryBus;
 use App\Core\SendMessage\Query\ListMessageHistory;
 use App\Core\SendMessage\ReadModel\MessageHistoryEntry;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('RecentSentMessages', template: 'send_message/_component/recent-sent-messages.html.twig')]
 class RecentSentMessagesComponent
 {
     use DefaultActionTrait;
+
+    /**
+     * Refresh the component when a message is sent.
+     */
+    #[LiveListener('messageSent')]
+    public function onMessageSent(): void
+    {
+        // The component will re-render automatically after this method is called
+    }
 
     private const LIMIT = 10;
 

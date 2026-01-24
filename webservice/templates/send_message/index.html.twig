@@ -53,25 +53,28 @@
 
             <hr class="my-3"/>
 
+            {# Recipient selection - works without JS, enhanced with JS #}
+            <noscript><style>.send-message-form__search-column {border:none !important;flex-grow:1;padding-inline:0;max-width:100%} .combobox select {border-radius: var(--bs-border-radius)} .combobox option:checked {font-weight: bold} </style></noscript>
             <div class="mb-2 send-message-form__select-recipient-container flex-grow-1" {{ stimulus_controller('send_message_select_recipient') }}
                  data-send-message-select-recipient-index-value="{{ form.to|length > 0 ? form.to|last.vars.name + 1 : 0 }}"
-                    data-send-message-select-recipient-preselected-value="{{ form.to.vars.value|default([])|column('id')|json_encode() }}">
-                {# Search Column #}
+                 data-send-message-select-recipient-preselected-value="{{ form.to.vars.value|default([])|column('id')|json_encode() }}">
+                {# Search/Select Column - select always works, search enhanced with JS #}
                 <div class="send-message-form__search-column end-border-arrow">
-                    <div class="end-border-arrow__triangle"></div>
+                    <div class="end-border-arrow__triangle d-js-required"></div>
                     <div class="combobox" {{ stimulus_controller('send_message_search_recipient') }}
                         data-send-message-search-recipient-endpoint-value="{{ path('send_message_search_recipients') }}">
                         <label for="recipientSearchInput" class="form-label">{% trans %}To{% endtrans %}</label>
-                        <input type="text" autocomplete="off" class="form-control" id="recipientSearchInput" placeholder="{% trans %}Search...{% endtrans %}" {{ stimulus_target('send_message_search_recipient', 'search') }} {{ stimulus_action('send_message_search_recipient', 'fetchOptions', 'keyup' ) }}>
-                        {{ form_widget(form.optionsTo, { attr: stimulus_target('send_message_search_recipient', 'optionsList')|stimulus_target('send_message_select_recipient', 'optionsList')|stimulus_action('send_message_select_recipient', 'addSelectedRecipient', 'dblclick')|stimulus_action('send_message_select_recipient', 'addSelectedRecipients', 'keydown.enter').toArray() }) }}
-                        <p class="show-parent-mo form-text text-muted mb-0">{% trans %}Double-click option to select!{% endtrans %}</p>
-                        <p class="show-parent-focus form-text text-muted mb-0">{% trans %}Press enter to select!{% endtrans %}</p>
-                        <p class="form-text text-muted mb-0 d-md-none">{% trans %}Tap option to select{% endtrans %}</p>
+                        <input type="text" autocomplete="off" class="form-control d-js-required" id="recipientSearchInput" placeholder="{% trans %}Search...{% endtrans %}" {{ stimulus_target('send_message_search_recipient', 'search') }} {{ stimulus_action('send_message_search_recipient', 'fetchOptions', 'keyup' ) }}>
+                        {{ form_widget(form.optionsTo, { attr: stimulus_target('send_message_search_recipient', 'optionsList')|stimulus_target('send_message_select_recipient', 'optionsList')|stimulus_action('send_message_select_recipient', 'addSelectedRecipient', 'dblclick')|stimulus_action('send_message_select_recipient', 'addSelectedRecipients', 'keydown.enter').toArray()|merge({ class: 'form-select', size: 8 }) }) }}
+                        <p class="show-parent-mo form-text text-muted mb-0 d-js-required">{% trans %}Double-click option to select!{% endtrans %}</p>
+                        <p class="show-parent-focus form-text text-muted mb-0 d-js-required">{% trans %}Press enter to select!{% endtrans %}</p>
+                        <p class="form-text text-muted mb-0 d-md-none d-js-required">{% trans %}Tap option to select{% endtrans %}</p>
+                        <p class="form-text text-muted mb-0 d-none d-js-missing">{% trans %}Hold Ctrl/Cmd to select multiple recipients{% endtrans %}</p>
                     </div>
                 </div>
 
-                {# Selected Recipients Column #}
-                <div class="send-message-form__selected-column">
+                {# Selected Recipients Column - only visible with JS #}
+                <div class="send-message-form__selected-column d-js-required">
                     <label class="form-label">{% trans %}Selected{% endtrans %}</label>
 
                     {# Desktop: Table display #}
@@ -130,10 +133,11 @@
                 {{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}
                 {{ form_widget(form.reset, { 'attr': {'class': 'btn btn-outline-secondary'} }) }}
             </footer>
+            {{ form_rest(form) }}{# Renders CSRF token and any other hidden fields #}
             {{ form_end(form) }}
         </main>
 
-        <aside class="d-none d-xl-block flex-shrink-0" style="width: 320px" {{ stimulus_controller('predefined_message_shortcuts') }}>
+        <aside class="send-message-form__sidebar flex-shrink-0" {{ stimulus_controller('predefined_message_shortcuts') }}>
             {{ component('PredefinedMessagesSidebar') }}
         </aside>
     </div>

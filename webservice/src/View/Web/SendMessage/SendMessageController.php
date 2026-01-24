@@ -6,6 +6,7 @@ namespace App\View\Web\SendMessage;
 
 use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
+use App\Core\MessageRecipient\Query\MessageRecipientById;
 use App\Core\PredefinedMessages\Query\PredefinedMessageById;
 use App\Core\SendMessage\Command\SendMessage;
 use App\View\Web\SendMessage\Form\GroupsOnlyRecipientsChoiceLoader;
@@ -36,16 +37,27 @@ final class SendMessageController extends AbstractController
             if (null !== $predefined) {
                 $message->message = $predefined->messageContent;
                 $message->priority = $predefined->priority;
+
+                // Fetch full recipient details including label and type
                 foreach ($predefined->recipientIds as $recipientId) {
-                    $recipient = new SendMessageRecipientRequest();
-                    $recipient->id = $recipientId;
-                    $message->to[] = $recipient;
+                    $recipient = $this->queryBus->get(MessageRecipientById::withId($recipientId));
+                    if (null !== $recipient) {
+                        $recipientRequest = new SendMessageRecipientRequest();
+                        $recipientRequest->id = $recipient->id;
+                        $recipientRequest->label = $recipient->name;
+                        $recipientRequest->type = $recipient->type;
+                        $message->to[] = $recipientRequest;
+                    }
                 }
             }
         }
-        $form = $this->createForm(SendMessageFormType::class, $message, ['choice_loader' => $this->recipientsChoiceLoader]);
+
+        $form = $this->createForm(SendMessageFormType::class, $message, [
+            'choice_loader' => $this->recipientsChoiceLoader,
+        ]);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var SendMessageRequest $message */
             $message = $form->getData();
@@ -58,7 +70,7 @@ final class SendMessageController extends AbstractController
             );
             $this->commandBus->do($sendMessage);
 
-            // Redirect to this route, but with empty form
+            // Redirect to clear form after successful submission
             return $this->redirectToRoute(self::class);
         }
 
