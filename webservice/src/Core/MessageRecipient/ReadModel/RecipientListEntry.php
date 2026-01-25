@@ -11,11 +11,13 @@ final class RecipientListEntry
 {
     /**
      * @param "GROUP"|"ROLE"|"PERSON" $type
+     * @param list<string>            $enabledTransports Short class names of enabled transports for this recipient
      */
     public function __construct(
         public string $id,
         public string $type,
         public string $name,
+        public array $enabledTransports = [],
     ) {
     }
 }

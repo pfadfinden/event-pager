@@ -24,6 +24,7 @@ final class SendMessageRecipientFormType extends AbstractType
             ->add('id', HiddenType::class, ['attr' => ['data-property' => 'id']])
             ->add('label', HiddenType::class, ['attr' => ['data-property' => 'label']])
             ->add('type', HiddenType::class, ['attr' => ['data-property' => 'type']])
+            ->add('enabledTransports', HiddenType::class, ['attr' => ['data-property' => 'enabledTransports']])
         ;
     }
 

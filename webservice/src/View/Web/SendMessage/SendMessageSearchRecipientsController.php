@@ -25,13 +25,17 @@ final class SendMessageSearchRecipientsController extends AbstractController
     {
         $data = $this->queryBus->get(ListOfMessageRecipients::all($search));
 
-        $result = array_map(function (RecipientListEntry $r): RecipientListEntry {
+        $result = array_map(function (RecipientListEntry $r): array {
             $prefix = match ($r->type) {
                 'GROUP' => '👥 ', 'ROLE' => '💼 ', default => '👤 ',
             };
-            $r->name = $prefix.$r->name;
 
-            return $r;
+            return [
+                'id' => $r->id,
+                'type' => $r->type,
+                'name' => $prefix.$r->name,
+                'enabledTransports' => $r->enabledTransports,
+            ];
         }, iterator_to_array($data));
 
         return new JsonResponse($result, Response::HTTP_OK);

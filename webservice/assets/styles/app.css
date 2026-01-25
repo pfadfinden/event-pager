@@ -21,136 +21,14 @@
     font-weight: 550;
 }
 
-.send-message-form {
-    display: flex;
-    max-height: 100vh; /* TODO only for displays with height > x */
-    overflow: hidden;
-
-    height: 100%
-}
-
-.send-message-form__container {
-    max-height: 100%;
-    overflow: hidden;
-}
-
-.send-message-form__container form {
-    display: flex;
-    flex-direction: column;
-    max-height: 100%;
-    overflow: hidden;
-    height: 100%
-}
-
-.send-message-form__container form > * {
-    height: 100%;
-    display: flex;
-    flex-basis: min-content;
-}
-
-.send-message-form__select-recipient-container {
-    flex-shrink: 2;
-    flex-basis: 1px;
-    flex-grow: 1;
-}
-
-.send-message-form__select-recipient-container > div {
-    min-height: 1px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.send-message-form__selected {
-    flex-grow: 1;
-    flex-basis: 1px;
-}
-
-
-
-.end-border-arrow {
-    --eba-style: solid;
-    --eba-col: currentColor;
-    border-right: 2px var(--eba-style) var(--eba-col);
-    position: relative;
-}
-
-.end-border-arrow__triangle {
-    position: absolute;
-    right: -10px;
-    top: 2.5rem;
-}
-
-.end-border-arrow__triangle:before,
-.end-border-arrow__triangle:after {
-    content: "";
-    display: inline-block;
-    width: 0;
-    height: 0;
-}
-
-.end-border-arrow__triangle:before {
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 10px solid var(--eba-col);
-}
-
-.end-border-arrow__triangle:after {
-    position: absolute;
-    right: 2px;
-    top: 1.5px;
-    border-top: 8px solid transparent;
-    border-left: 8px solid var(--bs-secondary-bg);
-    border-bottom: 8px solid transparent;
-}
+/* ========================================
+   GLOBAL UTILITY CLASSES
+   ======================================== */
 
 .btn-sm-table {
     --bs-btn-padding-y: .25rem;
     --bs-btn-padding-x: .5rem;
     --bs-btn-font-size: .75rem;
-}
-
-.fixw-2_4rem {
-    width: 2.4rem;
-}
-
-.combobox {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.combobox input {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    flex: 0;
-}
-
-.combobox select {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-top: 0;
-    flex-basis: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
-
-    padding: 0 !important;
-    overflow: scroll;
-}
-
-.combobox option {
-    padding-left: 0.5rem;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-    /* the following overwrites the optgroup styles */
-    text-align: start;
-    background-color: var(--bs-body-bg);
-}
-
-.combobox optgroup {
-    text-align: center;
-    background-color: var(--bs-tertiary-bg);
-    font-style: normal;
 }
 
 .badge-recipient-group {
@@ -179,22 +57,150 @@
     margin-inline-start: -0.4rem;
 }
 
-
-.show-parent-mo,  .show-parent-focus  {
-    display:none;
-}
-
-*:hover > .show-parent-mo {
-    display: block;
-}
-
-*:focus-within:not(:hover) > .show-parent-focus {
-    display: block;
-}
-
 .expand-icon {
     transition: transform 0.2s ease-in-out;
 }
 tr[aria-expanded="true"] .expand-icon {
     transform: rotate(90deg);
+}
+
+/* ========================================
+   MESSAGE LIST (Responsive Table/Cards)
+   Bootstrap table-like styling on desktop, cards on mobile
+   ======================================== */
+
+.message-list__empty {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Desktop: Bootstrap table styling */
+@media (min-width: 1200px) {
+    .message-list {
+        width: 100%;
+        margin-bottom: 1rem;
+        vertical-align: top;
+        border-color: var(--bs-border-color);
+    }
+
+    .message-list__header {
+        border-bottom: 2px solid currentcolor;
+        vertical-align: bottom;
+    }
+
+    .message-list__row {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .message-list__body .message-list__row:hover {
+        background-color: rgba(var(--bs-emphasis-color-rgb), 0.075);
+    }
+
+    .message-list__cell {
+        padding: 0.5rem;
+        vertical-align: middle;
+        min-width: 0;
+    }
+
+    .message-list__header .message-list__cell {
+        font-weight: bold;
+    }
+
+    /* Column widths */
+    .message-list__cell--timestamp { flex: 0 0 110px; }
+    .message-list__cell--content { flex: 1 1 auto; }
+    .message-list__cell--recipients {
+        flex: 0 0 400px;
+        overflow: hidden;
+    }
+    .message-list__cell--recipients > * {
+        display: inline;
+    }
+    .message-list__cell--priority { flex: 0 0 70px; text-align: center; }
+    .message-list__cell--status { flex: 0 0 200px; }
+}
+
+/* Mobile: Card layout */
+@media (max-width: 1199.99px) {
+
+    .message-list__header {
+        display: none;
+    }
+
+    .message-list__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "timestamp priority"
+            "content content"
+            "recipients status";
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background-color: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .message-list__row ~ .message-list__row {
+        margin-top: 0.5rem;
+    }
+
+    .message-list__cell {
+        min-width: 0;
+    }
+
+    .message-list__cell--timestamp {
+        grid-area: timestamp;
+        font-size: 0.875rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .message-list__cell--content {
+        grid-area: content;
+    }
+
+    .message-list__cell--recipients {
+        grid-area: recipients;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        align-items: center;
+    }
+
+    .message-list__cell--recipients::before {
+        content: attr(data-label) ":";
+        color: var(--bs-secondary-color);
+        margin-right: 0.5rem;
+    }
+
+    .message-list__cell--priority {
+        grid-area: priority;
+        text-align: right;
+    }
+
+    .message-list__cell--status {
+        grid-area: status;
+        text-align: right;
+    }
+}
+
+
+/* Mobile: Card layout */
+@media (max-width: 576px) {
+    .message-list__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "timestamp priority"
+            "content content"
+            "recipients recipients"
+            "status status";
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background-color: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+    }
 }

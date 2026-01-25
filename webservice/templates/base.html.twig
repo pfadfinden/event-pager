@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>{% block title %}Welcome!{% endblock %}</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -28,6 +29,7 @@
 		{% endblock %}
 	</head>
 	<body>
+        <noscript><style>.d-js-required {display: none !important} .d-js-missing {display: revert}</style></noscript>
 		{% block body %}{% endblock %}
 	</body>
 </html>

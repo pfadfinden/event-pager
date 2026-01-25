@@ -164,6 +164,21 @@ Cancel: Abbrechen
 'Failed to update transport configuration: {message}': 'Fehler beim Aktualisieren der Transportkonfiguration: {message}'
 'Failed to remove transport configuration: {message}': 'Fehler beim Entfernen der Transportkonfiguration: {message}'
 'Are you sure you want to remove this transport configuration?': 'Möchten Sie diese Transportkonfiguration wirklich entfernen?'
+'The assigned person or role does not have IntelPage transport configured. Messages will not be delivered to this pager.': 'Die zugewiesene Person oder Rolle hat keinen IntelPage-Transport konfiguriert. Nachrichten werden an diesen Pager nicht zugestellt.'
+'Send Message': 'Nachricht senden'
+To: An
+'Double-click option to select!': 'Option durch Doppelklick auswählen!'
+'Press enter to select!': 'Zum Auswählen Enter drücken!'
+'Double tap option to select': 'Zum Auswählen doppelt tippen'
+'Hold Ctrl/Cmd to select multiple recipients': 'Strg/Cmd gedrückt halten, um mehrere Empfänger auszuwählen'
+Selected: Ausgewählt
+'Press number to select': 'Zum Auswählen eine Zahl drücken'
+'Last Sent Messages': 'Zuletzt gesendete Nachrichten'
+'Sent Messages': 'Gesendete Nachrichten'
+Timestamp: Zeitstempel
+Message: Nachricht
+'No messages sent yet.': 'Noch keine Nachrichten gesendet.'
+Reset: Zurücksetzen
 
 # Data Exchange
 'Data Exchange': Datenaustausch
@@ -287,3 +302,22 @@ No: Nein
 'No recipients selected. Use the search above to add recipients.': 'Keine Empfänger ausgewählt. Verwenden Sie die Suche oben, um Empfänger hinzuzufügen.'
 'Search and select recipients for this predefined message.': 'Suchen und wählen Sie Empfänger für diese vordefinierte Nachricht aus.'
 'Press Alt+Number to select': 'Alt+Zahl drücken zum Auswählen'
+
+# Navigation
+Menu: Menü
+Theme: Design
+History: Verlauf
+'Main navigation': Hauptnavigation
+'Mobile navigation': 'Mobile Navigation'
+
+# Priority levels
+Urgent: Dringend
+High: Hoch
+Normal: Normal
+Low: Niedrig
+Minimal: Minimal
+
+# Message length hints
+'Recommended message length is max 80 characters.': 'Empfohlene Textlänge ist maximal 80 Zeichen.'
+'Message will not fit entirely on pager display.': 'Nachricht wird nicht als Ganzes im Pager Display erscheinen.'
+'Message is too long for most pagers!': 'Nachricht ist zu lang für die meisten Pager!'

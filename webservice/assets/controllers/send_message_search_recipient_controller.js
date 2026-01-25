@@ -26,10 +26,10 @@ export default class extends Controller {
         const items = searchResults.map(value => {
             const item = document.createElement('option')
             item.setAttribute('value', value.id);
+            item.setAttribute('data-enabled-transports', JSON.stringify(value.enabledTransports || []));
             item.innerHTML = value.name;
             return item;
         })
-console.log(items, this.optionsListTarget.children);
         this.optionsListTarget.replaceChildren(...items);
     }
 }
