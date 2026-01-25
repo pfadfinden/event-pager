@@ -10,10 +10,13 @@ export default class extends Controller {
     }
 
     addSelectedRecipient(event) {
+        // Only handle double-clicks on actual option elements
+        if (event.target.tagName !== 'OPTION') {
+            return;
+        }
         if (event.target.disabled) {
             return;
         }
-        // TODO bug double click outside option, adds all
         const selectedId = event.target.value;
         const label = event.target.textContent;
         const enabledTransports = this._getEnabledTransports(event.target);
