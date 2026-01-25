@@ -47,6 +47,7 @@
     <coverage>
         <report>
             <html outputDirectory="dist/phpunit"></html>
+            <cobertura outputFile="dist/phpunit/cobertura.xml"/>
         </report>
     </coverage>
 
