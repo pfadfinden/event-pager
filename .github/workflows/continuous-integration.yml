@@ -150,8 +150,14 @@ jobs:
       #  Disabled due to issue in dbal 4 with custom types
       #  run: docker compose exec -T php bin/console -e test doctrine:schema:validate
 
-      - name: Run PHPUnit
+      - name: Run PHPUnit Unit & Integration Tests
         run: docker compose exec -T php composer run test:coverage
+
+      - name: Run PHPUnit Functional Tests
+        run: docker compose exec -T php composer run test:functional
+
+      - name: Run PHPUnit E2E Tests
+        run: docker compose exec -T php composer run test:e2e
 
   static-analyser-check:
     runs-on: ubuntu-latest

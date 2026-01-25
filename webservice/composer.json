@@ -104,14 +104,16 @@
         "test": "@php vendor/bin/phpunit --no-coverage",
         "test:coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "@php vendor/bin/phpunit"
+            "@php vendor/bin/phpunit --testsuite Unit,Integration"
         ],
-        "test:unit": "@php vendor/bin/phpunit --group unit --no-coverage",
-        "test:unit:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group unit"],
-        "test:integration": "@php vendor/bin/phpunit --group integration --no-coverage",
-        "test:integration:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group integration"],
-        "test:application": "@php vendor/bin/phpunit --group application --no-coverage",
-        "test:application:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group application"]
+        "test:unit": "@php vendor/bin/phpunit --testsuite Unit --no-coverage",
+        "test:unit:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Unit"],
+        "test:integration": "@php vendor/bin/phpunit --testsuite Integration --no-coverage",
+        "test:integration:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Integration"],
+        "test:functional": "@php vendor/bin/phpunit --testsuite Functional --no-coverage",
+        "test:functional:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Functional"],
+        "test:e2e": "@php vendor/bin/phpunit --testsuite E2E --no-coverage",
+        "test:e2e:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite E2E"]
     },
     "conflict": {
         "symfony/symfony": "*"
