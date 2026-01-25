@@ -33,6 +33,7 @@ RUN set -eux; \
 		zip \
         pdo_pgsql \
         pcntl \
+        redis \
 	;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser

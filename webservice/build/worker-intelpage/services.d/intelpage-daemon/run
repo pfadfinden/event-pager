@@ -1,0 +1,2 @@
+#!/command/with-contenv sh
+php /app/bin/console app:intel-page:run-daemon default-pager

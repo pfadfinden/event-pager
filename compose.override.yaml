@@ -27,7 +27,45 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
     tty: true
-  
+
+  worker:
+    build:
+      context: ./webservice
+      dockerfile: ./build/worker/Dockerfile
+      target: worker_dev
+    volumes:
+      - ./webservice:/app
+    environment:
+      INTEL_PAGE_TRANSMITTER_DSN: intelpage://pager_transmitter_stub:6000?secondsBetweenMessages=2
+
+  worker-intelpage:
+    build:
+      context: ./webservice
+      dockerfile: ./build/worker/Dockerfile
+      target: worker_intelpage_dev
+    volumes:
+      - ./webservice:/app
+    environment:
+      INTEL_PAGE_TRANSMITTER_DSN: intelpage://pager_transmitter_stub:6000?secondsBetweenMessages=2
+
+  # More information about the keycloak service is located unter /keycloak/README.md
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 7080
+      KC_HTTPS_PORT: 7443
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_LOG_LEVEL: info
+    command: ["start-dev", "--import-realm"]
+    volumes:
+      - ./keycloak/config:/opt/keycloak/data/import:rw
+      - keycloak_data:/opt/keycloak/data:rw
+    ports:
+      - "7080:7080"
+      - "7443:7443"
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
