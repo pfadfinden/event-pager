@@ -55,7 +55,7 @@
 
     <coverage>
         <report>
-            <html outputDirectory="dist/phpunit"></html>
+            <html outputDirectory="dist/phpunit-coverage"></html>
         </report>
     </coverage>
 
@@ -64,6 +64,7 @@
     </logging>
 
     <extensions>
+        <bootstrap class="Symfony\Component\Panther\ServerExtension" />
         <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension" />
     </extensions>
 </phpunit>
