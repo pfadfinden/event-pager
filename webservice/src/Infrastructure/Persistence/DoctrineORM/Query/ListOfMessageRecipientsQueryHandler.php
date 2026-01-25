@@ -14,6 +14,7 @@ use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
 use App\Core\TransportManager\Model\TransportConfiguration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Uid\Ulid;
+use function in_array;
 use function sprintf;
 
 final readonly class ListOfMessageRecipientsQueryHandler
@@ -70,7 +71,7 @@ final readonly class ListOfMessageRecipientsQueryHandler
         }
 
         // Fetch enabled transports for all recipients in a single query
-        $recipientIds = array_map(static fn (RecipientListEntry $r): string => Ulid::fromString($r->id)->toRfc4122(), $recipients);
+        $recipientIds = array_values(array_map(static fn (RecipientListEntry $r): string => Ulid::fromString($r->id)->toRfc4122(), $recipients));
         $transportsByRecipient = $this->fetchEnabledTransports($recipientIds);
 
         // Merge enabled transports into each recipient
@@ -103,6 +104,7 @@ final readonly class ListOfMessageRecipientsQueryHandler
         $transportsByRecipient = [];
         foreach ($result as $row) {
             // Convert RFC4122 UUID back to ULID format for consistent lookup
+            /** @phpstan-ignore-next-line argument.type */
             $recipientId = Ulid::fromString($row['recipientId'])->toBase32();
             // Extract short class name from FQCN
             $transportClass = $this->getShortClassName($row['transportClass']);

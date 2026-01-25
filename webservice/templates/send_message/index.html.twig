@@ -2,9 +2,14 @@
 
 {% block title %}Pager System{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/send-message.css') }}">
+{% endblock %}
+
 {% block main %}
-    <div class="send-message-form p-3 p-md-4">
-        <main class="send-message-form__container bg-body-secondary p-3">
+    <div class="send-message-form">
+        <main class="send-message-form__container">
             {{ form_start(form) }}
             <header class="mb-3">
                 <h1 class="h2-productive">{% trans %}Send Message{% endtrans %}</h1>
@@ -19,12 +24,14 @@
                     ]
                 }) }}>
                     {{ form_label(form.message) }}
-                    {{ form_widget(form.message, { 'attr': {'class': 'form-control', 'rows': '4' }|merge(stimulus_target('character_counter', 'input').toArray())|merge(stimulus_action('character_counter', 'update', 'input').toArray()) })}}
-                    <div {{ stimulus_target('character_counter', 'help') }} class="form-text text-muted">{% trans %}Recommended message length is max 80 characters.{% endtrans %}</div>
+                    {{ form_widget(form.message, { 'attr': {'class': 'form-control', 'rows': '4' }|merge(stimulus_target('character_counter', 'input').toArray())|merge(stimulus_action('character_counter', 'update', 'input').toArray()) }) }}
+                    <div {{ stimulus_target('character_counter', 'help') }}
+                        class="form-text text-muted">{% trans %}Recommended message length is max 80 characters.{% endtrans %}</div>
                 </div>
                 <div class="col-12 col-lg-6 col-xxl-5">
                     {{ form_label(form.priority) }}
-                    <div class="priority-selector btn-group" role="radiogroup" aria-label="{% trans %}Priority{% endtrans %}">
+                    <div class="priority-selector btn-group w-100" role="radiogroup"
+                         aria-label="{% trans %}Priority{% endtrans %}">
                         {% set priorityIcons = {
                             '5': 'bi:exclamation-octagon-fill',
                             '4': 'bi:chevron-double-up',
@@ -46,9 +53,11 @@
                                    id="{{ child.vars.id }}"
                                    value="{{ child.vars.value }}"
                                    autocomplete="off"
-                                   {{ child.vars.checked ? 'checked' : '' }}>
-                            <label class="btn btn-outline-{{ priorityColors[child.vars.value] }}" for="{{ child.vars.id }}" title="{{ child.vars.label|trans }}">
-                                <twig:ux:icon name="{{ priorityIcons[child.vars.value] }}" height="1.25em" aria-hidden="true" />
+                                {{ child.vars.checked ? 'checked' : '' }}>
+                            <label class="btn btn-outline-{{ priorityColors[child.vars.value] }}"
+                                   for="{{ child.vars.id }}" title="{{ child.vars.label|trans }}">
+                                <twig:ux:icon name="{{ priorityIcons[child.vars.value] }}" height="1.25em"
+                                              aria-hidden="true"/>
                                 <span class="d-none d-xxl-block priority-label">{{ child.vars.label|trans }}</span>
                             </label>
                         {% endfor %}
@@ -60,21 +69,39 @@
             <hr class="my-3"/>
 
             {# Recipient selection - works without JS, enhanced with JS #}
-            <noscript><style>.send-message-form__search-column {border:none !important;flex-grow:1;padding-inline:0;max-width:100%} .combobox select {border-radius: var(--bs-border-radius)} .combobox option:checked {font-weight: bold} </style></noscript>
-            <div class="mb-2 send-message-form__select-recipient-container flex-grow-1" {{ stimulus_controller('send_message_select_recipient') }}
-                 data-send-message-select-recipient-index-value="{{ form.to|length > 0 ? form.to|last.vars.name + 1 : 0 }}"
-                 data-send-message-select-recipient-preselected-value="{{ form.to.vars.value|default([])|column('id')|json_encode() }}">
+            <noscript>
+                <style>.send-message-form__search-column {
+                        border: none !important;
+                        flex-grow: 1;
+                        padding-inline: 0;
+                        max-width: 100%
+                    }
+
+                    .combobox select {
+                        border-radius: var(--bs-border-radius)
+                    }
+
+                    .combobox option:checked {
+                        font-weight: bold
+                    } </style>
+            </noscript>
+            <div
+                class="send-message-form__select-recipient-container" {{ stimulus_controller('send_message_select_recipient') }}
+                data-send-message-select-recipient-index-value="{{ form.to|length > 0 ? form.to|last.vars.name + 1 : 0 }}"
+                data-send-message-select-recipient-preselected-value="{{ form.to.vars.value|default([])|column('id')|json_encode() }}">
                 {# Search/Select Column - select always works, search enhanced with JS #}
                 <div class="send-message-form__search-column end-border-arrow">
                     <div class="end-border-arrow__triangle d-js-required"></div>
                     <div class="combobox" {{ stimulus_controller('send_message_search_recipient') }}
-                        data-send-message-search-recipient-endpoint-value="{{ path('send_message_search_recipients') }}">
+                         data-send-message-search-recipient-endpoint-value="{{ path('send_message_search_recipients') }}">
                         <label for="recipientSearchInput" class="form-label">{% trans %}To{% endtrans %}</label>
-                        <input type="text" autocomplete="off" class="form-control d-js-required" id="recipientSearchInput" placeholder="{% trans %}Search...{% endtrans %}" {{ stimulus_target('send_message_search_recipient', 'search') }} {{ stimulus_action('send_message_search_recipient', 'fetchOptions', 'keyup' ) }}>
+                        <input type="text" autocomplete="off" class="form-control d-js-required"
+                               id="recipientSearchInput"
+                               placeholder="{% trans %}Search...{% endtrans %}" {{ stimulus_target('send_message_search_recipient', 'search') }} {{ stimulus_action('send_message_search_recipient', 'fetchOptions', 'keyup' ) }}>
                         {{ form_widget(form.optionsTo, { attr: stimulus_target('send_message_search_recipient', 'optionsList')|stimulus_target('send_message_select_recipient', 'optionsList')|stimulus_action('send_message_select_recipient', 'addSelectedRecipient', 'dblclick')|stimulus_action('send_message_select_recipient', 'addSelectedRecipients', 'keydown.enter').toArray()|merge({ class: 'form-select', size: 8 }) }) }}
-                        <p class="show-parent-mo form-text text-muted mb-0 d-js-required">{% trans %}Double-click option to select!{% endtrans %}</p>
+                        <p class="d-none d-md-block show-parent-mo form-text text-muted mb-0 d-js-required d-sm">{% trans %}Double-click option to select!{% endtrans %}</p>
                         <p class="show-parent-focus form-text text-muted mb-0 d-js-required">{% trans %}Press enter to select!{% endtrans %}</p>
-                        <p class="form-text text-muted mb-0 d-md-none d-js-required">{% trans %}Tap option to select{% endtrans %}</p>
+                        <p class="form-text text-muted mb-0 d-md-none d-js-required">{% trans %}Double tap option to select{% endtrans %}</p>
                         <p class="form-text text-muted mb-0 d-none d-js-missing">{% trans %}Hold Ctrl/Cmd to select multiple recipients{% endtrans %}</p>
                     </div>
                 </div>
@@ -83,15 +110,15 @@
                 <div class="send-message-form__selected-column d-js-required">
                     <label class="form-label">{% trans %}Selected{% endtrans %}</label>
 
-                    {# Desktop: Table display #}
-                    <div class="bg-body border rounded overflow-auto send-message-form__selected">
-                        <table class="table table-sm table-hover mb-0" style="background: none">
-                            <thead class="sticky-top bg-body">
+                    <div class="send-message-form__selected">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
                             <tr>
-                                <th class="p-0"><!--Hidden Form Field--></th>
-                                <th scope="col" class="fixw-2_4rem"><!--Remove Button--></th>
+                                <th class="send-message-form__cell-hidden"></th>
+                                <th scope="col" class="send-message-form__cell-action"></th>
                                 <th scope="col">{% trans %}Recipient{% endtrans %}</th>
-                                <th scope="col" class="text-end px-2">{% trans %}Transport{% endtrans %}</th>
+                                <th scope="col"
+                                    class="send-message-form__cell-transport">{% trans %}Transport{% endtrans %}</th>
                             </tr>
                             </thead>
                             {# Transport class name to icon mapping #}
@@ -105,48 +132,55 @@
                             <tbody {{ stimulus_target('send_message_select_recipient', 'collectionContainer') }}>
                             <template {{ stimulus_target('send_message_select_recipient', 'template') }}>
                                 <tr>
-                                    <td class="p-0">{{ form_widget(form.to.vars.prototype) }}</td>
-                                    <td class="px-2 fixw-2_4rem">
-                                        <button title="{% trans %}Remove{% endtrans %}" class="btn btn-sm-table btn-outline-danger" type="button"
-                                                {{ stimulus_action('send_message_select_recipient', 'removeSelected') }}>
-                                            <twig:ux:icon name="bi:chevron-left" height="0.75em" aria-hidden="true" class="d-none d-xxl-inline" />
-                                            <twig:ux:icon name="bi:x-lg" height="0.75em" aria-hidden="true" class="d-xxl-none"/>
+                                    <td class="send-message-form__cell-hidden">{{ form_widget(form.to.vars.prototype) }}</td>
+                                    <td class="send-message-form__cell-action">
+                                        <button title="{% trans %}Remove{% endtrans %}"
+                                                class="btn btn-sm-table btn-outline-danger" type="button"
+                                            {{ stimulus_action('send_message_select_recipient', 'removeSelected') }}>
+                                            <twig:ux:icon name="bi:chevron-left" height="0.75em" aria-hidden="true"
+                                                          class="d-none d-xxl-inline"/>
+                                            <twig:ux:icon name="bi:x-lg" height="0.75em" aria-hidden="true"
+                                                          class="d-xxl-none"/>
                                         </button>
                                     </td>
-                                    <td><!-- Label populated by JS --></td>
-                                    <td class="text-end px-2">
+                                    <td></td>
+                                    <td class="send-message-form__cell-transport">
                                         <span class="text-muted" data-transport-none>—</span>
                                         {% for transportClass, iconName in transportIcons %}
-                                            <twig:ux:icon name="{{ iconName }}" height="1em" aria-hidden="true" title="{{ transportClass }}" data-transport="{{ transportClass }}" class="d-none" />
+                                            <twig:ux:icon name="{{ iconName }}" height="1em" aria-hidden="true"
+                                                          title="{{ transportClass }}"
+                                                          data-transport="{{ transportClass }}" class="d-none"/>
                                         {% endfor %}
                                     </td>
                                 </tr>
                             </template>
                             {% do form.to.setRendered %}
                             {% for field in form.to %}
-                                    {% set enabledTransports = field.enabledTransports.vars.value ? field.enabledTransports.vars.value : [] %}
-                                    <tr>
-                                        <td class="p-0">
-                                            {{ form_widget(field) }}
-                                        </td>
-                                        <td class="px-2 fixw-2_4rem">
-                                            <button title="{% trans %}Remove{% endtrans %}" class="btn btn-sm-table btn-outline-danger" type="button"
-                                                    {{ stimulus_action('send_message_select_recipient', 'removeSelected') }}>
-                                                <twig:ux:icon name="bi:chevron-left" height="0.75em" aria-hidden="true" />
-                                            </button>
-                                        </td>
-                                        <td>{{ field.label.vars.value }}</td>
-                                        <td class="text-end px-2">
-                                            {% if enabledTransports is empty %}
-                                                <span class="text-muted">—</span>
-                                            {% else %}
-                                                {% for transport in enabledTransports %}
-                                                    {% set iconName = transportIcons[transport] ?? 'bi:question-circle' %}
-                                                    <twig:ux:icon name="{{ iconName }}" height="1em" title="{{ transport }}" />
-                                                {% endfor %}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                {% set enabledTransports = field.enabledTransports.vars.value ? field.enabledTransports.vars.value : [] %}
+                                <tr>
+                                    <td class="send-message-form__cell-hidden">
+                                        {{ form_widget(field) }}
+                                    </td>
+                                    <td class="send-message-form__cell-action">
+                                        <button title="{% trans %}Remove{% endtrans %}"
+                                                class="btn btn-sm-table btn-outline-danger" type="button"
+                                            {{ stimulus_action('send_message_select_recipient', 'removeSelected') }}>
+                                            <twig:ux:icon name="bi:chevron-left" height="0.75em" aria-hidden="true"/>
+                                        </button>
+                                    </td>
+                                    <td>{{ field.label.vars.value }}</td>
+                                    <td class="send-message-form__cell-transport">
+                                        {% if enabledTransports is empty %}
+                                            <span class="text-muted">—</span>
+                                        {% else %}
+                                            {% for transport in enabledTransports %}
+                                                {% set iconName = transportIcons[transport] ?? 'bi:question-circle' %}
+                                                <twig:ux:icon name="{{ iconName }}" height="1em"
+                                                              title="{{ transport }}"/>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -154,7 +188,7 @@
                 </div>
             </div>
             {{ form_errors(form) }}
-            <footer class="mt-3 d-flex flex-column flex-sm-row gap-2 justify-content-between">
+            <footer class="send-message-form__footer">
                 {{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}
                 {{ form_widget(form.reset, { 'attr': {'class': 'btn btn-outline-secondary'} }) }}
             </footer>
@@ -162,12 +196,12 @@
             {{ form_end(form) }}
         </main>
 
-        <aside class="send-message-form__sidebar flex-shrink-0" {{ stimulus_controller('predefined_message_shortcuts') }}>
+        <aside class="send-message-form__sidebar" {{ stimulus_controller('predefined_message_shortcuts') }}>
             {{ component('PredefinedMessagesSidebar') }}
         </aside>
     </div>
 
-    <section class="px-3 px-md-4 pb-4">
+    <section class="send-message-form__section">
         {{ component('RecentSentMessages') }}
     </section>
 {% endblock %}

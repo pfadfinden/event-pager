@@ -12,11 +12,11 @@
         1: 'bi:chevron-double-down'
     } %}
     {% set priorityLabels = {
-        5: 'priority.urgent'|trans,
-        4: 'priority.high'|trans,
-        3: 'priority.normal'|trans,
-        2: 'priority.low'|trans,
-        1: 'priority.minimal'|trans
+        5: 'Urgent'|trans,
+        4: 'High'|trans,
+        3: 'Normal'|trans,
+        2: 'Low'|trans,
+        1: 'Minimal'|trans
     } %}
     {% set priorityColors = {
         5: 'text-danger',
@@ -30,36 +30,50 @@
     <div class="message-list" role="table" aria-label="{% trans %}Sent Messages{% endtrans %}">
         <div class="message-list__header" role="rowgroup">
             <div class="message-list__row" role="row">
-                <div class="message-list__cell message-list__cell--timestamp" role="columnheader">{% trans %}Timestamp{% endtrans %}</div>
-                <div class="message-list__cell message-list__cell--content" role="columnheader">{% trans %}Message{% endtrans %}</div>
-                <div class="message-list__cell message-list__cell--recipients" role="columnheader">{% trans %}To{% endtrans %}</div>
-                <div class="message-list__cell message-list__cell--priority" role="columnheader">{% trans %}Priority{% endtrans %}</div>
-                <div class="message-list__cell message-list__cell--status" role="columnheader">{% trans %}Status{% endtrans %}</div>
+                <div class="message-list__cell message-list__cell--timestamp"
+                     role="columnheader">{% trans %}Timestamp{% endtrans %}</div>
+                <div class="message-list__cell message-list__cell--content"
+                     role="columnheader">{% trans %}Message{% endtrans %}</div>
+                <div class="message-list__cell message-list__cell--recipients"
+                     role="columnheader">{% trans %}To{% endtrans %}</div>
+                <div class="message-list__cell message-list__cell--priority"
+                     role="columnheader">{% trans %}Priority{% endtrans %}</div>
+                <div class="message-list__cell message-list__cell--status"
+                     role="columnheader">{% trans %}Status{% endtrans %}</div>
             </div>
         </div>
         <div class="message-list__body" role="rowgroup">
             {% for message in computed.messages %}
                 <div class="message-list__row" role="row">
-                    <div class="message-list__cell message-list__cell--timestamp" role="cell" data-label="{% trans %}Timestamp{% endtrans %}">
+                    <div class="message-list__cell message-list__cell--timestamp" role="cell"
+                         data-label="{% trans %}Timestamp{% endtrans %}">
                         {{ message.sentOn|date("d.m.y H:i") }}
                     </div>
-                    <div class="message-list__cell message-list__cell--content" role="cell" data-label="{% trans %}Message{% endtrans %}">
+                    <div class="message-list__cell message-list__cell--content" role="cell"
+                         data-label="{% trans %}Message{% endtrans %}">
                         {{ message.content }}
                     </div>
-                    <div class="message-list__cell message-list__cell--recipients" role="cell" data-label="{% trans %}To{% endtrans %}">
+                    <div class="message-list__cell message-list__cell--recipients" role="cell"
+                         data-label="{% trans %}To{% endtrans %}">
                         {% for recipientId in message.recipientIds %}
                             {{ loop.first ? '' : ',&#32;' }}{{ component('RecipientWithId', { id: recipientId }) }}
                         {% endfor %}
                     </div>
-                    <div class="message-list__cell message-list__cell--priority" role="cell" data-label="{% trans %}Priority{% endtrans %}">
-                        <span class="{{ priorityColors[message.priority] | default('text-secondary') }}" title="{{ priorityLabels[message.priority] | default(message.priority) }}">
-                            <twig:ux:icon name="{{ priorityIcons[message.priority] | default('bi:dash-lg') }}" height="1.25em" aria-hidden="true" />
-                            <span class="visually-hidden">{{ priorityLabels[message.priority] | default(message.priority) }}</span>
+                    <div class="message-list__cell message-list__cell--priority" role="cell"
+                         data-label="{% trans %}Priority{% endtrans %}">
+                        <span class="{{ priorityColors[message.priority] | default('text-secondary') }}"
+                              title="{{ priorityLabels[message.priority] | default(message.priority) }}">
+                            <twig:ux:icon name="{{ priorityIcons[message.priority] | default('bi:dash-lg') }}"
+                                          height="1.25em" aria-hidden="true"/>
+                            <span
+                                class="visually-hidden">{{ priorityLabels[message.priority] | default(message.priority) }}</span>
                         </span>
                     </div>
-                    <div class="message-list__cell message-list__cell--status" role="cell" data-label="{% trans %}Status{% endtrans %}">
+                    <div class="message-list__cell message-list__cell--status" role="cell"
+                         data-label="{% trans %}Status{% endtrans %}">
                         {% for statusName, count in message.statusCounts %}
-                            <span class="badge {% if statusName == 'TRANSMITTED' or statusName == 'DELIVERED' or statusName == 'READ' or statusName == 'ACK' %}bg-success{% elseif statusName == 'ERROR' or statusName == 'TIMEOUT' %}bg-danger{% elseif statusName == 'QUEUED' or statusName == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
+                            <span
+                                class="badge {% if statusName == 'TRANSMITTED' or statusName == 'DELIVERED' or statusName == 'READ' or statusName == 'ACK' %}bg-success{% elseif statusName == 'ERROR' or statusName == 'TIMEOUT' %}bg-danger{% elseif statusName == 'QUEUED' or statusName == 'INITIATED' %}bg-secondary{% else %}bg-info{% endif %}">
                                 {{ statusName|trans }}: {{ count }}
                             </span>
                         {% else %}

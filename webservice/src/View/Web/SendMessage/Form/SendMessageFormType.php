@@ -59,13 +59,15 @@ final class SendMessageFormType extends AbstractType
             ->add('optionsTo', SelectRecipientsType::class, [
                 'mapped' => false,
                 'choice_loader' => $options['choice_loader'],
-                'choice_attr' => fn(RecipientListEntry $choice) => ['data-enabled-transports' => json_encode($choice->enabledTransports)],
+                'choice_attr' => fn (RecipientListEntry $choice) => ['data-enabled-transports' => json_encode($choice->enabledTransports)],
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Send',
             ])
-            ->add('reset', ResetType::class)
+            ->add('reset', ResetType::class, [
+                'label' => 'Reset',
+            ])
             ->addEventListener(FormEvents::SUBMIT, $this->onSubmit(...))
         ;
     }

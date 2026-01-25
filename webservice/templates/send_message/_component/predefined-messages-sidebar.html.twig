@@ -6,17 +6,19 @@
             <span class="input-group-text">
                 <twig:ux:icon name="bi:search" height="16" width="16" aria-hidden="true" class="bi"/>
             </span>
-            <input name="q" data-model="q" type="search" class="form-control form-control-sm" placeholder="{{ 'Search...'|trans }}" aria-label="{{ 'Search'|trans }}">
+            <input name="q" data-model="q" type="search" class="form-control form-control-sm"
+                   placeholder="{{ 'Search...'|trans }}" aria-label="{{ 'Search'|trans }}">
         </div>
     </div>
 
     <nav class="predefined-messages-sidebar__nav" role="menubar">
         {% for message in computed.messages %}
-            <a role="menuitem" href="{{ path('App\\View\\Web\\SendMessage\\SendMessageController', {predefined: message.id}) }}"
+            <a role="menuitem"
+               href="{{ path('App\\View\\Web\\SendMessage\\SendMessageController', {predefined: message.id}) }}"
                class="predefined-messages-sidebar__item border rounded fw-bold d-flex align-items-center text-decoration-none text-body"
                data-predefined-shortcut="{{ loop.index }}">
                 <span class="p-2 px-3 bg-body rounded-start d-none d-sm-inline  d-js-required">
-                    {{ loop.index < 10 ? loop.index : ''}}
+                    {{ loop.index < 10 ? loop.index : '' }}
                 </span>
                 <span class="p-2 px-3 text-truncate">{{ message.title }}</span>
             </a>
@@ -24,8 +26,8 @@
             <p class="text-muted small">
                 {% if computed.hasSearchQuery %}
                     {% trans %}No messages found{% endtrans %}
-                 {% else %}
-                     {% trans %}No favorite messages configured{% endtrans %}
+                {% else %}
+                    {% trans %}No favorite messages configured{% endtrans %}
                 {% endif %}
             </p>
         {% endfor %}

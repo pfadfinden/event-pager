@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Web\SendMessage;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use function is_array;
 
 final class SendMessageRecipientRequest
 {
@@ -33,6 +34,9 @@ final class SendMessageRecipientRequest
 
         $decoded = json_decode($this->enabledTransports, true);
 
-        return is_array($decoded) ? $decoded : [];
+        if (!is_array($decoded)) {
+            return  [];
+        }
+        return array_values(array_filter($decoded, fn(mixed $transport) => is_string($transport)));
     }
 }
