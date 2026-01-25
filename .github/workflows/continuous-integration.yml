@@ -156,6 +156,9 @@ jobs:
       - name: Run PHPUnit Functional Tests
         run: docker compose exec -T php composer run test:functional
 
+      - name: Prepare PHPUnit E2E Tests
+        run: docker compose exec -T php vendor/bin/bdi detect drivers
+
       - name: Run PHPUnit E2E Tests
         run: docker compose exec -T php composer run test:e2e
 
