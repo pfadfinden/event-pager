@@ -35,11 +35,11 @@ interface Transport
     public function acceptsNewMessages(): bool;
 
     /**
-     * Check if recipient is configured to use this transport and that its
-     * configuration and the message itself is valid to be sent through
-     * this transport.
+     * Check if the recipient configuration and message are valid to be sent through this transport.
+     *
+     * @param array<string, mixed>|null $recipientConfiguration The vendor-specific configuration for this transport
      */
-    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage): bool;
+    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage, ?array $recipientConfiguration): bool;
 
     /**
      * Once a message was determined to be sent through this transport,

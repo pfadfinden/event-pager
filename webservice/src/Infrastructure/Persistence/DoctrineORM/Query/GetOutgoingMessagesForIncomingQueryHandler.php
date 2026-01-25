@@ -28,14 +28,14 @@ final readonly class GetOutgoingMessagesForIncomingQueryHandler
 
         // Get the latest status for each outgoing message
         $dql = <<<DQL
-            SELECT r.outgoingMessageId, r.recipientId, rl.status, rl.recordedAt
+            SELECT r.outgoingMessageId, r.recipientId, r.transportKey, rl.status, rl.recordedAt
             FROM $source r
             LEFT JOIN $source rl ON rl.outgoingMessageId = r.outgoingMessageId AND rl.recordedAt = (
                 SELECT MAX(r2.recordedAt)
                 FROM $source r2
                 WHERE r2.outgoingMessageId = r.outgoingMessageId
             )
-            WHERE r.incomingMessageId = :incomingMessageId AND r.status = -1
+            WHERE r.incomingMessageId = :incomingMessageId AND r.status < 0
             ORDER BY r.recordedAt DESC
             DQL;
 
@@ -59,6 +59,7 @@ final readonly class GetOutgoingMessagesForIncomingQueryHandler
                 $outgoingMessageId->toString(),
                 $recipientId->toString(),
                 $recipientNames[$recipientId->toString()] ?? 'Unknown',
+                $row['transportKey'] ?? 'Unknown',
                 $status->name,
                 $row['recordedAt']->toISOString(),
             );

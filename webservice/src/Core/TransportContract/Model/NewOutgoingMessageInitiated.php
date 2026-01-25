@@ -15,13 +15,15 @@ use Symfony\Component\Uid\Ulid;
  */
 readonly class NewOutgoingMessageInitiated
 {
-    public static function for(OutgoingMessage $message): self
+    public static function for(OutgoingMessage $message, bool $failed = false): self
     {
         return new self(
             $message->incomingMessage->messageId,
             $message->id,
             $message->recipient->getId(),
             Instant::now(),
+            $message->transport,
+            $failed
         );
     }
 
@@ -30,6 +32,8 @@ readonly class NewOutgoingMessageInitiated
         public Ulid $outgoingMessageId,
         public Ulid $recipientId,
         public Instant $at,
+        public string $transportKey,
+        public bool $failed = false,
     ) {
     }
 }

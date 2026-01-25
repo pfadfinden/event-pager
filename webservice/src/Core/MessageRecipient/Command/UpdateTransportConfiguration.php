@@ -14,9 +14,13 @@ final readonly class UpdateTransportConfiguration
      */
     public function __construct(
         public string $recipientId,
-        public string $transportKey,
+        public string $configId,
         public ?array $vendorSpecificConfig = null,
         public bool $isEnabled = true,
+        public ?int $rank = null,
+        public string $selectionExpression = 'true',
+        public ?bool $continueInHierarchy = null,
+        public bool $evaluateOtherTransportConfigurations = true,
     ) {
     }
 
@@ -27,5 +31,14 @@ final readonly class UpdateTransportConfiguration
         }
 
         return Ulid::fromString($this->recipientId);
+    }
+
+    public function getConfigId(): Ulid
+    {
+        if (!Ulid::isValid($this->configId)) {
+            throw new InvalidArgumentException('Malformed config ID');
+        }
+
+        return Ulid::fromString($this->configId);
     }
 }

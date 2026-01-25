@@ -31,12 +31,13 @@ readonly class OutgoingMessageEventRecord
 {
     private const int TIMESTAMP_PADDING = 15;
 
-    public static function create(
+    public static function newMessage(
         Ulid $outgoingMessageId,
         Instant $recordedAt,
         OutgoingMessageStatus $status,
-        ?Ulid $incomingMessageId = null,
-        ?Ulid $recipientId = null,
+        Ulid $incomingMessageId,
+        Ulid $recipientId,
+        string $transportKey,
     ): self {
         return new self(
             self::generateId($outgoingMessageId, $recordedAt, $status),
@@ -45,6 +46,20 @@ readonly class OutgoingMessageEventRecord
             $status,
             $incomingMessageId,
             $recipientId,
+            $transportKey
+        );
+    }
+
+    public static function followUp(
+        Ulid $outgoingMessageId,
+        Instant $recordedAt,
+        OutgoingMessageStatus $status,
+    ): self {
+        return new self(
+            self::generateId($outgoingMessageId, $recordedAt, $status),
+            $outgoingMessageId,
+            $recordedAt,
+            $status
         );
     }
 
@@ -78,6 +93,8 @@ readonly class OutgoingMessageEventRecord
         public ?Ulid $incomingMessageId = null,
         #[ORM\Column(type: UlidType::NAME, nullable: true)]
         public ?Ulid $recipientId = null,
+        #[ORM\Column(nullable: true)]
+        public ?string $transportKey = null,
     ) {
     }
 }

@@ -21,7 +21,7 @@ final class DummyTransport implements Transport
         return false;
     }
 
-    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage): bool
+    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage, ?array $recipientConfiguration): bool
     {
         return false;
     }

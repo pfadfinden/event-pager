@@ -13,6 +13,7 @@ readonly class OutgoingMessageDetail
         public string $outgoingMessageId,
         public string $recipientId,
         public string $recipientName,
+        public string $transportKey,
         public string $latestStatus,
         public string $latestStatusAt,
     ) {

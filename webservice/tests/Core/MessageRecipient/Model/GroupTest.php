@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Core\MessageRecipient\Model;
 
-use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
+use App\Core\MessageRecipient\Model\MessageRecipient;
 use App\Core\MessageRecipient\Model\Person;
 use InvalidArgumentException;
 use Iterator;
@@ -124,7 +124,7 @@ final class GroupTest extends TestCase
         $group2->addMember($maria);
         $group2->addMember($pete);
 
-        $members = array_map(fn (AbstractMessageRecipient $r): string => $r->getName(), iterator_to_array($group1->getMembersRecursively(), false));
+        $members = array_map(fn (MessageRecipient $r): string => $r->getName(), iterator_to_array($group1->getMembersRecursively(), false));
 
         self::assertSame(['Eve', 'Maria', 'Peter', 'Adam', 'Clair'], $members);
     }

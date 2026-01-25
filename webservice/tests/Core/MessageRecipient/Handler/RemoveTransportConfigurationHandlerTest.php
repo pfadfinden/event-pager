@@ -23,17 +23,17 @@ final class RemoveTransportConfigurationHandlerTest extends TestCase
     public function testRemoveTransportConfiguration(): void
     {
         $recipientId = Ulid::generate();
-        $transportKey = 'email';
+        $configId = Ulid::generate();
 
         $command = new RemoveTransportConfiguration(
             $recipientId,
-            $transportKey,
+            $configId,
         );
 
         $recipient = $this->createMock(AbstractMessageRecipient::class);
         $recipient->expects(self::once())
-            ->method('removeTransportConfiguration')
-            ->with($transportKey);
+            ->method('removeTransportConfigurationById')
+            ->with($configId);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
         $repo->expects(self::once())
@@ -52,10 +52,11 @@ final class RemoveTransportConfigurationHandlerTest extends TestCase
     public function testRemoveTransportConfigurationRecipientNotFound(): void
     {
         $recipientId = Ulid::generate();
+        $configId = Ulid::generate();
 
         $command = new RemoveTransportConfiguration(
             $recipientId,
-            'email',
+            $configId,
         );
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -72,41 +73,13 @@ final class RemoveTransportConfigurationHandlerTest extends TestCase
         $sut($command);
     }
 
-    public function testRemoveTransportConfigurationThrowsWhenNotExists(): void
-    {
-        $recipientId = Ulid::generate();
-        $transportKey = 'nonexistent';
-
-        $command = new RemoveTransportConfiguration(
-            $recipientId,
-            $transportKey,
-        );
-
-        $recipient = $this->createMock(AbstractMessageRecipient::class);
-        $recipient->expects(self::once())
-            ->method('removeTransportConfiguration')
-            ->with($transportKey)
-            ->willThrowException(new InvalidArgumentException("Transport configuration for key '{$transportKey}' does not exist."));
-
-        $repo = $this->createMock(MessageRecipientRepository::class);
-        $repo->expects(self::once())->method('getRecipientFromID')->willReturn($recipient);
-
-        $uow = $this->createMock(UnitOfWork::class);
-        $uow->expects(self::never())->method('commit');
-
-        $sut = new RemoveTransportConfigurationHandler($repo, $uow);
-
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage("Transport configuration for key '{$transportKey}' does not exist.");
-
-        $sut($command);
-    }
-
     public function testRemoveTransportConfigurationWithInvalidRecipientId(): void
     {
+        $configId = Ulid::generate();
+
         $command = new RemoveTransportConfiguration(
             'invalid-id',
-            'email',
+            $configId,
         );
 
         $repo = $this->createMock(MessageRecipientRepository::class);

@@ -19,6 +19,15 @@ class TransportConfigurationRequest
      */
     public ?string $vendorSpecificConfig = null;
 
+    public ?int $rank = null;
+
+    #[Assert\NotBlank]
+    public string $selectionExpression = 'true';
+
+    public ?bool $continueInHierarchy = null;
+
+    public bool $evaluateOtherTransportConfigurations = true;
+
     /**
      * @return array<mixed>|null
      */

@@ -39,9 +39,36 @@ class RecipientTransportConfiguration
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $vendorSpecificConfig = null; // @phpstan-ignore missingType.iterableValue (JSON compatible array)
 
-    public function __construct(AbstractMessageRecipient $recipient, string $key)
+    /**
+     * Higher rank = evaluated first. Transport configs are evaluated in descending rank order.
+     */
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
+    private int $rank = 0;
+
+    /**
+     * Symfony Expression Language expression that must evaluate to true for this config to be selected.
+     * Available variables: priority, priorityValue, currentTime, hour, dayOfWeek, contentLength.
+     */
+    #[ORM\Column(type: Types::STRING, length: 500, options: ['default' => 'true'])]
+    private string $selectionExpression = 'true';
+
+    /**
+     * For groups: whether to expand members after this config matches.
+     * NULL = not applicable (for individuals/roles), true = continue expansion, false = stop expansion.
+     */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private ?bool $continueInHierarchy = null;
+
+    /**
+     * Whether to continue evaluating other transport configurations after this one matches.
+     * If false, stops evaluating further configs when this one is selected.
+     */
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $evaluateOtherTransportConfigurations = true;
+
+    public function __construct(AbstractMessageRecipient $recipient, string $key, ?Ulid $id = null)
     {
-        $this->id = Ulid::fromString(Ulid::generate());
+        $this->id = $id ?? new Ulid();
         $this->recipient = $recipient;
         $this->key = $key;
     }
@@ -74,5 +101,45 @@ class RecipientTransportConfiguration
         ?array $vendorSpecificConfig,
     ): void {
         $this->vendorSpecificConfig = $vendorSpecificConfig;
+    }
+
+    public function getRank(): int
+    {
+        return $this->rank;
+    }
+
+    public function setRank(int $rank): void
+    {
+        $this->rank = $rank;
+    }
+
+    public function getSelectionExpression(): string
+    {
+        return $this->selectionExpression;
+    }
+
+    public function setSelectionExpression(string $selectionExpression): void
+    {
+        $this->selectionExpression = $selectionExpression;
+    }
+
+    public function getContinueInHierarchy(): ?bool
+    {
+        return $this->continueInHierarchy;
+    }
+
+    public function setContinueInHierarchy(?bool $continueInHierarchy): void
+    {
+        $this->continueInHierarchy = $continueInHierarchy;
+    }
+
+    public function shouldEvaluateOtherTransportConfigurations(): bool
+    {
+        return $this->evaluateOtherTransportConfigurations;
+    }
+
+    public function setEvaluateOtherTransportConfigurations(bool $evaluateOtherTransportConfigurations): void
+    {
+        $this->evaluateOtherTransportConfigurations = $evaluateOtherTransportConfigurations;
     }
 }

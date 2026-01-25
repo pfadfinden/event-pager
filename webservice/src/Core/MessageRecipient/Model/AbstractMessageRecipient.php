@@ -8,7 +8,6 @@ use App\Core\TransportContract\Port\Transport;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use Stringable;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -37,9 +36,9 @@ abstract class AbstractMessageRecipient implements MessageRecipient, Stringable
     private Collection $groups;
 
     /**
-     * @var Collection<string, RecipientTransportConfiguration>
+     * @var Collection<int, RecipientTransportConfiguration>
      */
-    #[ORM\OneToMany(RecipientTransportConfiguration::class, mappedBy: 'recipient', cascade: ['all'], indexBy: 'key')]
+    #[ORM\OneToMany(RecipientTransportConfiguration::class, mappedBy: 'recipient', cascade: ['all'], orphanRemoval: true)]
     private Collection $transportConfiguration;
 
     public function __construct(string $name, ?Ulid $id = null)
@@ -73,12 +72,27 @@ abstract class AbstractMessageRecipient implements MessageRecipient, Stringable
         return $this->name;
     }
 
-    // @phpstan-ignore-next-line missingType.iterableValue (JSON compatible array)
+    public function hasTransportConfigurations(): bool
+    {
+        return !$this->transportConfiguration->isEmpty();
+    }
+
+    /**
+     * Returns the vendor-specific config for the first enabled configuration matching the transport key.
+     * Note: With multiple configs per transport, this returns the highest-ranked enabled config.
+     *
+     * @phpstan-ignore missingType.iterableValue (JSON compatible array)
+     */
     public function getTransportConfigurationFor(Transport $transport): ?array
     {
-        $config = $this->transportConfiguration->get($transport->key());
+        $transportKey = $transport->key();
+        foreach ($this->getTransportConfiguration() as $config) {
+            if ($config->getKey() === $transportKey && $config->isEnabled) {
+                return $config->getVendorSpecificConfig();
+            }
+        }
 
-        return ($config instanceof RecipientTransportConfiguration && $config->isEnabled) ? $config->getVendorSpecificConfig() : null;
+        return null;
     }
 
     public function __toString(): string
@@ -87,37 +101,82 @@ abstract class AbstractMessageRecipient implements MessageRecipient, Stringable
     }
 
     /**
-     * @return array<string, RecipientTransportConfiguration>
+     * Returns all transport configurations sorted by rank descending (highest rank first).
+     *
+     * @return list<RecipientTransportConfiguration>
      */
     public function getTransportConfiguration(): array
     {
-        return $this->transportConfiguration->toArray();
+        $configs = $this->transportConfiguration->toArray();
+        usort($configs, static fn (RecipientTransportConfiguration $a, RecipientTransportConfiguration $b): int => $b->getRank() <=> $a->getRank());
+
+        return $configs;
     }
 
-    public function hasTransportConfiguration(string $key): bool
-    {
-        return $this->transportConfiguration->containsKey($key);
-    }
-
+    /**
+     * Adds a new transport configuration with automatic rank assignment.
+     * Multiple configurations with the same key are allowed.
+     */
     public function addTransportConfiguration(string $key): RecipientTransportConfiguration
     {
-        if ($this->transportConfiguration->containsKey($key)) {
-            throw new InvalidArgumentException("Transport configuration for key '{$key}' already exists.");
+        return $this->addTransportConfigurationWithId($key, null);
+    }
+
+    /**
+     * Adds a transport configuration with a specific ID (for import scenarios).
+     * Multiple configurations with the same key are allowed.
+     */
+    public function addTransportConfigurationWithId(string $key, ?Ulid $id): RecipientTransportConfiguration
+    {
+        // Calculate the next rank (highest existing rank + 1)
+        $maxRank = 0;
+        foreach ($this->transportConfiguration as $config) {
+            if ($config->getRank() > $maxRank) {
+                $maxRank = $config->getRank();
+            }
         }
 
-        $config = new RecipientTransportConfiguration($this, $key);
-        $this->transportConfiguration->set($key, $config);
+        $config = new RecipientTransportConfiguration($this, $key, $id);
+        $config->setRank($maxRank + 1);
+        $this->transportConfiguration->add($config);
 
         return $config;
     }
 
-    public function getTransportConfigurationByKey(string $key): ?RecipientTransportConfiguration
+    public function getTransportConfigurationById(string|Ulid $id): ?RecipientTransportConfiguration
     {
-        return $this->transportConfiguration->get($key);
+        foreach ($this->transportConfiguration as $config) {
+            if ($config->getId()->toString() === (string) $id) {
+                return $config;
+            }
+        }
+
+        return null;
     }
 
-    public function removeTransportConfiguration(string $key): void
+    /**
+     * Returns the first transport configuration matching the given key.
+     * Useful for backward-compatible import/export operations.
+     */
+    public function getFirstTransportConfigurationByKey(string $key): ?RecipientTransportConfiguration
     {
-        $this->transportConfiguration->remove($key);
+        foreach ($this->getTransportConfiguration() as $config) {
+            if ($config->getKey() === $key) {
+                return $config;
+            }
+        }
+
+        return null;
+    }
+
+    public function removeTransportConfigurationById(string $id): void
+    {
+        foreach ($this->transportConfiguration as $key => $config) {
+            if ($config->getId()->toString() === $id) {
+                $this->transportConfiguration->remove($key);
+
+                return;
+            }
+        }
     }
 }

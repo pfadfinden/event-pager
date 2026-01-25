@@ -11,7 +11,7 @@ final readonly class RemoveTransportConfiguration
 {
     public function __construct(
         public string $recipientId,
-        public string $transportKey,
+        public string $configId,
     ) {
     }
 
@@ -22,5 +22,14 @@ final readonly class RemoveTransportConfiguration
         }
 
         return Ulid::fromString($this->recipientId);
+    }
+
+    public function getConfigId(): Ulid
+    {
+        if (!Ulid::isValid($this->configId)) {
+            throw new InvalidArgumentException('Malformed config ID');
+        }
+
+        return Ulid::fromString($this->configId);
     }
 }

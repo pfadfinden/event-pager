@@ -49,16 +49,15 @@ final readonly class NtfyTransport implements Transport
             && '' !== $vendorConfig[self::CONFIG_SERVER_URL];
     }
 
-    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage): bool
+    public function canSendTo(MessageRecipient $recipient, Message $incomingMessage, ?array $recipientConfiguration): bool
     {
-        $config = $recipient->getTransportConfigurationFor($this);
-        if (null === $config) {
+        if (null === $recipientConfiguration) {
             return false;
         }
 
-        $recipientConfiguration = new RecipientConfiguration($config);
+        $config = new RecipientConfiguration($recipientConfiguration);
 
-        return $recipientConfiguration->hasTopic();
+        return $config->hasTopic();
     }
 
     public function send(OutgoingMessage $message): void

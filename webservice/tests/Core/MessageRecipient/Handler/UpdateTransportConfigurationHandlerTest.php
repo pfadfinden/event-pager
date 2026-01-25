@@ -24,23 +24,26 @@ final class UpdateTransportConfigurationHandlerTest extends TestCase
     public function testUpdateTransportConfiguration(): void
     {
         $recipientId = Ulid::generate();
-        $transportKey = 'email';
+        $configId = Ulid::generate();
         $vendorConfig = ['api_key' => 'updated123'];
 
         $command = new UpdateTransportConfiguration(
             $recipientId,
-            $transportKey,
+            $configId,
             $vendorConfig,
             true,
         );
 
         $config = $this->createMock(RecipientTransportConfiguration::class);
         $config->expects(self::once())->method('setVendorSpecificConfig')->with($vendorConfig);
+        $config->expects(self::once())->method('setSelectionExpression')->with('true');
+        $config->expects(self::once())->method('setContinueInHierarchy')->with(null);
+        $config->expects(self::once())->method('setEvaluateOtherTransportConfigurations')->with(true);
 
         $recipient = $this->createMock(AbstractMessageRecipient::class);
         $recipient->expects(self::once())
-            ->method('getTransportConfigurationByKey')
-            ->with($transportKey)
+            ->method('getTransportConfigurationById')
+            ->with(self::callback(fn (mixed $param) => $param instanceof Ulid && $param->equals(Ulid::fromString($configId))))
             ->willReturn($config);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -60,22 +63,25 @@ final class UpdateTransportConfigurationHandlerTest extends TestCase
     public function testUpdateTransportConfigurationDisableAndClearConfig(): void
     {
         $recipientId = Ulid::generate();
-        $transportKey = 'sms';
+        $configId = Ulid::generate();
 
         $command = new UpdateTransportConfiguration(
             $recipientId,
-            $transportKey,
+            $configId,
             null,
             false,
         );
 
         $config = $this->createMock(RecipientTransportConfiguration::class);
         $config->expects(self::once())->method('setVendorSpecificConfig')->with(null);
+        $config->expects(self::once())->method('setSelectionExpression')->with('true');
+        $config->expects(self::once())->method('setContinueInHierarchy')->with(null);
+        $config->expects(self::once())->method('setEvaluateOtherTransportConfigurations')->with(true);
 
         $recipient = $this->createMock(AbstractMessageRecipient::class);
         $recipient->expects(self::once())
-            ->method('getTransportConfigurationByKey')
-            ->with($transportKey)
+            ->method('getTransportConfigurationById')
+            ->with(self::callback(fn (mixed $param) => $param instanceof Ulid && $param->equals(Ulid::fromString($configId))))
             ->willReturn($config);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -92,10 +98,11 @@ final class UpdateTransportConfigurationHandlerTest extends TestCase
     public function testUpdateTransportConfigurationRecipientNotFound(): void
     {
         $recipientId = Ulid::generate();
+        $configId = Ulid::generate();
 
         $command = new UpdateTransportConfiguration(
             $recipientId,
-            'email',
+            $configId,
             null,
             true,
         );
@@ -117,19 +124,19 @@ final class UpdateTransportConfigurationHandlerTest extends TestCase
     public function testUpdateTransportConfigurationNotFound(): void
     {
         $recipientId = Ulid::generate();
-        $transportKey = 'nonexistent';
+        $configId = Ulid::generate();
 
         $command = new UpdateTransportConfiguration(
             $recipientId,
-            $transportKey,
+            $configId,
             null,
             true,
         );
 
         $recipient = $this->createMock(AbstractMessageRecipient::class);
         $recipient->expects(self::once())
-            ->method('getTransportConfigurationByKey')
-            ->with($transportKey)
+            ->method('getTransportConfigurationById')
+            ->with(self::callback(fn (mixed $param) => $param instanceof Ulid && $param->equals(Ulid::fromString($configId))))
             ->willReturn(null);
 
         $repo = $this->createMock(MessageRecipientRepository::class);
@@ -141,16 +148,18 @@ final class UpdateTransportConfigurationHandlerTest extends TestCase
         $sut = new UpdateTransportConfigurationHandler($repo, $uow);
 
         self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage("Transport configuration for key '{$transportKey}' not found.");
+        self::expectExceptionMessage("Transport configuration with ID '{$configId}' not found.");
 
         $sut($command);
     }
 
     public function testUpdateTransportConfigurationWithInvalidRecipientId(): void
     {
+        $configId = Ulid::generate();
+
         $command = new UpdateTransportConfiguration(
             'invalid-id',
-            'email',
+            $configId,
             null,
             true,
         );

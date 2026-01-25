@@ -165,25 +165,29 @@ final class ImportRecipientsHandler extends AbstractImportHandler
             return;
         }
 
-        /** @var array<string, array{enabled?: bool, config?: array<string, mixed>}>|null $configs */
+        /** @var array<string, array{key: string, rank?: int, enabled?: bool, config?: array<string, mixed>}>|null $configs */
         $configs = json_decode($configsJson, true, 512, JSON_THROW_ON_ERROR);
 
         if (!is_array($configs)) {
             return;
         }
 
-        foreach ($configs as $key => $configData) {
-            if (!$recipient->hasTransportConfiguration($key)) {
-                $config = $recipient->addTransportConfiguration($key);
-            } else {
-                $config = $recipient->getTransportConfigurationByKey($key);
+        foreach ($configs as $configId => $configData) {
+            $transportKey = $configData['key'];
+            $id = Ulid::fromString($configId);
+
+            // Find existing config by ID and update, or create a new one
+            $config = $recipient->getTransportConfigurationById($id);
+            if (!$config instanceof RecipientTransportConfiguration) {
+                $config = $recipient->addTransportConfigurationWithId($transportKey, $id);
             }
 
-            if ($config instanceof RecipientTransportConfiguration) {
-                $config->isEnabled = $configData['enabled'] ?? false;
-                if (isset($configData['config'])) {
-                    $config->setVendorSpecificConfig($configData['config']);
-                }
+            $config->isEnabled = $configData['enabled'] ?? false;
+            if (isset($configData['rank'])) {
+                $config->setRank($configData['rank']);
+            }
+            if (isset($configData['config'])) {
+                $config->setVendorSpecificConfig($configData['config']);
             }
         }
     }

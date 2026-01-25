@@ -28,7 +28,7 @@ final readonly class RemoveTransportConfigurationHandler
             throw new InvalidArgumentException("Recipient with ID {$command->recipientId} not found.");
         }
 
-        $recipient->removeTransportConfiguration($command->transportKey);
+        $recipient->removeTransportConfigurationById($command->configId);
 
         $this->uow->commit();
     }

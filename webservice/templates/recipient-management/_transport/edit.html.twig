@@ -45,6 +45,30 @@
                     <div class="form-text">{% trans %}Enter valid JSON configuration data, or leave empty.{% endtrans %}</div>
                 </div>
 
+                <hr class="my-4">
+                <h5>{% trans %}Routing Options{% endtrans %}</h5>
+
+                <div class="mb-3">
+                    {{ form_row(form.selectionExpression) }}
+                    <div class="form-text">
+                        {% trans %}Expression that must evaluate to true for this transport to be used.{% endtrans %}<br>
+                        {% trans %}Available variables: <code>priority</code>, <code>priorityValue</code>, <code>currentTime</code>, <code>hour</code>, <code>dayOfWeek</code>, <code>contentLength</code>{% endtrans %}<br>
+                        {% trans %}Examples: <code>priority > 5</code>, <code>hour >= 9 and hour < 17</code>, <code>true</code> (always match){% endtrans %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.evaluateOtherTransportConfigurations) }}
+                    <div class="form-text">{% trans %}If checked, continue checking other transport configurations after this one matches.{% endtrans %}</div>
+                </div>
+
+                {% if form.continueInHierarchy is defined %}
+                    <div class="mb-3">
+                        {{ form_row(form.continueInHierarchy) }}
+                        <div class="form-text">{% trans %}If checked, continue expanding group members after this group's transport matches.{% endtrans %}</div>
+                    </div>
+                {% endif %}
+
                 <div class="d-flex gap-2">
                     {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
                     {% if recipientType == 'person' %}
