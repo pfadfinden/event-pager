@@ -42,8 +42,9 @@
 				</div>
 				<div class="col-lg-5 col-xl-5 offset-xl-1">
 					<form action="{{ path('app_login') }}" method="POST">
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-						<a data-mdb-ripple-init class="btn btn-primary w-100 btn-lg btn-block" href="#" role="button">
+						<a data-mdb-ripple-init class="btn btn-primary w-100 btn-lg btn-block" href="{{ path('hwi_oauth_service_redirect', {'service': 'keycloak' }) }}" role="button">
 							<i class="fab fa-twitter me-2"></i>{% trans %}Log in with SSO{% endtrans %}</a>
 
 						<div class="divider d-flex align-items-center my-4">
@@ -77,9 +78,6 @@
 						<button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-secondary btn-lg btn-block w-100">{% trans %}Log in with local account{% endtrans %}</button>
 
 					</form>
-					<a href="{{ path('hwi_oauth_service_redirect', {'service': 'keycloak' }) }}">
-						<span>Login with Keycloak</span>
-					</a>
 				</div>
 			</div>
 		</div>

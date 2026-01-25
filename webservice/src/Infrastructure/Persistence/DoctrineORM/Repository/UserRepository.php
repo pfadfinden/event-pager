@@ -50,6 +50,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findOneByUsername(string $username): ?User
     {
-        return $this->findOneBy(['username' => $username]);
+        // @phpstan-ignore-next-line return.type
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->where('lower(user.username) = :username')
+            ->setParameter('username', strtolower($username))
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    public function findOneByExternalId(string $externalId): ?User
+    {
+        return $this->findOneBy(['externalId' => $externalId]);
     }
 }

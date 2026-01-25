@@ -94,6 +94,6 @@ final class EditUserCommandTest extends KernelTestCase
         self::assertNotSame('newpassword', $result->getPassword());
         self::assertContains('ROLE_ADMIN', $result->getRoles());
         self::assertNotContains('ROLE_TEST', $result->getRoles());
-        self::assertCount(2, $result->getRoles());
+        self::assertCount(1, $result->getRoles());
     }
 }

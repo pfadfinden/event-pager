@@ -29,6 +29,7 @@ final readonly class AddUserHandler
 
         $user = new User($command->getUsername());
         $user->setDisplayname($command->getDisplayName());
+        $user->setRoles(['ROLE_USER']); // Default role for new users created via web/CLI
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $command->getPassword()));
 

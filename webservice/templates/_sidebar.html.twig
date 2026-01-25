@@ -29,7 +29,7 @@
 				<ul class="dropdown-menu text-small dropdown-menu-end shadow" aria-labelledby="sidebarUserDropdown">
 					<li><a class="dropdown-item" href="#">{% trans %}Account{% endtrans %}</a></li>
 					<li><hr class="dropdown-divider"></li>
-					<li><a class="dropdown-item" href="/login">{% trans %}Sign out{% endtrans %}</a></li>
+					<li><a class="dropdown-item" href="{{ path('app_logout') }}">{% trans %}Sign out{% endtrans %}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -94,7 +94,7 @@
 					<div class="mobile-menu-user-info">
 						<span class="mobile-menu-user-name">{{ app.user.displayname }}</span>
                         <div>
-						    <a href="/login" class="mobile-menu-user-link pe-2">{% trans %}Sign out{% endtrans %}</a>|<a href="/login" class="mobile-menu-user-link ps-2">{% trans %}Account{% endtrans %}</a>
+						    <a href="{{ path('app_logout') }}" class="mobile-menu-user-link pe-2">{% trans %}Sign out{% endtrans %}</a>|<a href="#" class="mobile-menu-user-link ps-2">{% trans %}Account{% endtrans %}</a>
                         </div>
 					</div>
 				</div>

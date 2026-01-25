@@ -7,7 +7,7 @@ security:
 
     role_hierarchy:
         ROLE_ADMIN: ['ROLE_MANAGER', 'ROLE_VIEW_SYSTEM_INFO', 'ROLE_VIEW_MESSAGE_HISTORY_ALL', 'ROLE_USERMANAGEMENT_ASSIGN_PRIVILEGED', 'ROLE_TRANSPORT_ADMINISTRATOR']
-        ROLE_MANAGER: ['ROLE_SUPPORT', 'ROLE_MANAGE_RECIPIENTS', 'ROLE_USERMANAGEMENT_MANAGE', 'ROLE_MANAGE_PAGER_CONFIGURATION', 'ROLE_TRANSPORT_CONFIGURATION_VIEWER', 'ROLE_PREDEFINEDMESSAGES_MANAGE'] # User + manage users, groups, devices
+        ROLE_MANAGER: ['ROLE_SUPPORT', 'ROLE_USERMANAGEMENT_MANAGE', 'ROLE_MANAGE_PAGER_CONFIGURATION', 'ROLE_TRANSPORT_CONFIGURATION_VIEWER', 'ROLE_PREDEFINEDMESSAGES_MANAGE'] # User + manage users, groups, devices
         ROLE_SUPPORT: ['ROLE_ACTIVE_USER', 'ROLE_MANAGE_RECIPIENTS', 'ROLE_USERMANAGEMENT_VIEW', 'ROLE_MANAGE_PAGER_STATUS'] # User + manage users, groups, devices
         ROLE_ACTIVE_USER: ['ROLE_USER', 'ROLE_SEND'] # Info + send messages
         ROLE_USER: ['ROLE_ACCESS_WEB', 'ROLE_VIEW', 'ROLE_VIEW_MESSAGE_HISTORY'] # View only
@@ -62,8 +62,8 @@ security:
             entity:
                 class: App\Core\UserManagement\Model\User
                 property: username
-        hwi_oauth:
-            id: hwi_oauth.user.provider
+        keycloak_user_provider:
+            id: App\Infrastructure\Security\OAuth\KeycloakUserProvider
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
@@ -71,11 +71,19 @@ security:
             security: false
         main:
             lazy: true
-#            provider: app_user_provider
-#            form_login:
-#                login_path: app_login
-#                check_path: app_login
             pattern: ^/
+
+            # Entry point - where to redirect unauthenticated users
+            entry_point: form_login
+
+            # Form login for local accounts
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                default_target_path: /
+                enable_csrf: true
+
+            # OAuth login for Keycloak SSO
             oauth:
                 resource_owners:
                     keycloak: "/login/check-keycloak"
@@ -83,13 +91,16 @@ security:
                 use_forward: false
                 failure_path: /login
                 default_target_path: /
-
                 oauth_user_provider:
-                    service: hwi_oauth.user.provider
-                provider: hwi_oauth
+                    service: App\Infrastructure\Security\OAuth\KeycloakUserProvider
 
-            # Activate different ways to authenticate:
-            # https://symfony.com/doc/current/security.html#the-firewall
+            # Logout configuration
+            logout:
+                path: /logout
+                target: app_login
+
+            # Use app_user_provider for form login (checks username in DB)
+            provider: app_user_provider
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
@@ -97,6 +108,7 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: IS_AUTHENTICATED}
         - { path: ^/connect, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_ACCESS_WEB } # force login
 
