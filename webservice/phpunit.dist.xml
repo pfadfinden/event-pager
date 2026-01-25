@@ -23,8 +23,17 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
+        <testsuite name="E2E">
+            <directory>tests/E2E</directory>
         </testsuite>
     </testsuites>
 
@@ -46,7 +55,7 @@
 
     <coverage>
         <report>
-            <html outputDirectory="dist/phpunit"></html>
+            <html outputDirectory="dist/phpunit-coverage"></html>
         </report>
     </coverage>
 
@@ -55,6 +64,7 @@
     </logging>
 
     <extensions>
+        <bootstrap class="Symfony\Component\Panther\ServerExtension" />
         <bootstrap class="Zenstruck\Foundry\PHPUnit\FoundryExtension" />
     </extensions>
 </phpunit>

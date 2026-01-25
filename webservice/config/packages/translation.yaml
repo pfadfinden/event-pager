@@ -5,3 +5,7 @@ framework:
         fallbacks:
           - en
         providers:
+
+when@test:
+    framework:
+        default_locale: en

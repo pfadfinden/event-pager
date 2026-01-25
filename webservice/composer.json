@@ -104,14 +104,16 @@
         "test": "@php vendor/bin/phpunit --no-coverage",
         "test:coverage": [
             "@putenv XDEBUG_MODE=coverage",
-            "@php vendor/bin/phpunit"
+            "@php vendor/bin/phpunit --testsuite Unit,Integration"
         ],
-        "test:unit": "@php vendor/bin/phpunit --group unit --no-coverage",
-        "test:unit:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group unit"],
-        "test:integration": "@php vendor/bin/phpunit --group integration --no-coverage",
-        "test:integration:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group integration"],
-        "test:application": "@php vendor/bin/phpunit --group application --no-coverage",
-        "test:application:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --group application"]
+        "test:unit": "@php vendor/bin/phpunit --testsuite Unit --no-coverage",
+        "test:unit:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Unit"],
+        "test:integration": "@php vendor/bin/phpunit --testsuite Integration --no-coverage",
+        "test:integration:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Integration"],
+        "test:functional": "@php vendor/bin/phpunit --testsuite Functional --no-coverage",
+        "test:functional:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite Functional"],
+        "test:e2e": "@php vendor/bin/phpunit --testsuite E2E --no-coverage",
+        "test:e2e:coverage": ["@putenv XDEBUG_MODE=coverage", "@php vendor/bin/phpunit --testsuite E2E"]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -123,6 +125,7 @@
         }
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^1.4",
         "friendsofphp/php-cs-fixer": "^3.75",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0",
@@ -134,6 +137,7 @@
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
         "symfony/debug-bundle": "8.0.*",
+        "symfony/panther": "^2.4",
         "symfony/stopwatch": "8.0.*",
         "symfony/web-profiler-bundle": "8.0.*",
         "zenstruck/foundry": "^2.3"
