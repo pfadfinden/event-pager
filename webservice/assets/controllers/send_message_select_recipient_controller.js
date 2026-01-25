@@ -1,6 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
 
-
 export default class extends Controller {
     static targets = ["collectionContainer", "template", "optionsList"]
 
@@ -17,7 +16,8 @@ export default class extends Controller {
         // TODO bug double click outside option, adds all
         const selectedId = event.target.value;
         const label = event.target.textContent;
-        this._addSelectedRecipientToTable(selectedId, label);
+        const enabledTransports = this._getEnabledTransports(event.target);
+        this._addSelectedRecipientToTable(selectedId, label, enabledTransports);
         this._markSelected(event.target);
     }
 
@@ -27,24 +27,63 @@ export default class extends Controller {
             const option = options[i];
 
             if (option.selected && !option.disabled) {
-                this._addSelectedRecipientToTable(option.value, option.text);
+                const enabledTransports = this._getEnabledTransports(option);
+                this._addSelectedRecipientToTable(option.value, option.text, enabledTransports);
                 this._markSelected(option);
                 option.selected = false;
             }
         }
     }
 
-    _addSelectedRecipientToTable(id, label)
+    _getEnabledTransports(optionElement) {
+        const transportsData = optionElement.getAttribute('data-enabled-transports');
+        if (transportsData) {
+            try {
+                return JSON.parse(transportsData);
+            } catch (e) {
+                return [];
+            }
+        }
+        return [];
+    }
+
+    _addSelectedRecipientToTable(id, label, enabledTransports = [])
     {
         const item = this.templateTarget.content.cloneNode(true);
         let td = item.querySelectorAll("td");
         td[0].querySelector("input[data-property='id']").value = id;
         td[0].querySelector("input[data-property='label']").value = label;
+        td[0].querySelector("input[data-property='enabledTransports']").value = JSON.stringify(enabledTransports);
         td[0].innerHTML = td[0].innerHTML.replace(/__name__/g, this.indexValue);
         td[2].textContent = label;
 
+        // Show only enabled transport icons, remove others
+        this._filterTransportIcons(td[3], enabledTransports);
+
         this.collectionContainerTarget.appendChild(item);
         this.indexValue++;
+    }
+
+    _filterTransportIcons(container, enabledTransports) {
+        const hasTransports = enabledTransports && enabledTransports.length > 0;
+
+        // Show/hide the "none" placeholder
+        const nonePlaceholder = container.querySelector('[data-transport-none]');
+        if (nonePlaceholder) {
+            if (hasTransports) {
+                nonePlaceholder.remove();
+            }
+        }
+
+        // Remove icons for transports that are not enabled
+        container.querySelectorAll('[data-transport]').forEach(icon => {
+            const transport = icon.getAttribute('data-transport');
+            if (enabledTransports.includes(transport)) {
+                icon.classList.remove('d-none');
+            } else {
+                icon.remove();
+            }
+        });
     }
 
     /**

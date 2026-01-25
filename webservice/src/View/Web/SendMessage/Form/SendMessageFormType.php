@@ -59,6 +59,7 @@ final class SendMessageFormType extends AbstractType
             ->add('optionsTo', SelectRecipientsType::class, [
                 'mapped' => false,
                 'choice_loader' => $options['choice_loader'],
+                'choice_attr' => fn(RecipientListEntry $choice) => ['data-enabled-transports' => json_encode($choice->enabledTransports)],
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [

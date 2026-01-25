@@ -91,9 +91,17 @@
                                 <th class="p-0"><!--Hidden Form Field--></th>
                                 <th scope="col" class="fixw-2_4rem"><!--Remove Button--></th>
                                 <th scope="col">{% trans %}Recipient{% endtrans %}</th>
-                                <th scope="col" class="text-end px-2">{% trans %}Channel{% endtrans %}</th>
+                                <th scope="col" class="text-end px-2">{% trans %}Transport{% endtrans %}</th>
                             </tr>
                             </thead>
+                            {# Transport class name to icon mapping #}
+                            {% set transportIcons = {
+                                'MailTransport': 'bi:envelope-fill',
+                                'CallTransport': 'bi:telephone-fill',
+                                'IntelPageTransport': 'fa6-solid:pager',
+                                'TelegramTransport': 'bi:telegram',
+                                'NtfyTransport': 'bi:bell-fill',
+                            } %}
                             <tbody {{ stimulus_target('send_message_select_recipient', 'collectionContainer') }}>
                             <template {{ stimulus_target('send_message_select_recipient', 'template') }}>
                                 <tr>
@@ -105,12 +113,18 @@
                                             <twig:ux:icon name="bi:x-lg" height="0.75em" aria-hidden="true" class="d-xxl-none"/>
                                         </button>
                                     </td>
-                                    <td>__LABEL__</td>
-                                    <td class="text-end px-2">Mail</td>
+                                    <td><!-- Label populated by JS --></td>
+                                    <td class="text-end px-2">
+                                        <span class="text-muted" data-transport-none>—</span>
+                                        {% for transportClass, iconName in transportIcons %}
+                                            <twig:ux:icon name="{{ iconName }}" height="1em" aria-hidden="true" title="{{ transportClass }}" data-transport="{{ transportClass }}" class="d-none" />
+                                        {% endfor %}
+                                    </td>
                                 </tr>
                             </template>
                             {% do form.to.setRendered %}
                             {% for field in form.to %}
+                                    {% set enabledTransports = field.enabledTransports.vars.value ? field.enabledTransports.vars.value : [] %}
                                     <tr>
                                         <td class="p-0">
                                             {{ form_widget(field) }}
@@ -123,9 +137,14 @@
                                         </td>
                                         <td>{{ field.label.vars.value }}</td>
                                         <td class="text-end px-2">
-                                            <twig:ux:icon name="bi:telephone-fill" height="1em" aria-hidden="true" />
-                                            <twig:ux:icon name="bi:at" height="1em" aria-hidden="true" />
-                                            <twig:ux:icon name="fa6-solid:pager" height="1em" aria-hidden="true" />
+                                            {% if enabledTransports is empty %}
+                                                <span class="text-muted">—</span>
+                                            {% else %}
+                                                {% for transport in enabledTransports %}
+                                                    {% set iconName = transportIcons[transport] ?? 'bi:question-circle' %}
+                                                    <twig:ux:icon name="{{ iconName }}" height="1em" title="{{ transport }}" />
+                                                {% endfor %}
+                                            {% endif %}
                                         </td>
                                     </tr>
                             {% endfor %}

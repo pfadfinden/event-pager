@@ -7,10 +7,13 @@ namespace App\Infrastructure\Persistence\DoctrineORM\Query;
 use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\MessageRecipient\Model\Group;
 use App\Core\MessageRecipient\Model\Person;
+use App\Core\MessageRecipient\Model\RecipientTransportConfiguration;
 use App\Core\MessageRecipient\Model\Role;
 use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
+use App\Core\TransportManager\Model\TransportConfiguration;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Uid\Ulid;
 use function sprintf;
 
 final readonly class ListOfMessageRecipientsQueryHandler
@@ -59,6 +62,69 @@ final readonly class ListOfMessageRecipientsQueryHandler
             $doctrineQuery->setMaxResults($query->perPage);
         }
 
-        return $doctrineQuery->getResult();
+        /** @var RecipientListEntry[] $recipients */
+        $recipients = $doctrineQuery->getResult();
+
+        if ([] === $recipients) {
+            return $recipients;
+        }
+
+        // Fetch enabled transports for all recipients in a single query
+        $recipientIds = array_map(static fn (RecipientListEntry $r): string => Ulid::fromString($r->id)->toRfc4122(), $recipients);
+        $transportsByRecipient = $this->fetchEnabledTransports($recipientIds);
+
+        // Merge enabled transports into each recipient
+        foreach ($recipients as $recipient) {
+            $recipient->enabledTransports = $transportsByRecipient[$recipient->id] ?? [];
+        }
+
+        return $recipients;
+    }
+
+    /**
+     * Fetches enabled transport class names for a list of recipient IDs.
+     *
+     * @param list<string> $recipientIds
+     *
+     * @return array<string, list<string>> Map of recipient ID to list of short transport class names
+     */
+    private function fetchEnabledTransports(array $recipientIds): array
+    {
+        $dql = sprintf(
+            'SELECT IDENTITY(rtc.recipient) as recipientId, t.transport as transportClass FROM %s rtc JOIN %s t WITH rtc.key = t.key WHERE IDENTITY(rtc.recipient) IN (:ids) AND rtc.isEnabled = true ORDER BY rtc.rank DESC',
+            RecipientTransportConfiguration::class,
+            TransportConfiguration::class,
+        );
+
+        $result = $this->em->createQuery($dql)
+            ->setParameter('ids', $recipientIds)
+            ->getResult();
+
+        $transportsByRecipient = [];
+        foreach ($result as $row) {
+            // Convert RFC4122 UUID back to ULID format for consistent lookup
+            $recipientId = Ulid::fromString($row['recipientId'])->toBase32();
+            // Extract short class name from FQCN
+            $transportClass = $this->getShortClassName($row['transportClass']);
+            if (!isset($transportsByRecipient[$recipientId])) {
+                $transportsByRecipient[$recipientId] = [];
+            }
+            // Avoid duplicates (multiple configs with same transport)
+            if (!in_array($transportClass, $transportsByRecipient[$recipientId], true)) {
+                $transportsByRecipient[$recipientId][] = $transportClass;
+            }
+        }
+
+        return $transportsByRecipient;
+    }
+
+    /**
+     * Extracts the short class name from a fully qualified class name.
+     */
+    private function getShortClassName(string $fqcn): string
+    {
+        $parts = explode('\\', $fqcn);
+
+        return end($parts);
     }
 }
