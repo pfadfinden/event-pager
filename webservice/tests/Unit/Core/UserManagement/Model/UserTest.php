@@ -6,9 +6,11 @@ namespace App\Tests\Unit\Core\UserManagement\Model;
 
 use App\Core\UserManagement\Model\User;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(User::class)]
+#[Group('unit')]
 final class UserTest extends TestCase
 {
     public function testCanCreateUserWithUsername(): void
