@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING)]
     private string $password = '';
 
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: true)]
+    private ?string $externalId = null;
+
     public function __construct(string $username)
     {
         assert('' !== $username);
@@ -93,11 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return array_values(array_unique($this->roles));
     }
 
     /**
@@ -142,6 +141,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addRoles(array $roles): self
     {
         $this->roles = array_unique(array_merge($this->roles, $roles));
+
+        return $this;
+    }
+
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(?string $externalId): self
+    {
+        $this->externalId = $externalId;
 
         return $this;
     }

@@ -1264,6 +1264,32 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             cache_pool?: string|Param, // The cache pool to use for storing the limiter state // Default: "cache.rate_limiter"
  *             storage_service?: string|Param, // The service ID of a custom storage implementation, this precedes any configured "cache_pool" // Default: null
  *         },
+ *         oauth?: array{
+ *             provider?: scalar|null|Param,
+ *             remember_me?: bool|Param, // Default: true
+ *             success_handler?: scalar|null|Param,
+ *             failure_handler?: scalar|null|Param,
+ *             check_path?: scalar|null|Param, // Default: "/login_check"
+ *             use_forward?: bool|Param, // Default: false
+ *             login_path: scalar|null|Param,
+ *             always_use_default_target_path?: bool|Param, // Default: false
+ *             default_target_path?: scalar|null|Param, // Default: "/"
+ *             target_path_parameter?: scalar|null|Param, // Default: "_target_path"
+ *             use_referer?: bool|Param, // Default: false
+ *             failure_path?: scalar|null|Param, // Default: null
+ *             failure_forward?: bool|Param, // Default: false
+ *             failure_path_parameter?: scalar|null|Param, // Default: "_failure_path"
+ *             oauth_user_provider: array{
+ *                 orm?: array{
+ *                     class: scalar|null|Param,
+ *                     manager_name?: scalar|null|Param, // Default: null
+ *                     properties: array<string, scalar|null|Param>,
+ *                 },
+ *                 service?: scalar|null|Param,
+ *                 oauth?: scalar|null|Param,
+ *             },
+ *             resource_owners: array<string, scalar|null|Param>,
+ *         },
  *         x509?: array{
  *             provider?: scalar|null|Param,
  *             user?: scalar|null|Param, // Default: "SSL_CLIENT_S_DN_Email"
@@ -1514,6 +1540,41 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         default_namespace?: scalar|null|Param, // Default namespace where stories will be created by maker. // Default: "Story"
  *     },
  * }
+ * @psalm-type HwiOauthConfig = array{
+ *     firewall_names?: list<scalar|null|Param>,
+ *     target_path_parameter?: scalar|null|Param, // Default: null
+ *     target_path_domains_whitelist?: list<scalar|null|Param>,
+ *     use_referer?: bool|Param, // Default: false
+ *     failed_use_referer?: bool|Param, // Default: false
+ *     failed_auth_path?: scalar|null|Param, // Default: "hwi_oauth_connect"
+ *     grant_rule?: scalar|null|Param, // Default: "IS_AUTHENTICATED_REMEMBERED"
+ *     connect?: array{
+ *         confirmation?: bool|Param, // Default: true
+ *         account_connector?: scalar|null|Param,
+ *         registration_form_handler?: scalar|null|Param,
+ *         registration_form?: scalar|null|Param,
+ *     },
+ *     resource_owners: array<string, array{ // Default: []
+ *         base_url?: scalar|null|Param,
+ *         access_token_url?: scalar|null|Param,
+ *         authorization_url?: scalar|null|Param,
+ *         request_token_url?: scalar|null|Param,
+ *         revoke_token_url?: scalar|null|Param,
+ *         infos_url?: scalar|null|Param,
+ *         client_id?: scalar|null|Param,
+ *         client_secret?: scalar|null|Param,
+ *         realm?: scalar|null|Param,
+ *         scope?: scalar|null|Param,
+ *         user_response_class?: scalar|null|Param,
+ *         service?: scalar|null|Param,
+ *         class?: scalar|null|Param,
+ *         type?: scalar|null|Param,
+ *         use_authorization_to_get_token?: scalar|null|Param,
+ *         paths?: array<string, mixed>,
+ *         options?: array<string, scalar|null|Param>,
+ *         ...<mixed>
+ *     }>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1529,6 +1590,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     live_component?: LiveComponentConfig,
  *     ux_icons?: UxIconsConfig,
  *     security?: SecurityConfig,
+ *     hwi_oauth?: HwiOauthConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1547,6 +1609,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         ux_icons?: UxIconsConfig,
  *         security?: SecurityConfig,
  *         zenstruck_foundry?: ZenstruckFoundryConfig,
+ *         hwi_oauth?: HwiOauthConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1563,6 +1626,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         live_component?: LiveComponentConfig,
  *         ux_icons?: UxIconsConfig,
  *         security?: SecurityConfig,
+ *         hwi_oauth?: HwiOauthConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1581,6 +1645,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         ux_icons?: UxIconsConfig,
  *         security?: SecurityConfig,
  *         zenstruck_foundry?: ZenstruckFoundryConfig,
+ *         hwi_oauth?: HwiOauthConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
