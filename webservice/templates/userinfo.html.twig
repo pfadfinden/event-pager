@@ -1,0 +1,108 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% trans %}My Profile{% endtrans %}{% endblock %}
+
+{% block main %}
+	<main class="main-container mx-auto p-4">
+		<h1 class="mb-4">
+			{% trans %}Your Account{% endtrans %}
+		</h1>
+
+        <div class="row mt-2 d-print-none">
+            <div class="col-12">
+                <a href="{{ path('app_logout') }}" class="btn btn-outline-danger">
+                    <twig:ux:icon name="bi:box-arrow-right" height="16" width="16" aria-hidden="true" class="bi me-2"/>
+                    {% trans %}Sign out{% endtrans %}
+                </a>
+            </div>
+        </div>
+
+		<div class="row mt-2">
+			<div class="py-3 col-12 col-md">
+				<h3>{% trans %}Details{% endtrans %}</h3>
+				<dl>
+					<dt>{% trans %}Username{% endtrans %}</dt>
+					<dd>{{ user.username }}</dd>
+					<dt>{% trans %}Display Name{% endtrans %}</dt>
+					<dd>{{ user.displayname ?? '-' }}</dd>
+				</dl>
+			</div>
+			<div class="py-3 col-12 col-md">
+				<h3>{% trans %}Authentication{% endtrans %}</h3>
+				<dl>
+					<dt>{% trans %}SSO Provider{% endtrans %}</dt>
+					<dd>
+						{% if user.externalId %}
+							<span class="badge bg-success">
+								<twig:ux:icon name="bi:link-45deg" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+								{% trans %}Connected{% endtrans %}
+							</span>
+						{% else %}
+							<span class="badge bg-secondary">
+								<twig:ux:icon name="bi:x-lg" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+								{% trans %}Not connected{% endtrans %}
+							</span>
+						{% endif %}
+					</dd>
+					<dt>{% trans %}Local Login{% endtrans %}</dt>
+					<dd>
+						{% if user.hasPassword %}
+							<span class="badge bg-success">
+								<twig:ux:icon name="bi:key" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+								{% trans %}Password set{% endtrans %}
+							</span>
+						{% else %}
+							<span class="badge bg-secondary">
+								<twig:ux:icon name="bi:x-lg" height="14" width="14" aria-hidden="true" class="bi me-1"/>
+								{% trans %}No password{% endtrans %}
+							</span>
+						{% endif %}
+					</dd>
+				</dl>
+			</div>
+		</div>
+
+		<div class="row mt-3">
+			<div>
+				<h3>{% trans %}Roles{% endtrans %}</h3>
+				<ul class="list-group">
+					{% for role in user.roles %}
+						<li class="list-group-item">
+							<twig:ux:icon name="bi:shield-check" height="16" width="16" aria-hidden="true" class="bi me-2"/>
+							{{ role }}
+						</li>
+					{% else %}
+						<li class="list-group-item text-muted">{% trans %}No roles assigned{% endtrans %}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		{% if password_form %}
+		<div class="row mt-4">
+			<div class="col-12 col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title mb-0">
+							<twig:ux:icon name="bi:key-fill" height="18" width="18" aria-hidden="true" class="bi me-2"/>
+							{% trans %}Change Password{% endtrans %}
+						</h3>
+					</div>
+					<div class="card-body">
+						{{ form_start(password_form) }}
+						{{ form_errors(password_form) }}
+						<div class="mb-3">
+							{{ form_row(password_form.current_password) }}
+						</div>
+						<div class="mb-3">
+							{{ form_row(password_form.password) }}
+						</div>
+						{{ form_widget(password_form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+						{{ form_end(password_form) }}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</main>
+{% endblock %}

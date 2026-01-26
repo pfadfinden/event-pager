@@ -35,3 +35,9 @@ services:
     App\Infrastructure\Persistence\:
         resource: '../src/Infrastructure/Persistence/*/Query'
         tags: [{ name: messenger.message_handler, bus: query.bus }]
+
+    App\Infrastructure\Security\OAuth\KeycloakLogoutSubscriber:
+        arguments:
+            $keycloakBaseUrl: '%env(KEYCLOAK_BASE_URL)%'
+            $keycloakRealm: '%env(KEYCLOAK_REALM)%'
+            $keycloakClientId: '%env(KEYCLOAK_CLIENT_ID)%'

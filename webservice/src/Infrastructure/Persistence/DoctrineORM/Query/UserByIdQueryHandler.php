@@ -28,6 +28,8 @@ final readonly class UserByIdQueryHandler
             (string) $user->getUsername(),
             $user->getDisplayname(),
             $user->getRoles(),
+            $user->getExternalId(),
+            '' !== $user->getPassword(),
         );
     }
 }
