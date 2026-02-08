@@ -13,6 +13,7 @@
         "doctrine/doctrine-bundle": "^3.2",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.2",
+        "hwi/oauth-bundle": "dev-master@dev",
         "league/csv": "^9.28",
         "symfony/asset": "8.0.*",
         "symfony/asset-mapper": "8.0.*",

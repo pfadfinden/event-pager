@@ -273,6 +273,47 @@
         "containerId" : "9cf1e69d-26da-4691-949b-87824665cd23",
         "attributes" : { }
       } ],
+      "pager" : [ {
+        "id" : "ea3663bb-ab36-4d41-a49b-b1733beb1947",
+        "name" : "MANAGER",
+        "description" : "Can manage the pager system for day to day duties",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+        "attributes" : { }
+      }, {
+        "id" : "c2aeb7a2-f756-4554-b960-d9241f01f67b",
+        "name" : "USER",
+        "description" : "Can log in to the web ui but has read only rights.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+        "attributes" : { }
+      }, {
+        "id" : "8d776586-eb1e-480a-8e88-be75fb783d76",
+        "name" : "ACTIVE_USER",
+        "description" : "\tCan log in and send messages through the pagersystem.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+        "attributes" : { }
+      }, {
+        "id" : "0be1e1e3-b01f-4ea7-a3cd-03417c226c8e",
+        "name" : "ADMIN",
+        "description" : "Can manage the entire system.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+        "attributes" : { }
+      }, {
+        "id" : "6de7104c-8a5f-4265-a546-5454edf4ec27",
+        "name" : "SUPPORT",
+        "description" : "Help desk / support member that can see and manage users and recipients.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+        "attributes" : { }
+      } ],
       "security-admin-console" : [ ],
       "admin-cli" : [ ],
       "account-console" : [ ],
@@ -404,11 +445,40 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
   "webAuthnPolicyPasswordlessExtraOrigins" : [ ],
   "users" : [ {
+    "id" : "62c0b251-ee9b-4706-b094-56f34a308638",
+    "username" : "janedoe",
+    "firstName" : "Jane",
+    "lastName" : "Doe",
+    "email" : "janedoe@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "createdTimestamp" : 1769453761223,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "e9429df4-fcf4-4b25-9f97-e6fcb8556cc3",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1769453774212,
+      "secretData" : "{\"value\":\"GwKH51gt12LMzLQNULUWgwvyl/gLk84aX2iQ+gIO0m0=\",\"salt\":\"ro+pOebuiXqAbOPf8tjCXA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-dev_bula_sansi" ],
+    "clientRoles" : {
+      "pager" : [ "SUPPORT" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "94f1a8ba-1eb0-4b3d-87f4-786c12ec0543",
     "username" : "masteradmin",
+    "firstName" : "Master",
+    "lastName" : "Admin",
+    "email" : "admin@example.org",
     "emailVerified" : false,
-    "createdTimestamp" : 1742499382939,
     "enabled" : true,
+    "createdTimestamp" : 1742499382939,
     "totp" : false,
     "credentials" : [ {
       "id" : "48feba53-03a8-4eed-8cf2-0199b98c6eb8",
@@ -421,6 +491,23 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
     "realmRoles" : [ "master_admin", "default-roles-dev_bula_sansi" ],
+    "clientRoles" : {
+      "pager" : [ "MANAGER" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "5334b644-1d15-4140-8c34-a0c6df84bcf7",
+    "username" : "service-account-pager",
+    "emailVerified" : false,
+    "enabled" : true,
+    "createdTimestamp" : 1769362772026,
+    "totp" : false,
+    "serviceAccountClientId" : "pager",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-dev_bula_sansi" ],
     "notBefore" : 0,
     "groups" : [ ]
   } ],
@@ -559,6 +646,67 @@
     "fullScopeAllowed" : false,
     "nodeReRegistrationTimeout" : 0,
     "defaultClientScopes" : [ "web-origins", "acr", "profile", "roles", "basic", "email" ],
+    "optionalClientScopes" : [ "address", "phone", "offline_access", "organization", "microprofile-jwt" ]
+  }, {
+    "id" : "144f454b-0793-4b45-af5d-a4f0ef841d4a",
+    "clientId" : "pager",
+    "name" : "Pagersystem",
+    "description" : "",
+    "rootUrl" : "https://localhost",
+    "adminUrl" : "https://localhost",
+    "baseUrl" : "https://localhost",
+    "surrogateAuthRequired" : false,
+    "enabled" : true,
+    "alwaysDisplayInConsole" : false,
+    "clientAuthenticatorType" : "client-secret",
+    "secret" : "E0JIlEaZNIfiTHiMfkMMnpEi5S4a75lh",
+    "redirectUris" : [ "https://localhost/*" ],
+    "webOrigins" : [ "https://localhost/*" ],
+    "notBefore" : 0,
+    "bearerOnly" : false,
+    "consentRequired" : false,
+    "standardFlowEnabled" : true,
+    "implicitFlowEnabled" : false,
+    "directAccessGrantsEnabled" : false,
+    "serviceAccountsEnabled" : true,
+    "publicClient" : false,
+    "frontchannelLogout" : true,
+    "protocol" : "openid-connect",
+    "attributes" : {
+      "realm_client" : "false",
+      "oidc.ciba.grant.enabled" : "false",
+      "client.secret.creation.time" : "1769362772",
+      "backchannel.logout.session.required" : "true",
+      "standard.token.exchange.enabled" : "false",
+      "post.logout.redirect.uris" : "https://localhost/*",
+      "oauth2.device.authorization.grant.enabled" : "false",
+      "backchannel.logout.revoke.offline.tokens" : "false",
+      "dpop.bound.access.tokens" : "false"
+    },
+    "authenticationFlowBindingOverrides" : { },
+    "fullScopeAllowed" : true,
+    "nodeReRegistrationTimeout" : -1,
+    "protocolMappers" : [ {
+      "id" : "3a69b2c0-3d48-4c70-9b45-12f013545ac1",
+      "name" : "client roles",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-client-role-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "usermodel.clientRoleMapping.rolePrefix" : "ROLE_",
+        "introspection.token.claim" : "true",
+        "multivalued" : "true",
+        "userinfo.token.claim" : "true",
+        "user.attribute" : "foo",
+        "id.token.claim" : "true",
+        "lightweight.claim" : "false",
+        "access.token.claim" : "true",
+        "claim.name" : "roles",
+        "jsonType.label" : "String",
+        "usermodel.clientRoleMapping.clientId" : "pager"
+      }
+    } ],
+    "defaultClientScopes" : [ "web-origins", "service_account", "acr", "profile", "roles", "basic", "email" ],
     "optionalClientScopes" : [ "address", "phone", "offline_access", "organization", "microprofile-jwt" ]
   }, {
     "id" : "9cf1e69d-26da-4691-949b-87824665cd23",
@@ -1343,7 +1491,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-property-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "oidc-address-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "saml-user-attribute-mapper", "saml-user-property-mapper" ]
       }
     }, {
       "id" : "ece1976e-2c7f-4ea0-9d8b-aebe40db2521",
@@ -1352,7 +1500,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-property-mapper", "oidc-address-mapper", "oidc-full-name-mapper", "oidc-usermodel-property-mapper", "oidc-usermodel-attribute-mapper", "saml-user-attribute-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-full-name-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "saml-role-list-mapper", "saml-user-property-mapper", "oidc-usermodel-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper" ]
       }
     } ],
     "org.keycloak.keys.KeyProvider" : [ {
@@ -1400,7 +1548,6 @@
     } ]
   },
   "internationalizationEnabled" : false,
-  "supportedLocales" : [ ],
   "authenticationFlows" : [ {
     "id" : "4623ada9-8dc2-4e21-9ba1-95fd9b79cad6",
     "alias" : "Account verification options",
@@ -2009,6 +2156,14 @@
     "priority" : 100,
     "config" : { }
   }, {
+    "alias" : "idp_link",
+    "name" : "Linking Identity Provider",
+    "providerId" : "idp_link",
+    "enabled" : true,
+    "defaultAction" : false,
+    "priority" : 120,
+    "config" : { }
+  }, {
     "alias" : "update_user_locale",
     "name" : "Update User Locale",
     "providerId" : "update_user_locale",
@@ -2038,7 +2193,7 @@
     "cibaInterval" : "5",
     "realmReusableOtpCode" : "false"
   },
-  "keycloakVersion" : "26.1.3",
+  "keycloakVersion" : "26.5.1",
   "userManagedAccessAllowed" : false,
   "organizationsEnabled" : false,
   "verifiableCredentialsEnabled" : false,

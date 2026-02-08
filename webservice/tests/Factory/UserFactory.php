@@ -37,7 +37,7 @@ final class UserFactory extends PersistentObjectFactory
         return [
             'username' => self::faker()->unique()->userName(),
             'displayname' => self::faker()->name(),
-            'roles' => [],
+            'roles' => ['ROLE_USER'],
             'password' => self::DEFAULT_PASSWORD,
         ];
     }
@@ -62,6 +62,11 @@ final class UserFactory extends PersistentObjectFactory
                 $roles = $attributes['roles'];
                 $user->setRoles($roles);
             }
+
+            // Set externalId if provided
+            if (isset($attributes['externalId']) && is_string($attributes['externalId'])) {
+                $user->setExternalId($attributes['externalId']);
+            }
         });
     }
 
@@ -78,6 +83,11 @@ final class UserFactory extends PersistentObjectFactory
     public function withPassword(string $password): static
     {
         return $this->with(['password' => $password]);
+    }
+
+    public function withExternalId(string $externalId): static
+    {
+        return $this->with(['externalId' => $externalId]);
     }
 
     /**

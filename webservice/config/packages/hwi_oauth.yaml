@@ -1,0 +1,14 @@
+hwi_oauth:
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/docs/2-configuring_resource_owners.md
+    resource_owners:
+        keycloak:
+            type: keycloak
+            base_url: '%env(KEYCLOAK_BASE_URL)%'
+            realm: '%env(KEYCLOAK_REALM)%'
+            client_id: '%env(KEYCLOAK_CLIENT_ID)%'
+            client_secret: '%env(KEYCLOAK_CLIENT_SECRET)%'
+            # Map where to find user data in the response
+            paths:
+                identifier: sub
+                nickname: preferred_username
+                realname: name

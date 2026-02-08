@@ -228,6 +228,20 @@ User: Benutzer
 'Failed to update user: {message}': 'Fehler beim Aktualisieren des Benutzers: {message}'
 'Failed to delete user: {message}': 'Fehler beim Löschen des Benutzers: {message}'
 'You cannot delete your own account.': 'Sie können Ihr eigenes Benutzerkonto nicht löschen.'
+Authentication: Authentifizierung
+'SSO Provider': 'SSO-Anbieter'
+Connected: Verbunden
+'Not connected': 'Nicht verbunden'
+'Local Login': 'Lokale Anmeldung'
+'Password set': 'Passwort gesetzt'
+'No password': 'Kein Passwort'
+'Your Account': 'Dein Benutzerkonto'
+'Change Password': 'Passwort ändern'
+'Current Password': 'Aktuelles Passwort'
+'Current password is incorrect': 'Aktuelles Passwort ist falsch'
+'New password cannot be empty': 'Neues Passwort darf nicht leer sein'
+'Password changed successfully': 'Passwort erfolgreich geändert'
+'Failed to change password: {message}': 'Fehler beim Ändern des Passworts: {message}'
 'Manage Users': 'Benutzer verwalten'
 'Manage Recipients': 'Empfänger verwalten'
 Organisation: Organisation
