@@ -27,6 +27,10 @@ export default class extends Controller {
             const item = document.createElement('option')
             item.setAttribute('value', value.id);
             item.setAttribute('data-enabled-transports', JSON.stringify(value.enabledTransports || []));
+            if (value.enabledTransports.length === 0) {
+                item.classList.add('text-decoration-line-through');
+                item.setAttribute('disabled', 'disabled');
+            }
             item.innerHTML = value.name;
             return item;
         })

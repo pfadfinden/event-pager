@@ -82,12 +82,12 @@
                     <td>{{ c.capCode }}</td>
                     <td>{{ c.audible ? 'Yes' : 'No' }}</td>
                     <td>{{  c.vibration ? 'Yes' : 'No' }}</td>
-                    <td><!-- TODO button title -->
-                        <a href="{{ path('web_pager_management_channel_details', {id: c.id} ) }}" class="btn btn-outline-primary btn-sm">
+                    <td>
+                        <a href="{{ path('web_pager_management_channel_details', {id: c.id} ) }}" title="{{ 'Show Channel Details'|trans }}" class="btn btn-outline-primary btn-sm">
                             <twig:ux:icon name="bi:eye" height="16" width="16" aria-hidden="true" class="bi"/>
                         </a>
                         {% if is_granted('ROLE_MANAGE_PAGER_CONFIGURATION') %}
-                            <a href="{{ path('web_pager_management_channel_edit', {id: c.id} ) }}" class="btn btn-outline-primary btn-sm">
+                            <a href="{{ path('web_pager_management_channel_edit', {id: c.id} ) }}" title="{{ 'Edit Channel'|trans }}"  class="btn btn-outline-primary btn-sm">
                                 <twig:ux:icon name="bi:pencil" height="16" width="16" aria-hidden="true" class="bi"/>
                             </a>
                         {% endif %}

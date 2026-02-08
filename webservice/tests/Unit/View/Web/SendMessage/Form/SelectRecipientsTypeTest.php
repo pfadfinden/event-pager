@@ -8,8 +8,10 @@ use App\Core\MessageRecipient\ReadModel\RecipientListEntry;
 use App\View\Web\SendMessage\Form\SelectRecipientsType;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
+use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Test\TypeTestCase;
+use function is_array;
 
 #[AllowMockObjectsWithoutExpectations]
 final class SelectRecipientsTypeTest extends TypeTestCase
@@ -67,9 +69,18 @@ final class SelectRecipientsTypeTest extends TypeTestCase
         ]);
 
         $view = $form->createView();
+        $choices = $view->vars['choices'];
 
-        // When grouped, choices should be organized by their group label // TODO why is this test showing this?
-        self::assertArrayHasKey('preferred_choices', $view->vars);
+        // When grouped, choices are ChoiceGroupView instances keyed by group label
+        self::assertCount(2, $choices);
+        self::assertContainsOnlyInstancesOf(ChoiceGroupView::class, $choices);
+
+        // Verify group labels match expected emoji prefixes
+        /** @var array<string, ChoiceGroupView> $choicesArray */
+        $choicesArray = is_array($choices) ? $choices : iterator_to_array($choices);
+        $groupLabels = array_keys($choicesArray);
+        self::assertContains('👥', $groupLabels);
+        self::assertContains('👤', $groupLabels);
     }
 
     public function testFormSubmissionWithMultipleRecipients(): void

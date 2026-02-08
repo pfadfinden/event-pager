@@ -1,0 +1,9 @@
+header.connecting: Verbinden
+header.success: '"%name%" erfolgreich mit Benutzeraccount verbunden!'
+header.register: 'Neuen Benutzeraccount mit dem Namen "%name%" erstellen'
+header.registration_success: 'Benutzeraccount "%username%" erfolgreich angelegt und verknüpft!'
+connect.confirm.cancel: Abbrechen
+connect.confirm.submit: 'Benutzeraccount verbinden'
+connect.confirm.text: 'Sicher, dass Sie Ihren %service% Account "%name%" mit Ihrem aktuellen Benutzeraccount verknüpfen möchten?'
+connect.registration.cancel: Abbrechen
+connect.registration.submit: 'Benutzeraccount registrieren'

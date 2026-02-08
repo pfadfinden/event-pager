@@ -28,6 +28,6 @@ final class DummyTransport implements Transport
 
     public function send(OutgoingMessage $message): void
     {
-        // TODO: Implement send() method.
+        // NOOP
     }
 }
