@@ -47,9 +47,10 @@ final class UserDetailsE2ETest extends AbstractPantherTestCase
             ->create();
 
         $this->client->request('GET', '/admin/user/'.$targetUser->getId());
+        $this->waitForElement('body', 5);
 
-        // Should show access denied or redirect
-        self::assertStringNotContainsString('/admin/user/'.$targetUser->getId(), $this->client->getCurrentURL());
+        // Should show access denied page (403)
+        self::assertSelectorTextContains('body', 'Access Denied');
     }
 
     public function testDisplaysUserDetails(): void
@@ -65,8 +66,9 @@ final class UserDetailsE2ETest extends AbstractPantherTestCase
         $this->client->request('GET', '/admin/user/'.$targetUser->getId());
         $this->waitForElement('dl', 5);
 
-        self::assertSelectorTextContains('dd', 'detaileduser');
-        self::assertSelectorTextContains('dd', 'Detailed Test User');
+        // Check username (first dd) and displayname (second dd) separately
+        self::assertSelectorTextContains('dl dd:first-of-type', 'detaileduser');
+        self::assertSelectorTextContains('dl dd:nth-of-type(2)', 'Detailed Test User');
     }
 
     public function testDisplaysAuthenticationStatus(): void
@@ -81,10 +83,14 @@ final class UserDetailsE2ETest extends AbstractPantherTestCase
         $this->client->request('GET', '/admin/user/'.$targetUser->getId());
         $this->waitForElement('dl', 5);
 
-        // Should show SSO connected
-        self::assertSelectorTextContains('.badge.bg-success', 'Connected');
-        // Should also show password set
-        self::assertSelectorTextContains('.badge.bg-success', 'Password set');
+        // Get all success badges and check both statuses are present
+        /** @var list<string> $badgeTexts */
+        $badgeTexts = $this->client->getCrawler()->filter('.badge.bg-success')->each(fn ($node) => $node->text());
+        $allBadgeText = implode(' ', $badgeTexts);
+
+        // Should show SSO connected and password set
+        self::assertStringContainsString('Connected', $allBadgeText);
+        self::assertStringContainsString('Password set', $allBadgeText);
     }
 
     public function testDisplaysUserRoles(): void
@@ -149,30 +155,16 @@ final class UserDetailsE2ETest extends AbstractPantherTestCase
 
     public function testCannotDeleteOwnAccount(): void
     {
-        $this->loginAsManager();
+        // Create and login as manager, keeping track of the user
+        $manager = UserFactory::new()
+            ->asManager()
+            ->withUsername('selfdeletemanager')
+            ->create();
 
-        // Get manager's user ID
-        /** @var string $currentUsername */
-        $currentUsername = $this->client->executeScript("
-            return document.querySelector('.sidebar-user-name')?.textContent || '';
-        ");
+        $this->login('selfdeletemanager', 'password');
 
-        // Navigate to own user page
-        $this->client->request('GET', '/admin/user/overview');
-        $this->waitForElement('table', 5);
-
-        // Find the manager's row and click view
-        $this->client->executeScript("
-            const rows = document.querySelectorAll('table tbody tr');
-            for (const row of rows) {
-                if (row.textContent.includes('testmanager')) {
-                    const viewLink = row.querySelector('a[href*=\"/admin/user/\"]');
-                    if (viewLink) viewLink.click();
-                    break;
-                }
-            }
-        ");
-
+        // Navigate directly to own user details page
+        $this->client->request('GET', '/admin/user/'.$manager->getId());
         $this->waitForElement('.bg-danger', 5);
 
         // Should show warning that you cannot delete your own account

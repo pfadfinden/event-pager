@@ -41,8 +41,9 @@ final class UserInfoE2ETest extends AbstractPantherTestCase
         $this->client->request('GET', '/userinfo');
         $this->waitForElement('dl', 5);
 
-        self::assertSelectorTextContains('dd', 'profileuser');
-        self::assertSelectorTextContains('dd', 'Profile Test User');
+        // Check username (first dd) and displayname (second dd) separately
+        self::assertSelectorTextContains('dl dd:first-of-type', 'profileuser');
+        self::assertSelectorTextContains('dl dd:nth-of-type(2)', 'Profile Test User');
     }
 
     public function testDisplaysAuthenticationStatus(): void
@@ -112,7 +113,8 @@ final class UserInfoE2ETest extends AbstractPantherTestCase
         $this->client->request('GET', '/userinfo');
         $this->waitForElement('a.btn-outline-danger', 5);
 
-        $this->client->clickLink('Sign out');
+        // Click the logout button via JavaScript (clickLink fails due to icon inside button)
+        $this->client->executeScript("document.querySelector('a.btn-outline-danger').click();");
         $this->waitForElement('body', 5);
 
         // Should redirect to login page after logout

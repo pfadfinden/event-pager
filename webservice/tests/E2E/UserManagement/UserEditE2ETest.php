@@ -46,9 +46,10 @@ final class UserEditE2ETest extends AbstractPantherTestCase
             ->create();
 
         $this->client->request('GET', '/admin/user/'.$targetUser->getId().'/edit');
+        $this->waitForElement('body', 5);
 
-        // Support should be denied access to edit
-        self::assertStringNotContainsString('/edit', $this->client->getCurrentURL());
+        // Support should see access denied page (403)
+        self::assertSelectorTextContains('body', 'Access Denied');
     }
 
     public function testFormShowsCurrentDisplayname(): void
