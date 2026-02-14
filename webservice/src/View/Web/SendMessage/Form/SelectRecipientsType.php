@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function count;
 
 /**
  * Configuration of a ChoiceType to render options of type RecipientListEntry in a SendMessage form.
@@ -25,8 +26,7 @@ final class SelectRecipientsType extends AbstractType
         $resolver->setDefaults([
             'multiple' => true,
             'choice_attr' => ChoiceList::attr($this, function (RecipientListEntry $recipient): array {
-                $enabled = true; // @phpstan-ignore-next-line booleanNot.alwaysFalse (TODO validate options)
-                if (!$enabled) {
+                if (0 === count($recipient->enabledTransports)) {
                     return ['class' => 'text-decoration-line-through', 'disabled' => true];
                 }
 

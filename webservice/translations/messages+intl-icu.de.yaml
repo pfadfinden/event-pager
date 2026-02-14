@@ -179,6 +179,42 @@ Timestamp: Zeitstempel
 Message: Nachricht
 'No messages sent yet.': 'Noch keine Nachrichten gesendet.'
 Reset: Zurücksetzen
+'Failed to move transport configuration: {message}': 'Fehler beim Verschieben der Transportkonfiguration: {message}'
+'Entity to Import': 'Entität zum Importieren'
+Unknown: Unbekannt
+'Routing Options': 'Routing-Optionen'
+'Expression that must evaluate to true for this transport to be used.': 'Ausdruck, der wahr sein muss, damit dieser Transport verwendet wird.'
+'Available variables: <code>priority</code>, <code>priorityValue</code>, <code>currentTime</code>, <code>hour</code>, <code>dayOfWeek</code>, <code>contentLength</code>': 'Verfügbare Variablen: <code>priority</code>, <code>priorityValue</code>, <code>currentTime</code>, <code>hour</code>, <code>dayOfWeek</code>, <code>contentLength</code>'
+'Examples: <code>priority > 5</code>, <code>hour >= 9 and hour < 17</code>, <code>true</code> (always match)': 'Beispiele: <code>priority > 5</code>, <code>hour >= 9 and hour < 17</code>, <code>true</code> (immer zutreffend)'
+'If checked, continue checking other transport configurations after this one matches.': 'Wenn aktiviert, werden weitere Transportkonfigurationen geprüft, nachdem diese zutrifft.'
+"If checked, continue expanding group members after this group's transport matches.": "Wenn aktiviert, werden Gruppenmitglieder weiter expandiert, nachdem der Transport dieser Gruppe zutrifft."
+Expression: Ausdruck
+Continue: Fortfahren
+'Eval Others': 'Andere auswerten'
+always: immer
+'Continue expanding group members': 'Gruppenmitglieder weiter expandieren'
+'Do not proceed down the hierarchy': 'Nicht in der Hierarchie weiter fortfahren'
+'Continue checking other transport configurations': 'Weitere Transportkonfigurationen prüfen'
+'Stop after this configuration': 'Nach dieser Konfiguration stoppen'
+'Move Up': 'Nach oben verschieben'
+'Move Down': 'Nach unten verschieben'
+'Show Channel Details': 'Kanaldetails anzeigen'
+'Export Data': 'Daten exportieren'
+'Entity to Export': 'Entität zum Exportieren'
+'Select an entity type...': 'Wähle einen Entitätstyp...'
+'Select the type of data you want to export.': 'Wähle den Datentyp, den du exportieren möchtest.'
+'CSV Export Information': 'CSV-Exportinformationen'
+'The exported CSV file uses comma (,) as the column delimiter and UTF-8 encoding.': 'Die exportierte CSV-Datei verwendet ein Komma (,) als Spaltentrennzeichen und UTF-8-Kodierung.'
+'Export all recipients including persons and groups with their transport configurations.': 'Alle Empfänger einschließlich Personen und Gruppen mit ihren Transportkonfigurationen exportieren.'
+'IntelPage Pagers': 'IntelPage-Pager'
+'Export all pagers with their channel slot assignments.': 'Alle Pager mit ihren Kanal-Slot-Zuweisungen exportieren.'
+'IntelPage Channels': 'IntelPage-Kanäle'
+'Export all channel configurations.': 'Alle Kanalkonfigurationen exportieren.'
+'Export all transport configurations.': 'Alle Transportkonfigurationen exportieren.'
+'Export the complete message history with delivery status.': 'Den vollständigen Nachrichtenverlauf mit Zustellstatus exportieren.'
+'Upload a CSV file with comma (,) as delimiter.': 'Eine CSV-Datei mit Komma (,) als Trennzeichen hochladen.'
+'The CSV file must use comma (,) as the column delimiter and UTF-8 encoding.': 'Die CSV-Datei muss ein Komma (,) als Spaltentrennzeichen und UTF-8-Kodierung verwenden.'
+'My Profile': 'Mein Profil'
 
 # Data Exchange
 'Data Exchange': Datenaustausch
