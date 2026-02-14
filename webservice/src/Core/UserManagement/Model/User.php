@@ -7,8 +7,10 @@ namespace App\Core\UserManagement\Model;
 use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Ulid;
 use function assert;
 
 #[ORM\Entity(UserRepository::class)]
@@ -16,9 +18,8 @@ use function assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type : Types::INTEGER)]
-    private ?int $id = null;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $username;
@@ -45,10 +46,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         assert('' !== $username);
 
+        $this->id = new Ulid();
         $this->username = $username;
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
     }

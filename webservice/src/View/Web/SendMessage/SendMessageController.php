@@ -9,12 +9,14 @@ use App\Core\Contracts\Bus\QueryBus;
 use App\Core\MessageRecipient\Query\MessageRecipientById;
 use App\Core\PredefinedMessages\Query\PredefinedMessageById;
 use App\Core\SendMessage\Command\SendMessage;
+use App\Core\UserManagement\Model\User;
 use App\View\Web\SendMessage\Form\GroupsOnlyRecipientsChoiceLoader;
 use App\View\Web\SendMessage\Form\SendMessageFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use function assert;
 
 #[Route('/send')]
 final class SendMessageController extends AbstractController
@@ -62,9 +64,12 @@ final class SendMessageController extends AbstractController
             /** @var SendMessageRequest $message */
             $message = $form->getData();
 
+            $user = $this->getUser();
+            assert($user instanceof User);
+
             $sendMessage = new SendMessage(
                 $message->message,
-                '01JNAY9HWQTEX1T45VBM2HG1XJ', // TODO user
+                $user->getId()->toString(),
                 $message->priority,
                 $message->toIds(),
             );

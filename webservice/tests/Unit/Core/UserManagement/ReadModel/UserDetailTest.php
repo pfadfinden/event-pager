@@ -16,13 +16,13 @@ final class UserDetailTest extends TestCase
     public function testCanBeConstructedWithRequiredParameters(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: ['ROLE_USER'],
         );
 
-        self::assertSame(1, $userDetail->id);
+        self::assertSame('1', $userDetail->id);
         self::assertSame('johndoe', $userDetail->username);
         self::assertSame('John Doe', $userDetail->displayname);
         self::assertSame(['ROLE_USER'], $userDetail->roles);
@@ -33,7 +33,7 @@ final class UserDetailTest extends TestCase
     public function testCanBeConstructedWithAllParameters(): void
     {
         $userDetail = new UserDetail(
-            id: 42,
+            id: '42',
             username: 'janedoe',
             displayname: 'Jane Doe',
             roles: ['ROLE_ADMIN', 'ROLE_MANAGER'],
@@ -41,7 +41,7 @@ final class UserDetailTest extends TestCase
             hasPassword: true,
         );
 
-        self::assertSame(42, $userDetail->id);
+        self::assertSame('42', $userDetail->id);
         self::assertSame('janedoe', $userDetail->username);
         self::assertSame('Jane Doe', $userDetail->displayname);
         self::assertSame(['ROLE_ADMIN', 'ROLE_MANAGER'], $userDetail->roles);
@@ -52,7 +52,7 @@ final class UserDetailTest extends TestCase
     public function testCanBeConstructedWithNullDisplayname(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: null,
             roles: [],
@@ -64,7 +64,7 @@ final class UserDetailTest extends TestCase
     public function testCanBeConstructedWithEmptyRoles(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: [],
@@ -76,7 +76,7 @@ final class UserDetailTest extends TestCase
     public function testGetDisplayNameReturnsDisplaynameWhenSet(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: [],
@@ -88,7 +88,7 @@ final class UserDetailTest extends TestCase
     public function testGetDisplayNameReturnsUsernameWhenDisplaynameIsNull(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: null,
             roles: [],
@@ -100,7 +100,7 @@ final class UserDetailTest extends TestCase
     public function testHasPasswordDefaultsToFalse(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: [],
@@ -112,7 +112,7 @@ final class UserDetailTest extends TestCase
     public function testExternalIdDefaultsToNull(): void
     {
         $userDetail = new UserDetail(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: [],
@@ -124,7 +124,7 @@ final class UserDetailTest extends TestCase
     public function testPropertiesArePubliclyReadable(): void
     {
         $userDetail = new UserDetail(
-            id: 123,
+            id: '123',
             username: 'testuser',
             displayname: 'Test User',
             roles: ['ROLE_SUPPORT'],
@@ -133,7 +133,7 @@ final class UserDetailTest extends TestCase
         );
 
         // Verify all public properties are accessible
-        self::assertIsInt($userDetail->id);
+        self::assertIsString($userDetail->id);
         self::assertIsString($userDetail->username);
         self::assertIsString($userDetail->displayname);
         self::assertIsArray($userDetail->roles);

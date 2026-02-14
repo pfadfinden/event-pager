@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use stdClass;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -277,18 +276,14 @@ final class KeycloakUserProviderTest extends TestCase
     public function testRefreshUserReloadsFromDatabase(): void
     {
         $user = new User('johndoe');
-        // Use reflection to set the id since it's normally auto-generated
-        $reflection = new ReflectionClass($user);
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setValue($user, 123);
+        $userId = $user->getId();
 
         $refreshedUser = new User('johndoe');
-        $idProperty->setValue($refreshedUser, 123);
         $refreshedUser->setDisplayname('Refreshed Name');
 
         $this->userRepository->expects(self::once())
             ->method('find')
-            ->with(123)
+            ->with($userId)
             ->willReturn($refreshedUser);
 
         $result = $this->sut->refreshUser($user);
@@ -310,17 +305,15 @@ final class KeycloakUserProviderTest extends TestCase
     public function testRefreshUserThrowsExceptionWhenUserNotFoundInDatabase(): void
     {
         $user = new User('johndoe');
-        $reflection = new ReflectionClass($user);
-        $idProperty = $reflection->getProperty('id');
-        $idProperty->setValue($user, 999);
+        $userId = $user->getId();
 
         $this->userRepository->expects(self::once())
             ->method('find')
-            ->with(999)
+            ->with($userId)
             ->willReturn(null);
 
         $this->expectException(UnsupportedUserException::class);
-        $this->expectExceptionMessage('User with ID "999" not found.');
+        $this->expectExceptionMessage('User with ID "'.$userId.'" not found.');
 
         $this->sut->refreshUser($user);
     }

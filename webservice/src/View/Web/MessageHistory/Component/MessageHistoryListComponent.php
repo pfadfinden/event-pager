@@ -8,10 +8,12 @@ use App\Core\Contracts\Bus\QueryBus;
 use App\Core\SendMessage\Query\CountMessageHistory;
 use App\Core\SendMessage\Query\ListMessageHistory;
 use App\Core\SendMessage\ReadModel\MessageHistoryEntry;
+use App\Core\UserManagement\Model\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use function assert;
 
 #[AsLiveComponent('MessageHistoryList', template: 'message-history/_component/message-history-list.html.twig')]
 class MessageHistoryListComponent
@@ -87,8 +89,9 @@ class MessageHistoryListComponent
 
     private function getCurrentUserId(): string
     {
-        // TODO: Map authenticated user to their ULID once user-ULID mapping is implemented
-        // For now, returning a placeholder value
-        return '01JNAY9HWQTEX1T45VBM2HG1XJ';
+        $user = $this->security->getUser();
+        assert($user instanceof User);
+
+        return $user->getId()->toString();
     }
 }

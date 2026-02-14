@@ -44,7 +44,7 @@ final readonly class ListUsersQueryHandler
 
         foreach ($users as $user) {
             yield new UserListEntry(
-                (int) $user->getId(),
+                $user->getId()->toString(),
                 (string) $user->getUsername(),
                 $user->getDisplayname(),
                 $user->getRoles(),

@@ -24,7 +24,7 @@ final readonly class UserByIdQueryHandler
         }
 
         return new UserDetail(
-            (int) $user->getId(),
+            $user->getId()->toString(),
             (string) $user->getUsername(),
             $user->getDisplayname(),
             $user->getRoles(),

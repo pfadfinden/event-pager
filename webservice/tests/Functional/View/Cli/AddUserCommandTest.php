@@ -57,7 +57,6 @@ final class AddUserCommandTest extends KernelTestCase
 
         self::assertInstanceOf(User::class, $result);
         self::assertSame('newuser', $result->getDisplayname());
-        self::assertNotNull($result->getId());
         self::assertNotEmpty($result->getPassword());
         self::assertNotSame('', $result->getPassword());
         self::assertCount(1, $result->getRoles());
@@ -85,7 +84,6 @@ final class AddUserCommandTest extends KernelTestCase
 
         self::assertInstanceOf(User::class, $result);
         self::assertSame('Test User', $result->getDisplayname());
-        self::assertNotNull($result->getId());
         self::assertNotEmpty($result->getPassword());
         self::assertCount(1, $result->getRoles());
         self::assertContains('ROLE_USER', $result->getRoles());

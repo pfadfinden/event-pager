@@ -13,7 +13,7 @@ final class UserDetail
      * @param string[] $roles
      */
     public function __construct(
-        public int $id,
+        public string $id,
         public string $username,
         public ?string $displayname,
         public array $roles,

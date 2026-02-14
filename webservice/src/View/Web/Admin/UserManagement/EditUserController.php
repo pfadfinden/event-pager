@@ -44,7 +44,7 @@ final class EditUserController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, int $id): Response
+    public function __invoke(Request $request, string $id): Response
     {
         $user = $this->queryBus->get(UserById::withId($id));
         if (null === $user) {
