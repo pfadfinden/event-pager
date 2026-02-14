@@ -19,7 +19,7 @@ final class UserTest extends TestCase
 
         self::assertSame('johndoe', $user->getUsername());
         self::assertSame('johndoe', $user->getUserIdentifier());
-        self::assertNull($user->getId());
+        self::assertNotEmpty((string) $user->getId());
     }
 
     public function testCanSetAndGetExternalId(): void

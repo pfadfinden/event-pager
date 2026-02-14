@@ -32,7 +32,7 @@ final readonly class UpdatePagerHandler
         $pager->setLabel($cmd->label);
         $pager->setNumber($cmd->number);
         $pager->setComment($cmd->comment);
-        // TODO $pager->setCarriedBy(Ulid::fromString($cmd->carriedBy));
+        // TODO load user instead of passing id: $pager->setCarriedBy(Ulid::fromString($cmd->carriedBy));
 
         $this->repository->persist($pager);
         $this->uow->commit();

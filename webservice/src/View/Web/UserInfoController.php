@@ -37,7 +37,7 @@ final class UserInfoController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $user = $this->queryBus->get(UserById::withId((int) $currentUser->getId()));
+        $user = $this->queryBus->get(UserById::withId((string) $currentUser->getId()));
         if (null === $user) {
             throw $this->createNotFoundException('User not found');
         }

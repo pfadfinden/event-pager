@@ -16,13 +16,13 @@ final class UserListEntryTest extends TestCase
     public function testCanBeConstructedWithAllParameters(): void
     {
         $entry = new UserListEntry(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: ['ROLE_USER'],
         );
 
-        self::assertSame(1, $entry->id);
+        self::assertSame('1', $entry->id);
         self::assertSame('johndoe', $entry->username);
         self::assertSame('John Doe', $entry->displayname);
         self::assertSame(['ROLE_USER'], $entry->roles);
@@ -31,7 +31,7 @@ final class UserListEntryTest extends TestCase
     public function testCanBeConstructedWithNullDisplayname(): void
     {
         $entry = new UserListEntry(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: null,
             roles: [],
@@ -43,7 +43,7 @@ final class UserListEntryTest extends TestCase
     public function testCanBeConstructedWithEmptyRoles(): void
     {
         $entry = new UserListEntry(
-            id: 1,
+            id: '1',
             username: 'johndoe',
             displayname: 'John Doe',
             roles: [],
@@ -57,7 +57,7 @@ final class UserListEntryTest extends TestCase
         $roles = ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'];
 
         $entry = new UserListEntry(
-            id: 42,
+            id: '42',
             username: 'admin',
             displayname: 'Administrator',
             roles: $roles,
@@ -70,14 +70,14 @@ final class UserListEntryTest extends TestCase
     public function testPropertiesArePubliclyReadable(): void
     {
         $entry = new UserListEntry(
-            id: 123,
+            id: '123',
             username: 'testuser',
             displayname: 'Test User',
             roles: ['ROLE_SUPPORT'],
         );
 
         // Verify all public properties are accessible
-        self::assertIsInt($entry->id);
+        self::assertIsString($entry->id);
         self::assertIsString($entry->username);
         self::assertIsString($entry->displayname);
         self::assertIsArray($entry->roles);
@@ -86,14 +86,14 @@ final class UserListEntryTest extends TestCase
     public function testDifferentEntriesHaveDifferentValues(): void
     {
         $entry1 = new UserListEntry(
-            id: 1,
+            id: '1',
             username: 'user1',
             displayname: 'User One',
             roles: ['ROLE_USER'],
         );
 
         $entry2 = new UserListEntry(
-            id: 2,
+            id: '2',
             username: 'user2',
             displayname: 'User Two',
             roles: ['ROLE_ADMIN'],

@@ -50,7 +50,6 @@ final class KeycloakUserProviderTest extends KernelTestCase
         self::assertSame('kc-new-user-uuid', $user->getExternalId());
         self::assertSame('New Keycloak User', $user->getDisplayname());
         self::assertContains('ROLE_ACTIVE_USER', $user->getRoles());
-        self::assertNotNull($user->getId()); // Persisted to DB
     }
 
     public function testExistingUserIsLinkedByUsername(): void

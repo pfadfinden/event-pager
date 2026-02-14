@@ -12,12 +12,12 @@ use App\Core\UserManagement\ReadModel\UserDetail;
  */
 final readonly class UserById implements Query
 {
-    public static function withId(int $id): self
+    public static function withId(string $id): self
     {
         return new self($id);
     }
 
-    private function __construct(public int $id)
+    private function __construct(public string $id)
     {
     }
 }
