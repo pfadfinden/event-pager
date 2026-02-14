@@ -171,3 +171,6 @@ Error: Fehler
 'Please enter a valid week.': 'Bitte geben Sie eine gültige Woche ein.'
 'Number is required': 'Nummmer ist erforderlich'
 'Label is required': 'Bezeichnung ist erforderlich'
+'Key must only contain lowercase letters, numbers, hyphens and underscores': '__Key must only contain lowercase letters, numbers, hyphens and underscores'
+'Vendor configuration must be valid JSON': '__Vendor configuration must be valid JSON'
+'Please upload a valid CSV file': '__Please upload a valid CSV file'

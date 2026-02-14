@@ -87,7 +87,7 @@ services:
       - "8090:80"
 
   redis:
-    image: redis:8.4-alpine
+    image: redis:8.6-alpine
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
       - redis-data:/data:rw

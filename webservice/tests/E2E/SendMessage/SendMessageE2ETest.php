@@ -6,6 +6,7 @@ namespace App\Tests\E2E\SendMessage;
 
 use App\Tests\E2E\AbstractPantherTestCase;
 use App\Tests\Factory\RecipientGroupFactory;
+use App\Tests\Factory\TransportConfigurationFactory;
 use PHPUnit\Framework\Attributes\Group;
 
 #[Group('webgui')]
@@ -125,6 +126,9 @@ final class SendMessageE2ETest extends AbstractPantherTestCase
         // Create a test group
         RecipientGroupFactory::new()
             ->withName('Validation Test Group')
+            ->afterInstantiate(function (\App\Core\MessageRecipient\Model\Group $group): void {
+                $group->addTransportConfiguration('test');
+            })
             ->create();
 
         $this->client->request('GET', '/send');
@@ -164,13 +168,22 @@ final class SendMessageE2ETest extends AbstractPantherTestCase
     {
         $this->loginAsActiveUser();
 
+        // Create a system transport so recipient transport configs with key 'test' are recognized as active
+        TransportConfigurationFactory::new()->withKey('test')->enabled()->create();
+
         // Create multiple test groups
         RecipientGroupFactory::new()
             ->withName('First Group')
+            ->afterInstantiate(function (\App\Core\MessageRecipient\Model\Group $group): void {
+                $group->addTransportConfiguration('test');
+            })
             ->create();
 
         RecipientGroupFactory::new()
             ->withName('Second Group')
+            ->afterInstantiate(function (\App\Core\MessageRecipient\Model\Group $group): void {
+                $group->addTransportConfiguration('test');
+            })
             ->create();
 
         $this->client->request('GET', '/send');
@@ -199,30 +212,34 @@ final class SendMessageE2ETest extends AbstractPantherTestCase
         // Wait for first recipient to be added
         $this->client->waitFor('table tbody tr', 5);
 
-        // Search and select second group
+        // Search for second group
         $this->client->executeScript("
             const searchInput = document.querySelector('input[placeholder=\"Search...\"]');
             searchInput.value = 'Second Group';
             searchInput.dispatchEvent(new Event('keyup', { bubbles: true }));
         ");
 
-        // Wait a bit for AJAX to complete and options to update
-        usleep(500000); // 500ms
-        $this->client->waitFor('select option', 5);
-
-        $this->client->executeScript("
-            const options = document.querySelectorAll('select option');
-            for (const option of options) {
-                if (option.textContent.includes('Second Group')) {
-                    option.selected = true;
-                    option.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
-                    break;
+        // Poll until the "Second Group" option appears and select it
+        $selected = false;
+        for ($i = 0; $i < 50; ++$i) {
+            usleep(100_000);
+            /** @var bool $selected */
+            $selected = $this->client->executeScript("
+                const options = document.querySelectorAll('select option');
+                for (const option of options) {
+                    if (option.textContent.includes('Second Group') && !option.disabled) {
+                        option.selected = true;
+                        option.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+                        return true;
+                    }
                 }
+                return false;
+            ");
+            if ($selected) {
+                break;
             }
-        ");
-
-        // Wait for second recipient to be added
-        usleep(500000); // 500ms
+        }
+        self::assertTrue($selected, 'Second Group option did not appear within 5 seconds');
 
         // Verify both recipients are in the table
         /** @var int $rowCount */
