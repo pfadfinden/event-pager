@@ -78,7 +78,7 @@ services:
 ###< symfony/mercure-bundle ###
 
   ntfy:
-    image: binwiederhier/ntfy:v2.17.0
+    image: binwiederhier/ntfy:v2.19.2
     command: serve
     environment:
       NTFY_BASE_URL: http://ntfy:80
