@@ -54,7 +54,7 @@ services:
 
   # More information about the keycloak service is located unter /keycloak/README.md
   keycloak:
-    image: quay.io/keycloak/keycloak:26.5
+    image: quay.io/keycloak/keycloak:26.6
     environment:
       KC_HOSTNAME: host.docker.internal
       KC_HTTP_PORT: 7080
