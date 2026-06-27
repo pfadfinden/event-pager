@@ -84,6 +84,11 @@ COPY --link build/frankenphp/conf.d/20-app.dev.ini $PHP_INI_DIR/app.conf.d/
 
 CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--watch" ]
 
+RUN apt update && apt install -y chromium && rm -rf /var/lib/apt/lists/*
+ENV PANTHER_NO_SANDBOX 1
+ENV PANTHER_CHROME_ARGUMENTS='--disable-dev-shm-usage'
+
+
 # Builder for the prod FrankenPHP image
 FROM frankenphp_base AS frankenphp_prod_builder
 
