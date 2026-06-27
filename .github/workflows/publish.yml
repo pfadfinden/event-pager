@@ -1,19 +1,14 @@
 name: Build & Publish Docker Images
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Continuous Integration / Webservice"]
+    types: [completed]
     branches:
       - main
+  push:
     tags:
       - "v*.*.*"
-    paths:
-      - webservice/**
-      - .github/workflows/publish.yml
-  pull_request:
-    paths:
-      - webservice/**
-      - .github/workflows/publish.yml
-    types: [opened, reopened, synchronize, ready_for_review]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -22,6 +17,11 @@ concurrency:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    # For workflow_run: only publish when CI actually passed.
+    # For tag pushes: always publish (CI does not run on tags).
+    if: >-
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     permissions:
       contents: read
       packages: write
@@ -46,12 +46,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # For workflow_run: build the exact commit CI validated, not whatever
+          # HEAD happens to be at publish time if a new push arrived in between.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -65,11 +68,10 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/event-pager/${{ matrix.image }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main' }}
 
       - name: Build and push ${{ matrix.image }}
         uses: docker/build-push-action@v6
@@ -77,7 +79,7 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           target: ${{ matrix.target }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.image }}
