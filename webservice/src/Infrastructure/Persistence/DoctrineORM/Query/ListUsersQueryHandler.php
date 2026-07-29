@@ -48,6 +48,8 @@ final readonly class ListUsersQueryHandler
                 (string) $user->getUsername(),
                 $user->getDisplayname(),
                 $user->getRoles(),
+                $user->getExternalId(),
+                '' !== $user->getPassword(),
             );
         }
     }

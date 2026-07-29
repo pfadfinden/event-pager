@@ -30,6 +30,7 @@ final readonly class UserByIdQueryHandler
             $user->getRoles(),
             $user->getExternalId(),
             '' !== $user->getPassword(),
+            $user->getRecipient()?->getId()->toString(),
         );
     }
 }

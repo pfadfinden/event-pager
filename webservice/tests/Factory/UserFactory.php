@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Factory;
 
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Core\UserManagement\Model\User;
 use Override;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -67,6 +68,11 @@ final class UserFactory extends PersistentObjectFactory
             if (isset($attributes['externalId']) && is_string($attributes['externalId'])) {
                 $user->setExternalId($attributes['externalId']);
             }
+
+            // Set recipient if provided
+            if (isset($attributes['recipient']) && $attributes['recipient'] instanceof AbstractMessageRecipient) {
+                $user->setRecipient($attributes['recipient']);
+            }
         });
     }
 
@@ -88,6 +94,11 @@ final class UserFactory extends PersistentObjectFactory
     public function withExternalId(string $externalId): static
     {
         return $this->with(['externalId' => $externalId]);
+    }
+
+    public function withRecipient(AbstractMessageRecipient $recipient): static
+    {
+        return $this->with(['recipient' => $recipient]);
     }
 
     /**

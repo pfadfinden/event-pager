@@ -104,4 +104,32 @@ final class UserListEntryTest extends TestCase
         self::assertNotSame($entry1->displayname, $entry2->displayname);
         self::assertNotSame($entry1->roles, $entry2->roles);
     }
+
+    public function testDefaultsToNoExternalIdAndNoPassword(): void
+    {
+        $entry = new UserListEntry(
+            id: '1',
+            username: 'johndoe',
+            displayname: 'John Doe',
+            roles: ['ROLE_USER'],
+        );
+
+        self::assertNull($entry->externalId);
+        self::assertFalse($entry->hasPassword);
+    }
+
+    public function testCanBeConstructedWithSsoAndPasswordState(): void
+    {
+        $entry = new UserListEntry(
+            id: '1',
+            username: 'johndoe',
+            displayname: 'John Doe',
+            roles: ['ROLE_USER'],
+            externalId: 'keycloak-sub-123',
+            hasPassword: true,
+        );
+
+        self::assertSame('keycloak-sub-123', $entry->externalId);
+        self::assertTrue($entry->hasPassword);
+    }
 }

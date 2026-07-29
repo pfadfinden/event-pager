@@ -18,4 +18,6 @@ final class EditUserRequest
      * @var string[]
      */
     public array $roles = [];
+
+    public ?string $recipient = null;
 }

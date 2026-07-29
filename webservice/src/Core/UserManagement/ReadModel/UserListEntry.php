@@ -17,6 +17,8 @@ final class UserListEntry
         public string $username,
         public ?string $displayname,
         public array $roles,
+        public ?string $externalId = null,
+        public bool $hasPassword = false,
     ) {
     }
 }

@@ -6,7 +6,9 @@ namespace App\View\Web\Admin\UserManagement;
 
 use App\Core\Contracts\Bus\CommandBus;
 use App\Core\Contracts\Bus\QueryBus;
+use App\Core\MessageRecipient\Query\ListOfMessageRecipients;
 use App\Core\UserManagement\Command\EditUser;
+use App\Core\UserManagement\Command\LinkRecipientToUser;
 use App\Core\UserManagement\Query\UserById;
 use App\View\Web\Admin\UserManagement\Request\EditUserRequest;
 use RuntimeException;
@@ -54,11 +56,17 @@ final class EditUserController extends AbstractController
         $userRequest = new EditUserRequest();
         $userRequest->displayname = $user->displayname;
         $userRequest->roles = $user->roles;
+        $userRequest->recipient = $user->recipientId;
 
         $canAssignPrivileged = $this->isGranted('ROLE_USERMANAGEMENT_ASSIGN_PRIVILEGED');
         $availableRoles = self::ASSIGNABLE_ROLES;
         if ($canAssignPrivileged) {
             $availableRoles = array_merge($availableRoles, self::PRIVILEGED_ROLES);
+        }
+
+        $recipientChoices = [];
+        foreach ($this->queryBus->get(ListOfMessageRecipients::onlyPeople()) as $recipient) {
+            $recipientChoices[$recipient->name] = $recipient->id;
         }
 
         $form = $this->createFormBuilder($userRequest)
@@ -75,6 +83,12 @@ final class EditUserController extends AbstractController
                 'choices' => array_flip($availableRoles),
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('recipient', ChoiceType::class, [
+                'label' => 'Linked Recipient',
+                'required' => false,
+                'placeholder' => 'None',
+                'choices' => $recipientChoices,
             ])
             ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
@@ -109,6 +123,11 @@ final class EditUserController extends AbstractController
                     $userRequest->displayname,
                     [] !== $addRoles ? array_values($addRoles) : null,
                     [] !== $removeRoles ? array_values($removeRoles) : null,
+                ));
+
+                $this->commandBus->do(LinkRecipientToUser::with(
+                    $user->username,
+                    $userRequest->recipient,
                 ));
 
                 $this->addFlash('success', t('User updated successfully'));

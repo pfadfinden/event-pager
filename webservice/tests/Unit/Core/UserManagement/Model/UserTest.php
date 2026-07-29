@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Core\UserManagement\Model;
 
+use App\Core\MessageRecipient\Model\Person;
 use App\Core\UserManagement\Model\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -128,5 +129,27 @@ final class UserTest extends TestCase
 
         $user = new User('johndoe');
         $user->eraseCredentials();
+    }
+
+    public function testCanSetAndGetRecipient(): void
+    {
+        $user = new User('johndoe');
+        self::assertNull($user->getRecipient());
+
+        $recipient = new Person('John Doe');
+        $result = $user->setRecipient($recipient);
+
+        self::assertSame($user, $result); // Fluent interface
+        self::assertSame($recipient, $user->getRecipient());
+    }
+
+    public function testCanUnlinkRecipient(): void
+    {
+        $user = new User('johndoe');
+        $user->setRecipient(new Person('John Doe'));
+
+        $user->setRecipient(null);
+
+        self::assertNull($user->getRecipient());
     }
 }
