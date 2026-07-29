@@ -1,0 +1,11 @@
+<div{{ attributes }}>
+    {% if this.recipient is null %}
+        <p class="text-muted">{% trans %}No recipient is linked to your account yet. Contact an administrator to link one.{% endtrans %}</p>
+    {% else %}
+        {{ include('recipient-management/_transport/_list.html.twig', {
+            recipient: this.recipient,
+            recipientType: 'person',
+            manageRole: 'ROLE_MANAGE_RECIPIENT_INDIVIDUALS',
+        }) }}
+    {% endif %}
+</div>

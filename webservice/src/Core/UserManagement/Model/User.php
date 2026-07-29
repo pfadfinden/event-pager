@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\UserManagement\Model;
 
+use App\Core\MessageRecipient\Model\AbstractMessageRecipient;
 use App\Infrastructure\Persistence\DoctrineORM\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,6 +42,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, nullable: true)]
     private ?string $externalId = null;
+
+    #[ORM\ManyToOne(targetEntity: AbstractMessageRecipient::class)]
+    #[ORM\JoinColumn(name: 'recipient_id', nullable: true, onDelete: 'SET NULL')]
+    private ?AbstractMessageRecipient $recipient = null;
 
     public function __construct(string $username)
     {
@@ -155,6 +160,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setExternalId(?string $externalId): self
     {
         $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    public function getRecipient(): ?AbstractMessageRecipient
+    {
+        return $this->recipient;
+    }
+
+    public function setRecipient(?AbstractMessageRecipient $recipient): self
+    {
+        $this->recipient = $recipient;
 
         return $this;
     }

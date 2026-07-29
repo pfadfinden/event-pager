@@ -28,6 +28,7 @@ final class UserDetailTest extends TestCase
         self::assertSame(['ROLE_USER'], $userDetail->roles);
         self::assertNull($userDetail->externalId);
         self::assertFalse($userDetail->hasPassword);
+        self::assertNull($userDetail->recipientId);
     }
 
     public function testCanBeConstructedWithAllParameters(): void
@@ -39,6 +40,7 @@ final class UserDetailTest extends TestCase
             roles: ['ROLE_ADMIN', 'ROLE_MANAGER'],
             externalId: 'keycloak-uuid-12345',
             hasPassword: true,
+            recipientId: '01ARZ3NDEKTSV4RRFFQ69G5FAV',
         );
 
         self::assertSame('42', $userDetail->id);
@@ -47,6 +49,7 @@ final class UserDetailTest extends TestCase
         self::assertSame(['ROLE_ADMIN', 'ROLE_MANAGER'], $userDetail->roles);
         self::assertSame('keycloak-uuid-12345', $userDetail->externalId);
         self::assertTrue($userDetail->hasPassword);
+        self::assertSame('01ARZ3NDEKTSV4RRFFQ69G5FAV', $userDetail->recipientId);
     }
 
     public function testCanBeConstructedWithNullDisplayname(): void

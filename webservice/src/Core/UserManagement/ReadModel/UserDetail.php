@@ -19,6 +19,7 @@ final class UserDetail
         public array $roles,
         public ?string $externalId = null,
         public bool $hasPassword = false,
+        public ?string $recipientId = null,
     ) {
     }
 

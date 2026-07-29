@@ -39,7 +39,7 @@ class PagerSlotsController extends AbstractController
             throw new NotFoundHttpException('Pager not found');
         }
 
-        $channels = $this->queryBus->get(AllChannel::withoutFilter());
+        $channels = iterator_to_array($this->queryBus->get(AllChannel::withoutFilter()));
 
         $form = $this->createForm(SlotAssignmentFormType::class, null, [
             'channels' => $channels,
